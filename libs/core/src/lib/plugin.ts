@@ -1,11 +1,11 @@
-import { KondaContext } from './konda.context';
+import { IKondaContext } from './types'
 
 export abstract class Plugin {
-  public abstract name: string;
+  public abstract name: string
 
-  public install(context: KondaContext) {
-    this.setup(context);
+  public install(context: IKondaContext) {
+    this.setup(context)
   }
 
-  protected abstract setup(context: KondaContext): Promise<void>;
+  protected abstract setup(context: IKondaContext): Promise<void>
 }
