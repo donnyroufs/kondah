@@ -1,10 +1,145 @@
 {
-  
-  
   "version": 2,
-  
-  "projects": {},
-  "cli": {
-    "defaultCollection": "@nrwl/workspace"
+  "cli": { "defaultCollection": "@nrwl/node" },
+  "defaultProject": "example-api",
+  "projects": {
+    "example-api": {
+      "root": "apps/example-api",
+      "sourceRoot": "apps/example-api/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/example-api",
+            "main": "apps/example-api/src/main.ts",
+            "tsConfig": "apps/example-api/tsconfig.app.json",
+            "assets": ["apps/example-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/example-api/src/environments/environment.ts",
+                  "with": "apps/example-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": { "buildTarget": "example-api:build" }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["apps/example-api/**/*.ts"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/example-api"],
+          "options": {
+            "jestConfig": "apps/example-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "core": {
+      "root": "libs/core",
+      "sourceRoot": "libs/core/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/core/**/*.ts"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/core"],
+          "options": {
+            "jestConfig": "libs/core/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/core",
+            "tsConfig": "libs/core/tsconfig.lib.json",
+            "packageJson": "libs/core/package.json",
+            "main": "libs/core/src/index.ts",
+            "assets": ["libs/core/*.md"]
+          }
+        }
+      }
+    },
+    "express-adapter": {
+      "root": "libs/express-adapter",
+      "sourceRoot": "libs/express-adapter/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/express-adapter/**/*.ts"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/express-adapter"],
+          "options": {
+            "jestConfig": "libs/express-adapter/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/express-adapter",
+            "tsConfig": "libs/express-adapter/tsconfig.lib.json",
+            "packageJson": "libs/express-adapter/package.json",
+            "main": "libs/express-adapter/src/index.ts",
+            "assets": ["libs/express-adapter/*.md"]
+          }
+        }
+      }
+    },
+    "static-files-plugin": {
+      "root": "libs/static-files-plugin",
+      "sourceRoot": "libs/static-files-plugin/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/static-files-plugin/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/static-files-plugin"],
+          "options": {
+            "jestConfig": "libs/static-files-plugin/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/static-files-plugin",
+            "tsConfig": "libs/static-files-plugin/tsconfig.lib.json",
+            "packageJson": "libs/static-files-plugin/package.json",
+            "main": "libs/static-files-plugin/src/index.ts",
+            "assets": ["libs/static-files-plugin/*.md"]
+          }
+        }
+      }
+    }
   }
 }

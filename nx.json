@@ -1,27 +1,25 @@
 {
-  "npmScope": "konda",
-  "affected": {
-    "defaultBase": "master"
-  },
   "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     ".eslintrc.json": "*"
   },
+  "affected": { "defaultBase": "master" },
+  "npmScope": "konda",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
+      "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ]
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "accessToken": "MTBkYmNiNzYtYTE4Ny00NGFkLWIwMTctOTNmNzUwYmUzYzAyfHJlYWQtd3JpdGU=",
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
       }
     }
   },
-  "projects": {}
+  "projects": {
+    "example-api": { "tags": [] },
+    "core": { "tags": [] },
+    "express-adapter": { "tags": [] },
+    "static-files-plugin": { "tags": [] }
+  }
 }
