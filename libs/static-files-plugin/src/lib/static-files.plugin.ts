@@ -10,6 +10,11 @@ export class StaticFilesPlugin extends Plugin {
     super()
   }
 
+  // TODO: Remove (add) from IKondaContext,
+  // rename KondaContext to AppContext
+  // Add as object instead of own args
+  // Create seperate methods to register new things to the AppContext || create decorator to add to context!
+  // later on add HttpContext
   protected async setup(context: IKondaContext) {
     context.add('fromStaticPlugin', this.log.bind(this))
 
@@ -18,6 +23,7 @@ export class StaticFilesPlugin extends Plugin {
     )
   }
 
+  // e.g. @AddToContext('log')
   private log() {
     console.log('hello from static plugin')
   }

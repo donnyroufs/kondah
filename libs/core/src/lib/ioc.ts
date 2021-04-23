@@ -1,9 +1,9 @@
-export type Scopes = 'transient' | 'singleton';
-export type Identifier = string;
-export type Dependency<T = any> = new (...args: any[]) => T;
+export type Scopes = 'transient' | 'singleton'
+export type Identifier = string
+export type Dependency<T = any> = new (...args: any[]) => T
 
 export class DependencyData<T> {
-  public injectables: Identifier[];
+  public injectables: Identifier[]
 
   constructor(
     public scope: Scopes,
@@ -11,39 +11,39 @@ export class DependencyData<T> {
     injectables: Identifier[],
     public cache: null | Dependency<T> = null
   ) {
-    this.injectables = injectables;
+    this.injectables = injectables
   }
 }
 
 export class IOC {
-  private _dependencies: Map<string, DependencyData<unknown>> = new Map();
-  private _defaultScope: Scopes = 'transient';
+  private _dependencies: Map<string, DependencyData<unknown>> = new Map()
+  private _defaultScope: Scopes = 'transient'
 
   public register<T>(dep: Dependency<T>, scope?: Scopes) {
-    const _scope = scope ? scope : this._defaultScope;
-    this._dependencies.set(dep.name, new DependencyData<T>(_scope, dep, []));
+    const _scope = scope ? scope : this._defaultScope
+    this._dependencies.set(dep.name, new DependencyData<T>(_scope, dep, []))
   }
 
   public rebind(identifier: string) {}
 
   public setDefaultScope(scope: Scopes) {
-    this._defaultScope = scope;
+    this._defaultScope = scope
   }
 
   public get<T>(identifier: Identifier) {
-    const dep = this._dependencies.get(identifier);
+    const dep = this._dependencies.get(identifier)
     if (dep?.scope === 'singleton' && !dep.cache) {
-      const cachedDep = new dep.dependency() as any;
-      dep.cache = cachedDep;
-      return dep.cache;
+      const cachedDep = new dep.dependency() as any
+      dep.cache = cachedDep
+      return dep.cache as Dependency<T>
     }
 
     if (dep?.scope === 'singleton') {
-      return dep.cache;
+      return dep.cache as Dependency<T>
     }
 
     if (dep?.scope === 'transient') {
-      return new dep.dependency();
+      return new dep.dependency() as Dependency<T>
     }
   }
 

@@ -1,7 +1,5 @@
-import '@konda/core'
-
-export declare module '@konda/core' {
-  export interface IKondaContext {
-    fromStaticPlugin: () => void
-  }
-}
+// export declare module '@konda/core' {
+//   interface IKondaContext {
+//     fromStaticPlugin?: () => void
+//   }
+// }
