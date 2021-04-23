@@ -1,4 +1,5 @@
 export * from './lib/konda'
+export type { KondaContext } from './lib/konda.context'
 export * from './lib/types'
 export * from './lib/server-adapter'
 export * from './lib/plugin'

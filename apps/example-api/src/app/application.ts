@@ -1,5 +1,6 @@
 import 'reflect-metadata'
-import { Konda, IOC, IKondaContext } from '@konda/core'
+
+import { Konda, IOC, KondaContext } from '@konda/core'
 import { UserService } from './user.service'
 import { AuthService } from './auth.service'
 
@@ -11,9 +12,7 @@ export class Application extends Konda {
     services.register(UserService)
   }
 
-  public async setup(context: IKondaContext) {
-    // @ts-expect-error yes
-    console.log(context.ioc._dependencies.get('UserService'))
-    // context.fromStaticPlugin()
+  public async setup(context: KondaContext) {
+    context.fromStaticPlugin()
   }
 }

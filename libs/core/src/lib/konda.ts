@@ -4,13 +4,13 @@ import { ServerAdapter } from './server-adapter'
 import { IOC, ioc } from './ioc'
 import { KondaContext } from './konda.context'
 import { PluginManager } from './plugin.manager'
-import { IKondaContext, IKondaOptions } from './types'
+import { IKondaOptions } from './types'
 
 export abstract class Konda {
   protected readonly port: number = Number(process.env.PORT) || 5000
 
   private readonly _server: ServerAdapter
-  private readonly _context: IKondaContext
+  private readonly _context: KondaContext
   private readonly _pluginManager: PluginManager
 
   constructor(options: IKondaOptions) {
@@ -23,7 +23,7 @@ export abstract class Konda {
   }
 
   public abstract configureServices(services: IOC): Promise<void>
-  public abstract setup(context: IKondaContext): Promise<void>
+  public abstract setup(context: KondaContext): Promise<void>
 
   private async initialize() {
     await this.configureServices(this._context.ioc)
