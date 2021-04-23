@@ -39,7 +39,7 @@ export class IOC {
     if (!dep) throw new Error('dependency does not exist in the container')
 
     if (dep.scope === 'singleton' && !dep.cache) {
-      const cachedDep = new dep.dependency() as any
+      const cachedDep = new dep.dependency() as Dependency<T>
       dep.cache = cachedDep
       return dep.cache as Dependency<T>
     }
