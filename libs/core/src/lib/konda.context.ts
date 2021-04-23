@@ -19,8 +19,4 @@ export class KondaContext extends implement<PartialKodaContext>() {
     this.server = server
     this.ioc = ioc
   }
-
-  add = (name: string, propOrFunction: any) => {
-    this[name] = propOrFunction
-  }
 }
