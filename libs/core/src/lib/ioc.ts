@@ -1,17 +1,5 @@
+import { DependencyData } from './dependency-data'
 import { Dependency, Identifier, Scopes } from './types'
-
-export class DependencyData<T> {
-  public injectables: Dependency[]
-
-  constructor(
-    public scope: Scopes,
-    public dependency: Dependency<T>,
-    injectables: Dependency[],
-    public cache: null | T = null
-  ) {
-    this.injectables = injectables
-  }
-}
 
 export class IOC {
   private _dependencies: Map<string, DependencyData<unknown>> = new Map()
