@@ -17,3 +17,18 @@ export type Scopes = 'transient' | 'singleton'
 export type Identifier = string
 export type Dependency<T = unknown> = Constructor<T>
 export type PropOrFunction = string
+
+export type HttpVerb =
+  | 'get'
+  | 'post'
+  | 'delete'
+  | 'put'
+  | 'patch'
+  | 'options'
+  | 'head'
+
+export interface RouteDefinition {
+  path: string
+  requestMethod: HttpVerb
+  methodName: string
+}
