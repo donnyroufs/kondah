@@ -1,6 +1,4 @@
-export type Scopes = 'transient' | 'singleton'
-export type Identifier = string
-export type Dependency<T = any> = new (...args: any[]) => T
+import { Dependency, Identifier, Scopes } from './types'
 
 export class DependencyData<T> {
   public injectables: Identifier[]
@@ -21,10 +19,15 @@ export class IOC {
 
   public register<T>(dep: Dependency<T>, scope?: Scopes) {
     const _scope = scope ? scope : this._defaultScope
-    this._dependencies.set(dep.name, new DependencyData<T>(_scope, dep, []))
+    const injectables = this.getInjectables<T>(dep)
+
+    this._dependencies.set(
+      dep.name,
+      new DependencyData<T>(_scope, dep, injectables)
+    )
   }
 
-  public rebind(identifier: string) {}
+  // public rebind(identifier: Identifier) {}
 
   public setDefaultScope(scope: Scopes) {
     this._defaultScope = scope
@@ -32,28 +35,37 @@ export class IOC {
 
   public get<T>(identifier: Identifier) {
     const dep = this._dependencies.get(identifier)
-    if (dep?.scope === 'singleton' && !dep.cache) {
+
+    if (!dep) throw new Error('dependency does not exist in the container')
+
+    if (dep.scope === 'singleton' && !dep.cache) {
       const cachedDep = new dep.dependency() as any
       dep.cache = cachedDep
       return dep.cache as Dependency<T>
     }
 
-    if (dep?.scope === 'singleton') {
+    if (dep.scope === 'singleton') {
       return dep.cache as Dependency<T>
     }
 
-    if (dep?.scope === 'transient') {
+    if (dep.scope === 'transient') {
       return new dep.dependency() as Dependency<T>
     }
   }
 
-  private injectDependencies() {}
+  // Resolve dependency
+  private resolve() {
+    return 1
+  }
+
+  private hasInjectables<T>(dep: Dependency<T>) {
+    return !!dep.prototype.__injectables__
+  }
+
+  private getInjectables<T>(dep: Dependency<T>) {
+    const injectables = this.hasInjectables(dep)
+    return injectables ? dep.prototype.__injectables__ : null
+  }
 }
 
-/*
-  const ioc = new IOC();
-  ioc.register<IFancyService>(Types.fancyService).singleton(FancyService).in('core')
-
-  ioc.get(Types.fancyService)
-  ioc.rebind(Types.fancyService).singleton(FancyFancyService)
-*/
+export const ioc = new IOC()
