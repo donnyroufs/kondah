@@ -15,7 +15,8 @@ export interface IKondaOptions {
 export type IOC = _IOC
 
 export type Constructor<T> = new (...args: unknown[]) => T
-export type Scopes = 'transient' | 'singleton'
+export type Scopes = 'singleton'
+// export type Scopes = 'transient' | 'singleton'
 export type Identifier = string
 export type Dependency<T = unknown> = Constructor<T>
 export type PropOrFunction = string

@@ -1,12 +1,12 @@
 import { Dependency, Identifier, Scopes } from './types'
 
 export class DependencyData<T> {
-  public injectables: Identifier[]
+  public injectables: Dependency[]
 
   constructor(
     public scope: Scopes,
     public dependency: Dependency<T>,
-    injectables: Identifier[],
+    injectables: Dependency[],
     public cache: null | Dependency<T> = null
   ) {
     this.injectables = injectables
@@ -15,7 +15,7 @@ export class DependencyData<T> {
 
 export class IOC {
   private _dependencies: Map<string, DependencyData<unknown>> = new Map()
-  private _defaultScope: Scopes = 'transient'
+  private _defaultScope: Scopes = 'singleton'
 
   public register<T>(dep: Dependency<T>, scope?: Scopes) {
     const _scope = scope ? scope : this._defaultScope
@@ -39,18 +39,25 @@ export class IOC {
     if (!dep) throw new Error('dependency does not exist in the container')
 
     if (dep.scope === 'singleton' && !dep.cache) {
-      const cachedDep = new dep.dependency() as Dependency<T>
+      // console.log(this._dependencies)
+      // console.log(dep.injectables)
+      // let inj
+      // if (dep.injectables) {
+      //   // @ts-expect-error yes
+      //   inj = this.get(dep.injectables[0].name)
+      // }
+
+      const resolvedDeps =
+        dep.injectables?.length > 0
+          ? dep.injectables.map((dep) => this.get(dep.name))
+          : []
+
+      const cachedDep = new dep.dependency(...resolvedDeps) as Dependency<T>
       dep.cache = cachedDep
       return dep.cache as Dependency<T>
     }
 
-    if (dep.scope === 'singleton') {
-      return dep.cache as Dependency<T>
-    }
-
-    if (dep.scope === 'transient') {
-      return new dep.dependency() as Dependency<T>
-    }
+    return new dep.dependency() as Dependency<T>
   }
 
   // Resolve dependency
