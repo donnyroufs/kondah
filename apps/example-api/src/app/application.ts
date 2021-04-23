@@ -23,5 +23,8 @@ export class Application extends Konda {
     console.log({ get1: u.getUsers() })
     const u2 = context.ioc.get(UserService)
     console.log({ get2: u2.getUsers() })
+    context.ioc.rebind(UserService.name, UserService)
+    const u3 = context.ioc.get(UserService)
+    console.log({ get3: u3.getUsers() }) // should be empty
   }
 }

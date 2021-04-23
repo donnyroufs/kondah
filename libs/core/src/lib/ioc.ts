@@ -13,15 +13,20 @@ export class IOC {
 
   public register<T>(dep: Dependency<T>, scope?: Scopes) {
     const _scope = scope ? scope : this._defaultScope
-    const injectables = this.getInjectables<T>(dep)
-
-    this._dependencies.set(
-      dep.name,
-      new DependencyData<T>(_scope, dep, injectables)
-    )
+    this.addDependency<T>(dep, _scope)
   }
 
-  // public rebind(identifier: Identifier) {}
+  public rebind<T>(
+    identifier: Identifier | Dependency<T>,
+    newDependency: Dependency<T>,
+    scope?: Scopes
+  ) {
+    const _scope = scope ? scope : this._defaultScope
+    this.addDependency<T>(newDependency, _scope)
+
+    const _identifier = this.getIdentifier(identifier)
+    this._dependencies[_identifier] = newDependency
+  }
 
   /**
    *
@@ -33,8 +38,7 @@ export class IOC {
   }
 
   public get<T>(identifier: Identifier | Dependency<T>) {
-    const _identifier =
-      typeof identifier === 'string' ? identifier : identifier.name
+    const _identifier = this.getIdentifier(identifier)
 
     const dep = this._dependencies.get(_identifier)
 
@@ -57,6 +61,18 @@ export class IOC {
   private getInjectables<T>(dep: Dependency<T>) {
     const injectables = this.hasInjectables(dep)
     return injectables ? dep.prototype.__injectables__ : null
+  }
+
+  private addDependency<T>(dep: Dependency<T>, scope: Scopes) {
+    const injectables = this.getInjectables<T>(dep)
+    this._dependencies.set(
+      dep.name,
+      new DependencyData<T>(scope, dep, injectables)
+    )
+  }
+
+  private getIdentifier(identifier: Identifier | Dependency) {
+    return typeof identifier === 'string' ? identifier : identifier.name
   }
 }
 
