@@ -7,7 +7,7 @@ export class DependencyData<T> {
     public scope: Scopes,
     public dependency: Dependency<T>,
     injectables: Dependency[],
-    public cache: null | Dependency<T> = null
+    public cache: null | T = null
   ) {
     this.injectables = injectables
   }
@@ -43,8 +43,12 @@ export class IOC {
     if (dep.scope === 'singleton' && !dep.cache) {
       const resolvedDeps = this.resolveDependencies(dep)
       const cachedDep = new dep.dependency(...resolvedDeps) as T
-      dep.cache = cachedDep as any
+      dep.cache = cachedDep as T
       return cachedDep
+    }
+
+    if (dep.scope === 'singleton' && dep.cache) {
+      return dep.cache as T
     }
 
     return new dep.dependency() as T

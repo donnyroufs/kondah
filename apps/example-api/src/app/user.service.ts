@@ -3,9 +3,18 @@ import { AuthService } from './auth.service'
 
 @injectable()
 export class UserService {
+  public users: number[] = []
   constructor(private readonly _authService: AuthService) {}
 
-  getUsers() {
+  getNested() {
     return this._authService.fromNested()
+  }
+
+  getUsers() {
+    return this.users
+  }
+
+  addUser() {
+    this.users.push(this.users.length++)
   }
 }

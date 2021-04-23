@@ -18,6 +18,14 @@ export class Application extends Konda {
 
   public async setup(context: KondaContext) {
     const u = context.ioc.get(UserService)
-    console.log(u.getUsers())
+    // Test nested dep
+    console.log(u.getNested())
+
+    // Check if singleton dep works
+    u.addUser()
+    u.addUser()
+    console.log({ get1: u.getUsers() })
+    const u2 = context.ioc.get(UserService)
+    console.log({ get2: u2.getUsers() })
   }
 }
