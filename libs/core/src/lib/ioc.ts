@@ -33,36 +33,27 @@ export class IOC {
     this._defaultScope = scope
   }
 
-  public get<T>(identifier: Identifier) {
-    const dep = this._dependencies.get(identifier)
+  public get<T>(identifier: Identifier | Dependency<T>) {
+    const _identifier =
+      typeof identifier === 'string' ? identifier : identifier.name
+    const dep = this._dependencies.get(_identifier)
 
     if (!dep) throw new Error('dependency does not exist in the container')
 
     if (dep.scope === 'singleton' && !dep.cache) {
-      // console.log(this._dependencies)
-      // console.log(dep.injectables)
-      // let inj
-      // if (dep.injectables) {
-      //   // @ts-expect-error yes
-      //   inj = this.get(dep.injectables[0].name)
-      // }
-
-      const resolvedDeps =
-        dep.injectables?.length > 0
-          ? dep.injectables.map((dep) => this.get(dep.name))
-          : []
-
-      const cachedDep = new dep.dependency(...resolvedDeps) as Dependency<T>
-      dep.cache = cachedDep
-      return dep.cache as Dependency<T>
+      const resolvedDeps = this.resolveDependencies(dep)
+      const cachedDep = new dep.dependency(...resolvedDeps) as T
+      dep.cache = cachedDep as any
+      return cachedDep
     }
 
-    return new dep.dependency() as Dependency<T>
+    return new dep.dependency() as T
   }
 
   // Resolve dependency
-  private resolve() {
-    return 1
+  private resolveDependencies(dep: DependencyData<unknown>) {
+    if (!dep.injectables || dep.injectables.length <= 0) return []
+    return dep.injectables.map(this.get.bind(this))
   }
 
   private hasInjectables<T>(dep: Dependency<T>) {

@@ -17,9 +17,7 @@ export class Application extends Konda {
   }
 
   public async setup(context: KondaContext) {
-    // context.fromStaticPlugin()
-    const u = context.ioc.get<UserService>(UserService.name)
-    // @ts-expect-error yes mam
-    u._authService._nestedService.nested()
+    const u = context.ioc.get(UserService)
+    console.log(u.getUsers())
   }
 }

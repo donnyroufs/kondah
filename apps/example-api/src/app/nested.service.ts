@@ -1,5 +1,5 @@
 export class NestedService {
   nested() {
-    console.log('this is the nestedService')
+    return 'from nested'
   }
 }
