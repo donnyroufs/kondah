@@ -6,5 +6,3 @@ new Application({
   server: new ExpressAdapter(),
   plugins: [new StaticFilesPlugin()],
 })
-
-// ctx.

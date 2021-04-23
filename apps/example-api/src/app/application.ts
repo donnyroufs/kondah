@@ -1,4 +1,4 @@
-import { Konda, IOC, IKondaContext } from '@konda/core'
+import { Konda, IOC, KondaContext } from '@konda/core'
 import { UserService } from './user.service'
 
 export class Application extends Konda {
@@ -7,7 +7,7 @@ export class Application extends Konda {
     services.register(UserService)
   }
 
-  public async setup(context: IKondaContext) {
-    // context.fromStaticPlugin()
+  public async setup(context: KondaContext) {
+    context.fromStaticPlugin()
   }
 }

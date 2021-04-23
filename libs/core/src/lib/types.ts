@@ -5,7 +5,7 @@ import { IOC as _IOC } from './ioc'
 export interface IKondaContext {
   server: Omit<ServerAdapter, 'run'>
   ioc: IOC
-  add(name: string, propOrFunction: any): void
+  add: (name: string, propOrFunction: any) => void
 }
 
 export interface IKondaOptions {
