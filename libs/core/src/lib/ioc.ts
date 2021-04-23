@@ -1,9 +1,14 @@
 import { DependencyData } from './dependency-data'
+import { singletonStrategy } from './strategies/ioc'
+import { Strategy } from './strategies/ioc/strategy'
 import { Dependency, Identifier, Scopes } from './types'
 
 export class IOC {
   private _dependencies: Map<string, DependencyData<unknown>> = new Map()
   private _defaultScope: Scopes = 'singleton'
+  private _strategies: Record<Scopes, Strategy> = {
+    singleton: singletonStrategy,
+  }
 
   public register<T>(dep: Dependency<T>, scope?: Scopes) {
     const _scope = scope ? scope : this._defaultScope
@@ -24,25 +29,16 @@ export class IOC {
   public get<T>(identifier: Identifier | Dependency<T>) {
     const _identifier =
       typeof identifier === 'string' ? identifier : identifier.name
+
     const dep = this._dependencies.get(_identifier)
 
     if (!dep) throw new Error('dependency does not exist in the container')
 
-    if (dep.scope === 'singleton' && !dep.cache) {
-      const resolvedDeps = this.resolveDependencies(dep)
-      const cachedDep = new dep.dependency(...resolvedDeps) as T
-      dep.cache = cachedDep as T
-      return cachedDep
-    }
+    const resolvedDeps = this.resolveDependencies(dep)
 
-    if (dep.scope === 'singleton' && dep.cache) {
-      return dep.cache as T
-    }
-
-    return new dep.dependency() as T
+    return this._strategies[dep.scope].execute(dep, resolvedDeps)
   }
 
-  // Resolve dependency
   private resolveDependencies(dep: DependencyData<unknown>) {
     if (!dep.injectables || dep.injectables.length <= 0) return []
     return dep.injectables.map(this.get.bind(this))
