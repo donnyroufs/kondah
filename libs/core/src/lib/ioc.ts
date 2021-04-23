@@ -1,13 +1,14 @@
 import { DependencyData } from './dependency-data'
-import { singletonStrategy } from './strategies/ioc'
+import { singletonStrategy, transientStrategy } from './strategies/ioc'
 import { Strategy } from './strategies/ioc/strategy'
 import { Dependency, Identifier, Scopes } from './types'
 
 export class IOC {
   private _dependencies: Map<string, DependencyData<unknown>> = new Map()
-  private _defaultScope: Scopes = 'singleton'
+  private _defaultScope: Scopes = 'transient'
   private _strategies: Record<Scopes, Strategy> = {
     singleton: singletonStrategy,
+    transient: transientStrategy,
   }
 
   public register<T>(dep: Dependency<T>, scope?: Scopes) {
@@ -22,6 +23,11 @@ export class IOC {
 
   // public rebind(identifier: Identifier) {}
 
+  /**
+   *
+   * @param scope defaults to Transient
+   *
+   */
   public setDefaultScope(scope: Scopes) {
     this._defaultScope = scope
   }
@@ -36,7 +42,7 @@ export class IOC {
 
     const resolvedDeps = this.resolveDependencies(dep)
 
-    return this._strategies[dep.scope].execute(dep, resolvedDeps)
+    return this._strategies[dep.scope].execute(dep, resolvedDeps) as T
   }
 
   private resolveDependencies(dep: DependencyData<unknown>) {
