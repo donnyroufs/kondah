@@ -7,6 +7,7 @@ import { Dumpster } from './dumpster'
  *
  */
 export function AddToContext(propName?: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function (target: any, propertyKey: string) {
     const key = propName ? propName : propertyKey
     Dumpster.addToKondaContext(key, target[propertyKey])
