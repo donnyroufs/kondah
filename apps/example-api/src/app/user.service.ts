@@ -1,7 +1,7 @@
 import { injectable } from '@konda/core'
 import { AuthService } from './auth.service'
 
-@injectable
+@injectable()
 export class UserService {
   constructor(private readonly _authService: AuthService) {}
 
