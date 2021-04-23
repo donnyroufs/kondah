@@ -1,11 +1,7 @@
-import 'reflect-metadata'
-
-import { Konda, IOC, KondaContext } from '@konda/core'
+import { Konda, KondaContext, IOC } from '@konda/core'
 import { UserService } from './user.service'
 import { AuthService } from './auth.service'
 import { NestedService } from './nested.service'
-
-console.clear()
 
 export class Application extends Konda {
   public async configureServices(services: IOC) {
