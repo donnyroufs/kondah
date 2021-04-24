@@ -1,4 +1,4 @@
-import { Controller, Get } from '@konda/core'
+import { Controller, Get } from '@konda/http-controller'
 
 @Controller('/users')
 export class UserController {

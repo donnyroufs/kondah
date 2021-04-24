@@ -1,4 +1,11 @@
-import { Controller, Delete, Get, Middleware, Patch, Post } from '@konda/core'
+import {
+  Controller,
+  Delete,
+  Get,
+  Middleware,
+  Patch,
+  Post,
+} from '@konda/http-controller'
 import { logMiddleware } from './log.middleware'
 import { UserService } from './user.service'
 

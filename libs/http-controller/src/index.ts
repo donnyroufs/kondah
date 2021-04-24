@@ -1,0 +1,5 @@
+export * from './lib/index'
+export * from './lib/http-controller.plugin'
+export * from './lib/decorators/routes/index'
+export * from './lib/controller.decorator'
+export * from './lib/decorators/middleware.decorator'

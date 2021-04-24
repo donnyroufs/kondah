@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { Dumpster } from './dumpster'
+import { Dumpster } from '@konda/core'
 
 export const Controller = (prefix = ''): ClassDecorator => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -18,7 +18,8 @@
       "@konda/core": ["libs/core/src/index.ts"],
       "@koda/express-adapter": ["libs/express-adapter/src/index.ts"],
       "@konda/express-adapter": ["libs/express-adapter/src/index.ts"],
-      "@konda/static-files-plugin": ["libs/static-files-plugin/src/index.ts"]
+      "@konda/static-files-plugin": ["libs/static-files-plugin/src/index.ts"],
+      "@konda/http-controller": ["libs/http-controller/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
