@@ -4,4 +4,7 @@ export const appConfig: IAppConfig = {
   'static-files': {
     path: 'public',
   },
+  'http-controller': {
+    enable: true,
+  },
 }

@@ -140,6 +140,36 @@
           }
         }
       }
+    },
+    "http-controller": {
+      "root": "libs/http-controller",
+      "sourceRoot": "libs/http-controller/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["libs/http-controller/**/*.ts"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/http-controller"],
+          "options": {
+            "jestConfig": "libs/http-controller/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/http-controller",
+            "tsConfig": "libs/http-controller/tsconfig.lib.json",
+            "packageJson": "libs/http-controller/package.json",
+            "main": "libs/http-controller/src/index.ts",
+            "assets": ["libs/http-controller/*.md"]
+          }
+        }
+      }
     }
   }
 }
