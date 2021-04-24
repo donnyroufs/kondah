@@ -1,6 +1,6 @@
 import {
-  AddToContext,
   Dumpster,
+  IAppConfig,
   KondaContext,
   Plugin,
   RouteDefinition,
@@ -11,12 +11,10 @@ export class HttpControllerPlugin extends Plugin {
 
   static routes: Record<string, RouteDefinition[]> = {}
 
-  @AddToContext()
-  public logRoutes() {
-    console.log(HttpControllerPlugin.routes)
-  }
-
-  protected setup<T>(context: KondaContext) {
+  protected setup<T>(
+    context: KondaContext,
+    config: IAppConfig['http-controller']
+  ) {
     const app = context.server.getRawServer()
 
     Dumpster.controllers.forEach((controller) => {
@@ -42,7 +40,28 @@ export class HttpControllerPlugin extends Plugin {
       })
     })
 
+    if (config.serveRoutes) {
+      this.serveRoutes(context)
+    }
+
     return undefined
+  }
+
+  private serveRoutes(context: KondaContext) {
+    const app = context.server.getRawServer()
+
+    console.log(
+      'view active routes at: http://localhost:5000/development/routes'
+    )
+
+    // @ts-expect-error adapter is not yet properly configured
+    app.get('/development/routes', (req, res) => {
+      res.json(
+        Object.entries(HttpControllerPlugin.routes).map(([k, v]) => ({
+          [k]: v.map((route) => `${route.requestMethod} -> ` + route.path),
+        }))
+      )
+    })
   }
 
   private hasInjectables(controller: () => unknown) {

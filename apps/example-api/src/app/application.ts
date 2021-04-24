@@ -1,5 +1,3 @@
-import 'reflect-metadata'
-
 import { json } from 'express'
 import { Konda, KondaContext, IOC } from '@konda/core'
 import { UserService } from './user.service'
@@ -20,6 +18,5 @@ export class Application extends Konda {
 
   public async setup(context: KondaContext) {
     context.server.use(json())
-    context.logRoutes()
   }
 }
