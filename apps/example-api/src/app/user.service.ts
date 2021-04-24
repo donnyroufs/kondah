@@ -15,6 +15,10 @@ export class UserService {
   }
 
   addUser() {
-    this.users.push(this.users.length++)
+    this.users.push(this.currentUsersInLength + 1)
+  }
+
+  get currentUsersInLength() {
+    return this.users.length
   }
 }

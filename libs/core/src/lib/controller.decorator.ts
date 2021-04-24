@@ -10,6 +10,9 @@ export const Controller = (prefix = ''): ClassDecorator => {
       Reflect.defineMetadata('routes', [], target)
     }
 
+    const injectables = Reflect.getMetadata('design:paramtypes', target)
+    target.prototype.__injectables__ = injectables
+
     Dumpster.addController(target)
   }
 }

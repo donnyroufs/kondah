@@ -2,6 +2,8 @@ import { ServerAdapter } from './server-adapter'
 import { Plugin } from './plugin'
 import { IOC } from './ioc'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface IAppConfig {}
 export interface IKondaContext {
   server: Omit<ServerAdapter, 'run'>
   ioc: IOC

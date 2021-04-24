@@ -1,11 +1,14 @@
 import { Controller, Delete, Get, Patch, Post } from '@konda/core'
 import { HttpContext } from './application'
+import { UserService } from './user.service'
 
 @Controller('/app')
 export class AppController {
+  constructor(private readonly userService: UserService) {}
+
   @Get('/')
   index({ response }: HttpContext) {
-    response.json({})
+    response.json(this.userService.getUsers())
   }
 
   @Post('/')
