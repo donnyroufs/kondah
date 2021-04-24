@@ -1,5 +1,3 @@
-import 'reflect-metadata'
-
 import { json } from 'express'
 import { Konda, KondaContext, IOC } from '@konda/core'
 import { UserService } from './user.service'

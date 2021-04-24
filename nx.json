@@ -9,6 +9,7 @@
     "example-api": { "tags": [] },
     "core": { "tags": [] },
     "express-adapter": { "tags": [] },
-    "static-files-plugin": { "tags": [] }
+    "static-files-plugin": { "tags": [] },
+    "http-controller": { "tags": [] }
   }
 }
