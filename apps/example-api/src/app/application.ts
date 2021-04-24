@@ -20,5 +20,6 @@ export class Application extends Konda {
 
   public async setup(context: KondaContext) {
     context.server.use(json())
+    context.logRoutes()
   }
 }

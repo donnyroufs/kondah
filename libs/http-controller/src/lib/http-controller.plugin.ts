@@ -1,7 +1,20 @@
-import { Dumpster, KondaContext, Plugin, RouteDefinition } from '@konda/core'
+import {
+  AddToContext,
+  Dumpster,
+  KondaContext,
+  Plugin,
+  RouteDefinition,
+} from '@konda/core'
 
 export class HttpControllerPlugin extends Plugin {
   public name = 'http-controller'
+
+  static routes: Record<string, RouteDefinition[]> = {}
+
+  @AddToContext()
+  public logRoutes() {
+    console.log(HttpControllerPlugin.routes)
+  }
 
   protected setup<T>(context: KondaContext) {
     const app = context.server.getRawServer()
@@ -15,6 +28,8 @@ export class HttpControllerPlugin extends Plugin {
 
       const instance = new controller(...resolvedDeps)
       const [prefix, routes] = this.getMetaData(controller)
+
+      HttpControllerPlugin.routes[prefix] = routes
 
       routes.forEach((route) => {
         app[route.requestMethod](
