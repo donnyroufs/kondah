@@ -1,11 +1,13 @@
 import 'reflect-metadata'
 
+import { json } from 'express'
 import { Konda, KondaContext, IOC } from '@konda/core'
 import { UserService } from './user.service'
 import { AuthService } from './auth.service'
 import { NestedService } from './nested.service'
 
 import './app.controller'
+import './user.controller'
 
 export class Application extends Konda {
   public async configureServices(services: IOC) {
@@ -17,17 +19,6 @@ export class Application extends Konda {
   }
 
   public async setup(context: KondaContext) {
-    const u = context.ioc.get(UserService)
-    // Test nested dep
-    console.log(u.getNested())
-    // Check if singleton dep works
-    u.addUser()
-    u.addUser()
-    console.log({ get1: u.getUsers() })
-    const u2 = context.ioc.get(UserService)
-    console.log({ get2: u2.getUsers() })
-    context.ioc.rebind(UserService.name, UserService)
-    const u3 = context.ioc.get(UserService)
-    console.log({ get3: u3.getUsers() }) // should be empty
+    context.server.use(json())
   }
 }
