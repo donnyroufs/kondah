@@ -1,6 +1,6 @@
 import { ServerAdapter } from './server-adapter'
 import { IOC } from './ioc'
-import { IKondaContext } from './types'
+import { IAppConfig, IKondaContext } from './types'
 
 // Small hack to extend a interface rather than implementing
 // because plugins can augment the `IKodaContext` interface

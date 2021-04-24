@@ -20,7 +20,7 @@ export abstract class Konda {
 
     this._context = new KondaContext(options.server, ioc)
     this._controllerHandler = new ControllerHandler(this._context)
-    this._pluginManager = new PluginManager(options.plugins)
+    this._pluginManager = new PluginManager(options.plugins, options.config)
 
     this.initialize()
   }
