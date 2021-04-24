@@ -1,5 +1,4 @@
 import { Controller, Delete, Get, Middleware, Patch, Post } from '@konda/core'
-import { HttpContext } from './application'
 import { logMiddleware } from './log.middleware'
 import { UserService } from './user.service'
 
@@ -9,28 +8,28 @@ export class AppController {
 
   @Get('/')
   @Middleware([logMiddleware])
-  index({ response }: HttpContext) {
+  index(_, response) {
     response.json(this.userService.getUsers())
   }
 
   @Post('/')
-  create({ request, response }: HttpContext) {
+  create(request, response) {
     response.json(request.body)
   }
 
   @Get('/:id')
-  show({ response }: HttpContext) {
+  show(_, response) {
     response.send('show')
   }
 
   @Patch('/:id')
-  update({ request, response }: HttpContext) {
+  update(request, response) {
     const { id } = request.params
     response.send(id)
   }
 
   @Delete('/:id')
-  destroy({ request, response }: HttpContext) {
+  destroy(request, response) {
     const { id } = request.params
     response.send(id)
   }

@@ -25,8 +25,8 @@ export class ControllerHandler {
           prefix + route.path,
           ...route.middleware,
           (request, response) => {
-            // TODO: pass custom context
-            instance[route.methodName]({ request, response })
+            // TODO: pass custom context, postponed because not sure about the server adapter
+            instance[route.methodName](request, response)
           }
         )
       })

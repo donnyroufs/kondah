@@ -1,17 +1,11 @@
 import 'reflect-metadata'
+
 import { Konda, KondaContext, IOC } from '@konda/core'
 import { UserService } from './user.service'
 import { AuthService } from './auth.service'
 import { NestedService } from './nested.service'
 
-import { Request, Response } from 'express'
-
 import './app.controller'
-
-export type HttpContext = {
-  request: Request
-  response: Response
-}
 
 export class Application extends Konda {
   public async configureServices(services: IOC) {
