@@ -1,4 +1,4 @@
-import { HttpVerb, RouteDefinition } from './types'
+import { HttpVerb, RouteDefinition } from '@konda/core'
 
 export function addRouteMetadata(
   target,

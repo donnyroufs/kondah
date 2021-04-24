@@ -1,5 +1,7 @@
-import { RouteDefinition } from './types'
+import { RouteDefinition } from '@konda/core'
 
+// TODO: Add proper type
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Middleware(...middleware: any[]) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function (target: any, propertyKey: string) {
