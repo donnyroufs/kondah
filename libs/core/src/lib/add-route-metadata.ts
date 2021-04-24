@@ -15,11 +15,21 @@ export function addRouteMetadata(
     target.constructor
   ) as RouteDefinition[]
 
-  routes.push({
-    requestMethod: method,
-    path,
-    methodName: propertyKey,
-  })
+  const route = routes.find((route) => route.methodName === propertyKey)
+
+  if (!route) {
+    routes.push({
+      requestMethod: method,
+      path,
+      methodName: propertyKey,
+      middleware: [],
+    })
+  }
+
+  if (route) {
+    route.path = path
+    route.requestMethod = method
+  }
 
   Reflect.defineMetadata('routes', routes, target.constructor)
 }

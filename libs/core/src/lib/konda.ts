@@ -36,7 +36,6 @@ export abstract class Konda {
     await this.configureServices(this._context.ioc)
     await this._pluginManager.install(this._context)
     this._controllerHandler.setup()
-    // this.registerHttpRoutes()
     await this.setup(this._context)
 
     if (process.env.NODE_ENV !== 'test') {

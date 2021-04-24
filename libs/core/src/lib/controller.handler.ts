@@ -18,12 +18,17 @@ export class ControllerHandler {
       const instance = new controller(...resolvedDeps)
 
       const [prefix, routes] = this.getMetaData(controller)
+      console.log(routes)
 
       routes.forEach((route) => {
-        app[route.requestMethod](prefix + route.path, (request, response) => {
-          // TODO: pass custom context
-          instance[route.methodName]({ request, response })
-        })
+        app[route.requestMethod](
+          prefix + route.path,
+          ...route.middleware,
+          (request, response) => {
+            // TODO: pass custom context
+            instance[route.methodName]({ request, response })
+          }
+        )
       })
     })
   }

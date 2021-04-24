@@ -1,5 +1,6 @@
-import { Controller, Delete, Get, Patch, Post } from '@konda/core'
+import { Controller, Delete, Get, Middleware, Patch, Post } from '@konda/core'
 import { HttpContext } from './application'
+import { logMiddleware } from './log.middleware'
 import { UserService } from './user.service'
 
 @Controller('/app')
@@ -7,6 +8,7 @@ export class AppController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/')
+  @Middleware([logMiddleware])
   index({ response }: HttpContext) {
     response.json(this.userService.getUsers())
   }

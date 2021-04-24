@@ -6,6 +6,7 @@ export * from './lib/injectable.decorator'
 export * from './lib/add-to-context.decorator'
 export * from './lib/controller.decorator'
 export * from './lib/decorators/routes'
+export * from './lib/middleware.decorator'
 
 export type { KondaContext } from './lib/konda.context'
 export type { IOC } from './lib/ioc'

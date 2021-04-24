@@ -33,4 +33,6 @@ export interface RouteDefinition {
   path: string
   requestMethod: HttpVerb
   methodName: string
+  // TODO: Add middlewaretype
+  middleware?: unknown[]
 }
