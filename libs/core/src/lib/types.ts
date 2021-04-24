@@ -9,9 +9,13 @@ export interface IKondaContext {
   ioc: IOC
 }
 
+export type NewablePlugin = new (config: unknown) => Plugin
+
 export interface IKondaOptions {
   server: ServerAdapter
-  plugins?: Plugin[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config: IAppConfig
+  plugins?: NewablePlugin[]
 }
 
 export type Constructor<T> = new (...args: unknown[]) => T

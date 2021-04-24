@@ -4,8 +4,8 @@ declare module '@konda/core' {
   }
 
   interface IAppConfig {
-    'static-plugin': {
-      enabled: boolean
+    'static-files': {
+      path?: string
     }
   }
 }
