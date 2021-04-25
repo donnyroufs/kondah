@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/libs/express-adapter',
     '<rootDir>/libs/static-files-plugin',
     '<rootDir>/libs/http-controller',
+    '<rootDir>/apps/milestone-1',
   ],
 }

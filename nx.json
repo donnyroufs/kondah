@@ -10,6 +10,7 @@
     "core": { "tags": [] },
     "express-adapter": { "tags": [] },
     "static-files-plugin": { "tags": [] },
-    "http-controller": { "tags": [] }
+    "http-controller": { "tags": [] },
+    "milestone-1": { "tags": [] }
   }
 }

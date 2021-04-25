@@ -170,6 +170,52 @@
           }
         }
       }
+    },
+    "milestone-1": {
+      "root": "apps/milestone-1",
+      "sourceRoot": "apps/milestone-1/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/milestone-1",
+            "main": "apps/milestone-1/src/main.ts",
+            "tsConfig": "apps/milestone-1/tsconfig.app.json",
+            "assets": ["apps/milestone-1/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/milestone-1/src/environments/environment.ts",
+                  "with": "apps/milestone-1/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": { "buildTarget": "milestone-1:build" }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["apps/milestone-1/**/*.ts"] }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/milestone-1"],
+          "options": {
+            "jestConfig": "apps/milestone-1/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }
