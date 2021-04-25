@@ -50,14 +50,11 @@ export class HttpControllerPlugin extends Plugin {
   }
 
   private serveRoutes(context: AppContext) {
-    const app = context.server.getRawServer()
-
     console.log(
       'view active routes at: http://localhost:5000/development/routes'
     )
 
-    // @ts-expect-error adapter is not yet properly configured
-    app.get('/development/routes', (req, res) => {
+    context.server.get('/development/routes', (req, res) => {
       res.json(
         Object.entries(HttpControllerPlugin.routes).map(([k, v]) => ({
           [k]: v.map((route) => `${route.requestMethod} -> ` + route.path),

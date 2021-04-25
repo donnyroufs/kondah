@@ -2,7 +2,7 @@ import 'reflect-metadata'
 
 import { ServerAdapter } from './server-adapter'
 import { IOC, ioc } from './ioc'
-import { AppContext } from './konda.context'
+import { AppContext } from './app.context'
 import { PluginManager } from './plugin.manager'
 import { IKondaOptions } from './types'
 import { DependencyData } from './dependency-data'

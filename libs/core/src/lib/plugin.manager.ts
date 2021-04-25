@@ -1,5 +1,5 @@
 import { Plugin } from './plugin'
-import { AppContext } from './konda.context'
+import { AppContext } from './app.context'
 import { MetadataStore } from './metadata.store'
 import { IAppConfig, NewablePlugin } from './types'
 

@@ -7,6 +7,6 @@ export * from './lib/add-to-context.decorator'
 export * from './lib/metadata.types'
 
 // TODO: When we have @Inject don't expose the context anymore
-export { AppContext } from './lib/konda.context'
+export { AppContext } from './lib/app.context'
 
 export type { IOC } from './lib/ioc'

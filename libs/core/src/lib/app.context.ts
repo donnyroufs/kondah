@@ -4,8 +4,8 @@ import { PartialAppContext } from './types'
 
 const implement = <T>() => class {} as new () => T
 
-export class AppContext extends implement<PartialAppContext>() {
-  public readonly server: Omit<ServerAdapter, 'run'>
+export class AppContext extends implement<PartialAppContext<ServerAdapter>>() {
+  public readonly server: T
   public readonly ioc: IOC
 
   constructor(server: ServerAdapter, ioc: IOC) {

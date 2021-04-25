@@ -1,4 +1,4 @@
-import { AppContext } from './konda.context'
+import { AppContext } from './app.context'
 
 export abstract class Plugin {
   public abstract name: string
