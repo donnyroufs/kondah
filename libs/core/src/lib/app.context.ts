@@ -4,11 +4,13 @@ import { PartialAppContext } from './types'
 
 const implement = <T>() => class {} as new () => T
 
-export class AppContext extends implement<PartialAppContext<ServerAdapter>>() {
+export class AppContext<
+  T extends ServerAdapter = ServerAdapter
+> extends implement<PartialAppContext>() {
   public readonly server: T
   public readonly ioc: IOC
 
-  constructor(server: ServerAdapter, ioc: IOC) {
+  constructor(server: T, ioc: IOC) {
     super()
     this.server = server
     this.ioc = ioc
