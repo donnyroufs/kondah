@@ -10,8 +10,7 @@ import { Controller, MetadataStore } from './metadata.store'
 export class HttpControllerPlugin extends Plugin {
   public name = 'http-controller'
 
-  // TODO: Remove
-  static routes: Record<string, RouteDefinition[]> = {}
+  private _routes: Record<string, RouteDefinition[]> = {}
 
   protected setup(context: AppContext, config: IAppConfig['http-controller']) {
     const app = context.server.getRawServer()
@@ -26,7 +25,7 @@ export class HttpControllerPlugin extends Plugin {
       const instance = new controller(...resolvedDeps)
       const [prefix, routes] = this.getMetaData(controller)
 
-      HttpControllerPlugin.routes[prefix] = routes
+      this._routes[prefix] = routes
 
       routes.forEach((route) => {
         app[route.requestMethod](
@@ -53,7 +52,7 @@ export class HttpControllerPlugin extends Plugin {
 
     context.server.get('/development/routes', (req, res) => {
       res.json(
-        Object.entries(HttpControllerPlugin.routes).map(([k, v]) => ({
+        Object.entries(this._routes).map(([k, v]) => ({
           [k]: v.map((route) => `${route.requestMethod} -> ` + route.path),
         }))
       )
