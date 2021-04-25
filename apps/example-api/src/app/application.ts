@@ -17,7 +17,6 @@ export class Application extends Konda {
   }
 
   protected async setup(context: AppContext) {
-    console.log(context.ioc)
     context.server.use(json())
   }
 }

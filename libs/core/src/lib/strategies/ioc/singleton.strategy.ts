@@ -1,7 +1,7 @@
 import { DependencyData } from '../../dependency-data'
 import { Strategy } from './strategy'
 
-class SingletonStrategy extends Strategy {
+export const singletonStrategy = new (class extends Strategy {
   execute<T>(dep: DependencyData<T>, resolvedDeps: unknown[]) {
     if (dep.cache) {
       return dep.cache as T
@@ -12,6 +12,4 @@ class SingletonStrategy extends Strategy {
 
     return cachedDep as T
   }
-}
-
-export const singletonStrategy = new SingletonStrategy()
+})()
