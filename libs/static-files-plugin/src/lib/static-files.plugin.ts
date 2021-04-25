@@ -16,6 +16,6 @@ export class StaticFilesPlugin extends Plugin {
 
   @AddToContext()
   protected fromStaticPlugin() {
-    console.log('hello from static plugin')
+    console.log('hey! I got dynamically added because you plugged me in.')
   }
 }

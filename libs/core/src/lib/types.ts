@@ -22,7 +22,7 @@ export type Constructor<T> = new (...args: unknown[]) => T
 export type Scopes = 'transient' | 'singleton'
 export type Identifier = string
 export type Dependency<T = unknown> = Constructor<T>
-export type PropOrFunction = string
+export type PropOrFunction = string | (() => unknown)
 
 // TODO: Move to plugin
 export type HttpVerb =

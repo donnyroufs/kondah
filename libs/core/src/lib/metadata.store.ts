@@ -5,7 +5,7 @@ export class MetadataStore {
   static AppContext = {}
   static controllers = []
 
-  static addToAppContext(key: string, propOrFn: PropOrFunction) {
+  static addToAppContext(key: string | symbol, propOrFn: PropOrFunction) {
     MetadataStore.AppContext[key] = propOrFn
   }
 

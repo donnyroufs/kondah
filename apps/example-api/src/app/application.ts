@@ -19,5 +19,6 @@ export class Application extends Konda {
 
   protected async setup(context: AppContext<ExpressAdapter>) {
     context.server.use(json())
+    context.fromStaticPlugin()
   }
 }
