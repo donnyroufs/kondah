@@ -2,6 +2,7 @@ import { DependencyData } from './dependency-data'
 import { singletonStrategy, transientStrategy } from './strategies/ioc'
 import { Strategy } from './strategies/ioc/strategy'
 import { Dependency, Identifier, Scopes } from './types'
+import { MetaTypes } from './metadata.types'
 
 export class IOC {
   private _dependencies: Map<string, DependencyData<unknown>> = new Map()
@@ -55,12 +56,12 @@ export class IOC {
   }
 
   private hasInjectables<T>(dep: Dependency<T>) {
-    return !!dep.prototype.__injectables__
+    return !!Reflect.has(dep, MetaTypes.injectables)
   }
 
   private getInjectables<T>(dep: Dependency<T>) {
     const injectables = this.hasInjectables(dep)
-    return injectables ? dep.prototype.__injectables__ : null
+    return injectables ? Reflect.get(dep, MetaTypes.injectables) : null
   }
 
   private addDependency<T>(dep: Dependency<T>, scope: Scopes) {

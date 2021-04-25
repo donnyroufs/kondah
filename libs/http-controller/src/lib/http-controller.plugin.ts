@@ -2,6 +2,7 @@ import {
   Dumpster,
   IAppConfig,
   KondaContext,
+  MetaTypes,
   Plugin,
   RouteDefinition,
 } from '@konda/core'
@@ -9,6 +10,7 @@ import {
 export class HttpControllerPlugin extends Plugin {
   public name = 'http-controller'
 
+  // TODO: Remove
   static routes: Record<string, RouteDefinition[]> = {}
 
   protected setup<T>(
@@ -19,7 +21,7 @@ export class HttpControllerPlugin extends Plugin {
 
     Dumpster.controllers.forEach((controller) => {
       const resolvedDeps = this.hasInjectables(controller)
-        ? controller.prototype.__injectables__.map((dep) => {
+        ? Reflect.get(controller, MetaTypes.injectables).map((dep) => {
             return context.ioc.get(dep)
           })
         : []
@@ -65,7 +67,7 @@ export class HttpControllerPlugin extends Plugin {
   }
 
   private hasInjectables(controller: () => unknown) {
-    return controller.prototype.__injectables__
+    return Reflect.get(controller, MetaTypes.injectables)
   }
 
   private getMetaData(controller: () => unknown) {
