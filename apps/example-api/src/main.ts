@@ -4,7 +4,7 @@ import { HttpControllerPlugin } from '@konda/http-controller'
 import { Application } from './app/application'
 import { appConfig } from './app/app.config'
 
-new Application({
+export const app = new Application({
   server: new ExpressAdapter(),
   plugins: [StaticFilesPlugin, HttpControllerPlugin],
   config: appConfig,

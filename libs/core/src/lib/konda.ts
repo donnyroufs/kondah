@@ -22,12 +22,12 @@ export abstract class Konda {
     this.initialize()
   }
 
-  protected abstract configureServices(services: IOC): Promise<void>
-  protected abstract setup(context: KondaContext): Promise<void>
-
   public getContext() {
     return this._context
   }
+
+  protected abstract configureServices(services: IOC): Promise<void>
+  protected abstract setup(context: KondaContext): Promise<void>
 
   private async initialize() {
     await this.configureServices(this._context.ioc)
