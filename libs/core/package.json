@@ -1,4 +1,7 @@
 {
   "name": "@konda/core",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "dependencies": {
+    "chalk": "^4.1.1"
+  }
 }

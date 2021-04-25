@@ -32,6 +32,7 @@ export abstract class Konda {
 
   private async initialize() {
     this.dirtyAddContextToIoc()
+
     await this.configureServices(this._context.ioc)
     await this._pluginManager.install(this._context)
     await this.setup(this._context)

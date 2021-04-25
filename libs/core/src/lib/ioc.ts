@@ -3,6 +3,7 @@ import { singletonStrategy, transientStrategy } from './strategies/ioc'
 import { Strategy } from './strategies/ioc/strategy'
 import { Dependency, Identifier, Scopes } from './types'
 import { MetaTypes } from './metadata.types'
+import { Logger } from './logger'
 
 export class IOC {
   private _dependencies: Map<string, DependencyData<unknown>> = new Map()
@@ -14,7 +15,13 @@ export class IOC {
 
   public register<T>(dep: Dependency<T>, scope?: Scopes) {
     const _scope = scope ? scope : this._defaultScope
-    this.addDependency<T>(dep, _scope)
+
+    try {
+      this.addDependency<T>(dep, _scope)
+      Logger.successRegister(dep.name)
+    } catch (err) {
+      Logger.failedRegister(dep.name)
+    }
   }
 
   public rebind<T>(
