@@ -1,44 +1,60 @@
-import express from 'express';
-import { ServerAdapter } from '@konda/core';
+import express, { RequestHandler } from 'express'
+import { HttpVerb, ServerAdapter } from '@konda/core'
 
 export class ExpressAdapter extends ServerAdapter {
-  protected server = express();
+  protected server = express()
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public run(port: number, onSuccess?: () => void) {
-    this.server.listen(port, () => this.onSuccessListen(port));
+    this.server.listen(port, () => this.onSuccessListen(port))
   }
 
-  public use(namespace: string, fn: any): void;
-  public use(fn: any): void;
+  public use(path: string, fn: RequestHandler): void
+  public use(fn: RequestHandler): void
 
-  public use(namespace: any, fn?: any) {
-    if (namespace && !fn) {
-      this.server.use(namespace);
-      return;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public use(...args: any[]) {
+    if (args.length === 1) {
+      this.server.use(args[0])
+      return
     }
 
-    this.server.use(namespace, fn);
-    return;
+    this.server.use(args[0], args[1])
   }
 
-  // TODO: Fix types for all handlers
-  public get(namespace: string, handler: any) {
-    this.server.get(namespace, handler);
+  public get(path: string, ...handlers: RequestHandler[]) {
+    this.registerRoute('get', path, handlers)
   }
 
-  public post(namespace: string, handler: any) {
-    this.server.post(namespace, handler);
+  public post(path: string, ...handlers: RequestHandler[]) {
+    this.registerRoute('post', path, handlers)
   }
 
-  public put(namespace: string, handler: any) {
-    this.server.put(namespace, handler);
+  public put(path: string, ...handlers: RequestHandler[]) {
+    this.registerRoute('put', path, handlers)
   }
 
-  public patch(namespace: string, handler: any) {
-    this.server.patch(namespace, handler);
+  public patch(path: string, ...handlers: RequestHandler[]) {
+    this.registerRoute('patch', path, handlers)
   }
 
-  public delete(namespace: string, handler: any) {
-    this.server.delete(namespace, handler);
+  public delete(path: string, ...handlers: RequestHandler[]) {
+    this.registerRoute('delete', path, handlers)
+  }
+
+  public head(path: string, ...handlers: RequestHandler[]) {
+    this.registerRoute('head', path, handlers)
+  }
+
+  public options(path: string, ...handlers: RequestHandler[]) {
+    this.registerRoute('options', path, handlers)
+  }
+
+  private registerRoute(
+    verb: HttpVerb,
+    path: string,
+    handlers: RequestHandler[]
+  ) {
+    this.server[verb](path, handlers)
   }
 }
