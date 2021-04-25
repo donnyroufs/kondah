@@ -1,10 +1,8 @@
-import { RouteDefinition } from '@konda/core'
+import { RouteDefinition } from '../types'
 
-// TODO: Add proper type
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function Middleware(...middleware: any[]) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return function (target: any, propertyKey: string) {
+export function Middleware(...middleware: any[]): MethodDecorator {
+  return function (target, propertyKey) {
     if (!Reflect.hasMetadata('routes', target.constructor)) {
       Reflect.defineMetadata('routes', [], target.constructor)
     }

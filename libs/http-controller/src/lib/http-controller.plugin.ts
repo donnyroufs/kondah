@@ -1,11 +1,6 @@
-import {
-  IAppConfig,
-  AppContext,
-  MetaTypes,
-  Plugin,
-  RouteDefinition,
-} from '@konda/core'
+import { IAppConfig, AppContext, MetaTypes, Plugin } from '@konda/core'
 import { Controller, MetadataStore } from './metadata.store'
+import { RouteDefinition } from './types'
 
 export class HttpControllerPlugin extends Plugin {
   public name = 'http-controller'

@@ -13,7 +13,6 @@ export type NewablePlugin = new (config: unknown) => Plugin
 
 export interface IKondaOptions {
   server: ServerAdapter
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config: IAppConfig
   plugins?: NewablePlugin[]
 }
@@ -24,7 +23,6 @@ export type Identifier = string
 export type Dependency<T = unknown> = Constructor<T>
 export type PropOrFunction = string | (() => unknown)
 
-// TODO: Move to plugin
 export type HttpVerb =
   | 'get'
   | 'post'
@@ -33,15 +31,6 @@ export type HttpVerb =
   | 'patch'
   | 'options'
   | 'head'
-
-// TODO: Move to plugin
-export interface RouteDefinition {
-  path: string
-  requestMethod: HttpVerb
-  methodName: string
-  // TODO: Add middlewaretype
-  middleware?: unknown[]
-}
 
 // Small hack to extend a interface rather than implementing
 // because plugins can augment the `IKodaContext` interface
