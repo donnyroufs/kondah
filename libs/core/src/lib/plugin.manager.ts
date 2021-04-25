@@ -1,5 +1,5 @@
 import { Plugin } from './plugin'
-import { KondaContext } from './konda.context'
+import { AppContext } from './konda.context'
 import { MetadataStore } from './metadata.store'
 import { IAppConfig, NewablePlugin } from './types'
 
@@ -12,7 +12,7 @@ export class PluginManager {
     this._plugins = plugins.map((plug) => new plug(config))
   }
 
-  public async install(context: KondaContext) {
+  public async install(context: AppContext) {
     if (this._plugins.length <= 0) return
 
     for (const plug of this._plugins) {
@@ -23,10 +23,10 @@ export class PluginManager {
     this.addPluginExtensionsToContext(context)
   }
 
-  private addPluginExtensionsToContext(context: KondaContext) {
-    Object.entries(MetadataStore.KondaContext).forEach(
+  private addPluginExtensionsToContext(context: AppContext) {
+    Object.entries(MetadataStore.AppContext).forEach(
       ([k, v]) => (context[k] = v)
     )
-    MetadataStore.KondaContext = {}
+    MetadataStore.AppContext = {}
   }
 }

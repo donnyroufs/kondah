@@ -1,5 +1,5 @@
 declare module '@konda/core' {
-  interface KondaContext {
+  interface AppContext {
     fromStaticPlugin: () => void
   }
 

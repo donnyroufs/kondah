@@ -1,6 +1,6 @@
 import {
   IAppConfig,
-  KondaContext,
+  AppContext,
   MetaTypes,
   Plugin,
   RouteDefinition,
@@ -14,7 +14,7 @@ export class HttpControllerPlugin extends Plugin {
   static routes: Record<string, RouteDefinition[]> = {}
 
   protected setup<T>(
-    context: KondaContext,
+    context: AppContext,
     config: IAppConfig['http-controller']
   ) {
     const app = context.server.getRawServer()
@@ -49,7 +49,7 @@ export class HttpControllerPlugin extends Plugin {
     return undefined
   }
 
-  private serveRoutes(context: KondaContext) {
+  private serveRoutes(context: AppContext) {
     const app = context.server.getRawServer()
 
     console.log(

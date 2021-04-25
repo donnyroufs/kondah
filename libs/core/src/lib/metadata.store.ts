@@ -2,11 +2,11 @@ import 'reflect-metadata'
 import { PropOrFunction } from './types'
 
 export class MetadataStore {
-  static KondaContext = {}
+  static AppContext = {}
   static controllers = []
 
-  static addToKondaContext(key: string, propOrFn: PropOrFunction) {
-    MetadataStore.KondaContext[key] = propOrFn
+  static addToAppContext(key: string, propOrFn: PropOrFunction) {
+    MetadataStore.AppContext[key] = propOrFn
   }
 
   static addController(controller: unknown) {

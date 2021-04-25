@@ -1,16 +1,10 @@
 import { ServerAdapter } from './server-adapter'
 import { IOC } from './ioc'
-import { IAppConfig, IKondaContext } from './types'
-
-// Small hack to extend a interface rather than implementing
-// because plugins can augment the `IKodaContext` interface
-// making `KodaContext` invalid since it does not implement
-// the augmented interface
-type PartialKodaContext = Partial<IKondaContext>
+import { PartialAppContext } from './types'
 
 const implement = <T>() => class {} as new () => T
 
-export class KondaContext extends implement<PartialKodaContext>() {
+export class AppContext extends implement<PartialAppContext>() {
   public readonly server: Omit<ServerAdapter, 'run'>
   public readonly ioc: IOC
 

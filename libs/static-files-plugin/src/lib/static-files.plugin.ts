@@ -1,4 +1,4 @@
-import { AddToContext, IAppConfig, IKondaContext, Plugin } from '@konda/core'
+import { AddToContext, IAppConfig, IAppContext, Plugin } from '@konda/core'
 import express from 'express'
 import path from 'path'
 
@@ -6,7 +6,7 @@ export class StaticFilesPlugin extends Plugin {
   public name = 'static-files'
 
   protected async setup(
-    context: IKondaContext,
+    context: IAppContext,
     config: IAppConfig['static-files']
   ) {
     context.server.use(

@@ -4,7 +4,7 @@ import { IOC } from './ioc'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAppConfig {}
-export interface IKondaContext {
+export interface IAppContext {
   server: Omit<ServerAdapter, 'run'>
   ioc: IOC
 }
@@ -24,6 +24,7 @@ export type Identifier = string
 export type Dependency<T = unknown> = Constructor<T>
 export type PropOrFunction = string
 
+// TODO: Move to plugin
 export type HttpVerb =
   | 'get'
   | 'post'
@@ -33,6 +34,7 @@ export type HttpVerb =
   | 'options'
   | 'head'
 
+// TODO: Move to plugin
 export interface RouteDefinition {
   path: string
   requestMethod: HttpVerb
@@ -40,3 +42,9 @@ export interface RouteDefinition {
   // TODO: Add middlewaretype
   middleware?: unknown[]
 }
+
+// Small hack to extend a interface rather than implementing
+// because plugins can augment the `IKodaContext` interface
+// making `KodaContext` invalid since it does not implement
+// the augmented interface
+export type PartialAppContext = Partial<IAppContext>
