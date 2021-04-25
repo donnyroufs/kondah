@@ -1,6 +1,6 @@
 import { Plugin } from './plugin'
 import { KondaContext } from './konda.context'
-import { Dumpster } from './dumpster'
+import { MetadataStore } from './metadata.store'
 import { IAppConfig, NewablePlugin } from './types'
 
 export class PluginManager {
@@ -24,7 +24,9 @@ export class PluginManager {
   }
 
   private addPluginExtensionsToContext(context: KondaContext) {
-    Object.entries(Dumpster.KondaContext).forEach(([k, v]) => (context[k] = v))
-    Dumpster.KondaContext = {}
+    Object.entries(MetadataStore.KondaContext).forEach(
+      ([k, v]) => (context[k] = v)
+    )
+    MetadataStore.KondaContext = {}
   }
 }
