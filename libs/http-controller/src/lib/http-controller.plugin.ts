@@ -1,11 +1,11 @@
 import {
-  Dumpster,
   IAppConfig,
   KondaContext,
   MetaTypes,
   Plugin,
   RouteDefinition,
 } from '@konda/core'
+import { Controller, MetadataStore } from './metadata.store'
 
 export class HttpControllerPlugin extends Plugin {
   public name = 'http-controller'
@@ -19,7 +19,7 @@ export class HttpControllerPlugin extends Plugin {
   ) {
     const app = context.server.getRawServer()
 
-    Dumpster.controllers.forEach((controller) => {
+    MetadataStore.controllers.forEach((controller) => {
       const resolvedDeps = this.hasInjectables(controller)
         ? Reflect.get(controller, MetaTypes.injectables).map((dep) => {
             return context.ioc.get(dep)
@@ -66,11 +66,11 @@ export class HttpControllerPlugin extends Plugin {
     })
   }
 
-  private hasInjectables(controller: () => unknown) {
+  private hasInjectables(controller: Controller) {
     return Reflect.get(controller, MetaTypes.injectables)
   }
 
-  private getMetaData(controller: () => unknown) {
+  private getMetaData(controller: Controller) {
     const prefix = Reflect.getMetadata('prefix', controller)
 
     const routes: RouteDefinition[] = Reflect.getMetadata('routes', controller)

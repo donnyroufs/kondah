@@ -1,5 +1,6 @@
 import 'reflect-metadata'
-import { Dumpster, MetaTypes } from '@konda/core'
+import { MetaTypes } from '@konda/core'
+import { MetadataStore } from './metadata.store'
 
 export const Controller = (prefix = ''): ClassDecorator => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,8 +12,12 @@ export const Controller = (prefix = ''): ClassDecorator => {
     }
 
     const injectables = Reflect.getMetadata('design:paramtypes', target)
+
+    // TODO: should become internal and replaced with something like
+    // decorate(injectable(target)) which is exposed from @konda/core
     Reflect.set(target, MetaTypes.injectables, injectables)
 
-    Dumpster.addController(target)
+    const controllers = MetadataStore.controllers
+    controllers.push(target)
   }
 }
