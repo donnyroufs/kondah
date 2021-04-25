@@ -9,7 +9,7 @@ export abstract class Plugin {
     await this.setup(context, this.getConfig())
   }
 
-  protected abstract setup<T>(context: AppContext, config: T): Promise<void>
+  protected abstract setup(context: AppContext, config: unknown): Promise<void>
 
   private getConfig() {
     return this._config[this.name]

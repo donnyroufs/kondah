@@ -13,10 +13,7 @@ export class HttpControllerPlugin extends Plugin {
   // TODO: Remove
   static routes: Record<string, RouteDefinition[]> = {}
 
-  protected setup<T>(
-    context: AppContext,
-    config: IAppConfig['http-controller']
-  ) {
+  protected setup(context: AppContext, config: IAppConfig['http-controller']) {
     const app = context.server.getRawServer()
 
     MetadataStore.controllers.forEach((controller) => {
