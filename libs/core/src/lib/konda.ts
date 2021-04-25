@@ -5,6 +5,7 @@ import { IOC, ioc } from './ioc'
 import { AppContext } from './konda.context'
 import { PluginManager } from './plugin.manager'
 import { IKondaOptions } from './types'
+import { DependencyData } from './dependency-data'
 
 export abstract class Konda {
   protected readonly port: number = Number(process.env.PORT) || 5000
@@ -30,6 +31,9 @@ export abstract class Konda {
   protected abstract setup(context: AppContext): Promise<void>
 
   private async initialize() {
+    this.dirtyAddContextToIoc()
+    // @ts-expect-error yes
+    console.log(this._context.ioc._dependencies)
     await this.configureServices(this._context.ioc)
     await this._pluginManager.install(this._context)
     await this.setup(this._context)
@@ -37,5 +41,11 @@ export abstract class Konda {
     if (process.env.NODE_ENV !== 'test') {
       this._server.run(this.port)
     }
+  }
+
+  private dirtyAddContextToIoc() {
+    const data = new DependencyData('singleton', AppContext, [], this._context)
+    // @ts-expect-error dirty hack to add the current context to the IOC container
+    this._context.ioc._dependencies.set(AppContext.name, data)
   }
 }

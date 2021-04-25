@@ -11,12 +11,12 @@ import { UserService } from './user.service'
 
 @Controller('/app')
 export class AppController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly _userService: UserService) {}
 
   @Get('/')
   @Middleware([logMiddleware])
   index(_, response) {
-    response.json(this.userService.getUsers())
+    response.json(this._userService.getUsers())
   }
 
   @Post('/')
