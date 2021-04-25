@@ -1,4 +1,4 @@
-import { Konda, AppContext, IOC } from '@konda/core'
+import { Konda, AppContext, Energizor } from '@konda/core'
 import { ExpressAdapter } from '@konda/express-adapter'
 import { json } from 'express'
 
@@ -8,8 +8,9 @@ import { NestedService } from './nested.service'
 
 import './app.controller'
 import './user.controller'
+
 export class Application extends Konda {
-  protected async configureServices(services: IOC) {
+  protected async configureServices(services: Energizor) {
     services.setDefaultScope('singleton')
 
     services.register(AuthService)

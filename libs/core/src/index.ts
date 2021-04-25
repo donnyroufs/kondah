@@ -9,4 +9,4 @@ export * from './lib/metadata.types'
 // TODO: When we have @Inject don't expose the context anymore
 export { AppContext } from './lib/app.context'
 
-export type { IOC } from './lib/ioc'
+export type { Energizor } from './lib/energizor'

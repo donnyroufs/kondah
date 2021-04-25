@@ -13,7 +13,7 @@ export class HttpControllerPlugin extends Plugin {
     MetadataStore.controllers.forEach((controller) => {
       const resolvedDeps = this.hasInjectables(controller)
         ? Reflect.get(controller, MetaTypes.injectables).map((dep) => {
-            return context.ioc.get(dep)
+            return context.energizor.get(dep)
           })
         : []
 

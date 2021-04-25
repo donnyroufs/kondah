@@ -19,7 +19,6 @@ export class PluginManager {
       await plug.install(context)
     }
 
-    // this._plugins.forEach((plug) => ))
     this.addPluginExtensionsToContext(context)
   }
 
