@@ -1,4 +1,4 @@
-import { HttpVerb } from '@konda/core'
+import { HttpVerb } from '@kondah/core'
 import { RequestHandler } from 'express'
 
 export interface RouteDefinition {

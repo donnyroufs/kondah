@@ -1,5 +1,5 @@
 import express, { RequestHandler } from 'express'
-import { HttpVerb, ServerAdapter } from '@konda/core'
+import { HttpVerb, ServerAdapter } from '@kondah/core'
 
 export class ExpressAdapter extends ServerAdapter {
   protected server = express()

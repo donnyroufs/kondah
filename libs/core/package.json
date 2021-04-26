@@ -1,5 +1,5 @@
 {
-  "name": "@konda/core",
+  "name": "@kondah/core",
   "version": "0.0.1",
   "dependencies": {
     "chalk": "^4.1.1"

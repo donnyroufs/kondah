@@ -1,4 +1,4 @@
-import { IAppConfig, AppContext, MetaTypes, Plugin } from '@konda/core'
+import { IAppConfig, AppContext, MetaTypes, Plugin } from '@kondah/core'
 import { Controller, MetadataStore } from './metadata.store'
 import { RouteDefinition } from './types'
 

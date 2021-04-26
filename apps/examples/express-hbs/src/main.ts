@@ -1,6 +1,6 @@
 import { Application } from './app/application'
-import { ExpressAdapter } from '@konda/express-adapter'
-import { HttpControllerPlugin } from '@konda/http-controller'
+import { ExpressAdapter } from '@kondah/express-adapter'
+import { HttpControllerPlugin } from '@kondah/http-controller'
 
 // Temporarly exporting because there's no proper way to
 // inject the AppContext right now.

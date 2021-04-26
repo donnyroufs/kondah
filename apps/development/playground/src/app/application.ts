@@ -1,7 +1,7 @@
-import { AppContext, Energizor, Konda } from '@konda/core'
-import { ExpressAdapter } from '@konda/express-adapter'
+import { AppContext, Energizor, Kondah } from '@kondah/core'
+import { ExpressAdapter } from '@kondah/express-adapter'
 
-export class Application extends Konda {
+export class Application extends Kondah {
   protected async configureServices(services: Energizor) {
     services.setDefaultScope('singleton')
   }

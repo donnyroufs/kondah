@@ -1,4 +1,4 @@
-import { injectable } from '@konda/core'
+import { injectable } from '@kondah/core'
 import axios from 'axios'
 
 export interface ILastRequestData {

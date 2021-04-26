@@ -7,7 +7,7 @@ import { PluginManager } from './plugin.manager'
 import { IKondaOptions } from './types'
 import { DependencyData } from './dependency-data'
 
-export abstract class Konda {
+export abstract class Kondah {
   private readonly _server: ServerAdapter
   private readonly _context: AppContext
   private readonly _pluginManager: PluginManager

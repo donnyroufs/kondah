@@ -1,4 +1,4 @@
-import { HttpVerb } from '@konda/core'
+import { HttpVerb } from '@kondah/core'
 import { RouteDefinition } from './types'
 
 export function addRouteMetadata(

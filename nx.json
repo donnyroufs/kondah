@@ -4,7 +4,7 @@
     ".eslintrc.json": "*"
   },
   "affected": { "defaultBase": "master" },
-  "npmScope": "konda",
+  "npmScope": "kondah",
   "projects": {
     "core": { "tags": [] },
     "examples-express-hbs": { "tags": [] },

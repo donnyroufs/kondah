@@ -20,13 +20,13 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@konda/core": [
+      "@kondah/core": [
         "libs/core/src/index.ts"
       ],
-      "@konda/express-adapter": [
+      "@kondah/express-adapter": [
         "libs/adapters/express/src/index.ts"
       ],
-      "@konda/http-controller": [
+      "@kondah/http-controller": [
         "libs/plugins/http-controller/src/index.ts"
       ]
     }

@@ -1,4 +1,4 @@
-import { Controller, Get, Middleware } from '@konda/http-controller'
+import { Controller, Get, Middleware } from '@kondah/http-controller'
 import { Request, Response } from 'express'
 import { isCachedMiddleware } from '../../middlewares/is-cached.middleware'
 import { RedditService } from '../../services/reddit.service'

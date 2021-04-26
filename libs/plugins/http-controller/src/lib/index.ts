@@ -1,4 +1,4 @@
-declare module '@konda/core' {
+declare module '@kondah/core' {
   interface IAppConfig {
     'http-controller': {
       serveRoutes?: boolean

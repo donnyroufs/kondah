@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { MetaTypes } from '@konda/core'
+import { MetaTypes } from '@kondah/core'
 import { MetadataStore } from './metadata.store'
 
 export const Controller = (prefix = ''): ClassDecorator => {
@@ -14,7 +14,7 @@ export const Controller = (prefix = ''): ClassDecorator => {
     const injectables = Reflect.getMetadata('design:paramtypes', target)
 
     // TODO: should become internal and replaced with something like
-    // decorate(injectable(target)) which is exposed from @konda/core
+    // decorate(injectable(target)) which is exposed from @kondah/core
     Reflect.set(target, MetaTypes.injectables, injectables)
 
     const controllers = MetadataStore.controllers
