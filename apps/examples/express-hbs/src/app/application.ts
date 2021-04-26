@@ -24,6 +24,6 @@ export class Application extends Konda {
 
     ctx.server.use(cors())
 
-    this.run(5000)
+    ctx.server.run(5000)
   }
 }

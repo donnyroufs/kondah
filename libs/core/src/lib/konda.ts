@@ -25,10 +25,6 @@ export abstract class Konda {
     return this._context
   }
 
-  protected run(port: number) {
-    this._server.run(port)
-  }
-
   protected abstract configureServices(services: Energizor): Promise<void>
   protected abstract setup(context: AppContext): Promise<void>
 
