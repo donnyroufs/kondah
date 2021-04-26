@@ -1,4 +1,4 @@
-import express, { RequestHandler } from 'express'
+import express = require('express')
 import { HttpVerb, ServerAdapter } from '@kondah/core'
 
 export class ExpressAdapter extends ServerAdapter {
@@ -9,8 +9,8 @@ export class ExpressAdapter extends ServerAdapter {
     this.server.listen(port, () => this.onSuccessListen(port))
   }
 
-  public use(path: string, fn: RequestHandler): void
-  public use(fn: RequestHandler): void
+  public use(path: string, fn: express.RequestHandler): void
+  public use(fn: express.RequestHandler): void
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public use(...args: any[]) {
@@ -39,38 +39,38 @@ export class ExpressAdapter extends ServerAdapter {
     this.server.engine(ext, fn)
   }
 
-  public get(path: string, ...handlers: RequestHandler[]) {
+  public get(path: string, ...handlers: express.RequestHandler[]) {
     this.registerRoute('get', path, handlers)
   }
 
-  public post(path: string, ...handlers: RequestHandler[]) {
+  public post(path: string, ...handlers: express.RequestHandler[]) {
     this.registerRoute('post', path, handlers)
   }
 
-  public put(path: string, ...handlers: RequestHandler[]) {
+  public put(path: string, ...handlers: express.RequestHandler[]) {
     this.registerRoute('put', path, handlers)
   }
 
-  public patch(path: string, ...handlers: RequestHandler[]) {
+  public patch(path: string, ...handlers: express.RequestHandler[]) {
     this.registerRoute('patch', path, handlers)
   }
 
-  public delete(path: string, ...handlers: RequestHandler[]) {
+  public delete(path: string, ...handlers: express.RequestHandler[]) {
     this.registerRoute('delete', path, handlers)
   }
 
-  public head(path: string, ...handlers: RequestHandler[]) {
+  public head(path: string, ...handlers: express.RequestHandler[]) {
     this.registerRoute('head', path, handlers)
   }
 
-  public options(path: string, ...handlers: RequestHandler[]) {
+  public options(path: string, ...handlers: express.RequestHandler[]) {
     this.registerRoute('options', path, handlers)
   }
 
   private registerRoute(
     verb: HttpVerb,
     path: string,
-    handlers: RequestHandler[]
+    handlers: express.RequestHandler[]
   ) {
     this.server[verb](path, handlers)
   }
