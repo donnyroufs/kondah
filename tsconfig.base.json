@@ -10,32 +10,18 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@konda/core": [
-        "libs/core/src/index.ts"
-      ],
-      "@konda/express-adapter": [
-        "libs/express-adapter/src/index.ts"
-      ],
-      "@konda/static-files-plugin": [
-        "libs/static-files-plugin/src/index.ts"
-      ],
-      "@konda/http-controller": [
-        "libs/http-controller/src/index.ts"
-      ]
+      "@konda/core": ["libs/core/src/index.ts"],
+      "@konda/express-adapter": ["libs/express-adapter/src/index.ts"],
+      "@konda/static-files-plugin": ["libs/static-files-plugin/src/index.ts"],
+      "@konda/http-controller": ["libs/http-controller/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

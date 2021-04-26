@@ -1,16 +1,30 @@
 {
   "implicitDependencies": {
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
     ".eslintrc.json": "*"
   },
-  "affected": { "defaultBase": "master" },
+  "affected": {
+    "defaultBase": "master"
+  },
   "npmScope": "konda",
   "projects": {
-    "example-api": { "tags": [] },
-    "core": { "tags": [] },
-    "express-adapter": { "tags": [] },
-    "static-files-plugin": { "tags": [] },
-    "http-controller": { "tags": [] },
-    "milestone-1": { "tags": [] }
+    "core": {
+      "tags": []
+    },
+    "express-adapter": {
+      "tags": []
+    },
+    "static-files-plugin": {
+      "tags": []
+    },
+    "http-controller": {
+      "tags": []
+    },
+    "examples-express-hbs": {
+      "tags": []
+    }
   }
 }

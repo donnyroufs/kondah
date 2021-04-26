@@ -1,11 +1,10 @@
 module.exports = {
   projects: [
     ,
-    '<rootDir>/apps/example-api',
     '<rootDir>/libs/core',
     '<rootDir>/libs/express-adapter',
     '<rootDir>/libs/static-files-plugin',
     '<rootDir>/libs/http-controller',
-    '<rootDir>/apps/milestone-1',
+    '<rootDir>/apps/examples/express-hbs',
   ],
 }

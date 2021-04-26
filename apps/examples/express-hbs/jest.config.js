@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'example-api',
-  preset: '../../jest.preset.js',
+  displayName: 'examples-express-hbs',
+  preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -10,5 +10,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/example-api',
-};
+  coverageDirectory: '../../../coverage/apps/examples/express-hbs',
+}

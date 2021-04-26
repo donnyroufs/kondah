@@ -1,54 +1,9 @@
 {
   "version": 2,
-  "cli": { "defaultCollection": "@nrwl/node" },
-  "defaultProject": "example-api",
+  "cli": {
+    "defaultCollection": "@nrwl/node"
+  },
   "projects": {
-    "example-api": {
-      "root": "apps/example-api",
-      "sourceRoot": "apps/example-api/src",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/apps/example-api",
-            "main": "apps/example-api/src/main.ts",
-            "tsConfig": "apps/example-api/tsconfig.app.json",
-            "assets": ["apps/example-api/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/example-api/src/environments/environment.ts",
-                  "with": "apps/example-api/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "executor": "@nrwl/node:execute",
-          "options": { "buildTarget": "example-api:build" }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["apps/example-api/**/*.ts"] }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/example-api"],
-          "options": {
-            "jestConfig": "apps/example-api/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "core": {
       "root": "libs/core",
       "sourceRoot": "libs/core/src",
@@ -56,7 +11,9 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/core/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/core/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -86,7 +43,9 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/express-adapter/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/express-adapter/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -148,7 +107,9 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["libs/http-controller/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["libs/http-controller/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -171,19 +132,19 @@
         }
       }
     },
-    "milestone-1": {
-      "root": "apps/milestone-1",
-      "sourceRoot": "apps/milestone-1/src",
+    "examples-express-hbs": {
+      "root": "apps/examples/express-hbs",
+      "sourceRoot": "apps/examples/express-hbs/src",
       "projectType": "application",
       "targets": {
         "build": {
           "executor": "@nrwl/node:build",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/milestone-1",
-            "main": "apps/milestone-1/src/main.ts",
-            "tsConfig": "apps/milestone-1/tsconfig.app.json",
-            "assets": ["apps/milestone-1/src/assets"]
+            "outputPath": "dist/apps/examples/express-hbs",
+            "main": "apps/examples/express-hbs/src/main.ts",
+            "tsConfig": "apps/examples/express-hbs/tsconfig.app.json",
+            "assets": ["apps/examples/express-hbs/src/assets"]
           },
           "configurations": {
             "production": {
@@ -192,8 +153,8 @@
               "inspect": false,
               "fileReplacements": [
                 {
-                  "replace": "apps/milestone-1/src/environments/environment.ts",
-                  "with": "apps/milestone-1/src/environments/environment.prod.ts"
+                  "replace": "apps/examples/express-hbs/src/environments/environment.ts",
+                  "with": "apps/examples/express-hbs/src/environments/environment.prod.ts"
                 }
               ]
             }
@@ -201,17 +162,21 @@
         },
         "serve": {
           "executor": "@nrwl/node:execute",
-          "options": { "buildTarget": "milestone-1:build" }
+          "options": {
+            "buildTarget": "examples-express-hbs:build"
+          }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["apps/milestone-1/**/*.ts"] }
+          "options": {
+            "lintFilePatterns": ["apps/examples/express-hbs/**/*.ts"]
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/milestone-1"],
+          "outputs": ["coverage/apps/examples/express-hbs"],
           "options": {
-            "jestConfig": "apps/milestone-1/jest.config.js",
+            "jestConfig": "apps/examples/express-hbs/jest.config.js",
             "passWithNoTests": true
           }
         }
