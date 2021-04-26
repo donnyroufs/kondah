@@ -1,8 +1,13 @@
 import { Application } from './app/application'
 import { ExpressAdapter } from '@konda/express-adapter'
+import { HttpControllerPlugin } from '@konda/http-controller'
 
-new Application({
+export const app = new Application({
   server: new ExpressAdapter(),
-  plugins: [],
-  config: {},
+  plugins: [HttpControllerPlugin],
+  config: {
+    'http-controller': {
+      serveRoutes: true,
+    },
+  },
 })

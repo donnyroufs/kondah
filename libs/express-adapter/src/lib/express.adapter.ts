@@ -22,6 +22,23 @@ export class ExpressAdapter extends ServerAdapter {
     this.server.use(args[0], args[1])
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public set(setting: string, val: any): void {
+    this.server.set(setting, val)
+  }
+
+  public engine(
+    ext: string,
+    fn: (
+      path: string,
+      options: Record<string, unknown>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      callback: (e: any, rendered?: string) => void
+    ) => void
+  ) {
+    this.server.engine(ext, fn)
+  }
+
   public get(path: string, ...handlers: RequestHandler[]) {
     this.registerRoute('get', path, handlers)
   }

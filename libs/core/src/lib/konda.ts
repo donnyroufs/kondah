@@ -8,8 +8,6 @@ import { IKondaOptions } from './types'
 import { DependencyData } from './dependency-data'
 
 export abstract class Konda {
-  protected readonly port: number = Number(process.env.PORT) || 5000
-
   private readonly _server: ServerAdapter
   private readonly _context: AppContext
   private readonly _pluginManager: PluginManager
@@ -27,6 +25,10 @@ export abstract class Konda {
     return this._context
   }
 
+  protected run(port: number) {
+    this._server.run(port)
+  }
+
   protected abstract configureServices(services: Energizor): Promise<void>
   protected abstract setup(context: AppContext): Promise<void>
 
@@ -36,10 +38,6 @@ export abstract class Konda {
     await this.configureServices(this._context.energizor)
     await this._pluginManager.install(this._context)
     await this.setup(this._context)
-
-    if (process.env.NODE_ENV !== 'test') {
-      this._server.run(this.port)
-    }
   }
 
   private dirtyAddContextToIoc() {
