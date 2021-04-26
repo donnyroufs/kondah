@@ -9,6 +9,7 @@
     "core": { "tags": [] },
     "examples-express-hbs": { "tags": [] },
     "plugins-http-controller": { "tags": [] },
-    "adapters-express": { "tags": [] }
+    "adapters-express": { "tags": [] },
+    "development-playground": { "tags": [] }
   }
 }
