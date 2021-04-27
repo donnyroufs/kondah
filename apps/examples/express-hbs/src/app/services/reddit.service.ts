@@ -1,4 +1,4 @@
-import { injectable } from '@kondah/core'
+import { Injectable } from '@kondah/core'
 import axios from 'axios'
 
 export interface ILastRequestData {
@@ -7,7 +7,7 @@ export interface ILastRequestData {
   posts: any[]
 }
 
-@injectable()
+@Injectable()
 export class RedditService {
   private readonly _endpoint = 'https://www.reddit.com/r/webdev/new.json'
   private readonly _cache: ILastRequestData[] = []
