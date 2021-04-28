@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 
-import { ServerAdapter } from './server-adapter'
 import { Energizor, energizor } from './energizor'
 import { AppContext } from './app.context'
 import { PluginManager } from './plugin.manager'
@@ -8,13 +7,10 @@ import { IKondaOptions } from './types'
 import { DependencyData } from './dependency-data'
 
 export abstract class Kondah {
-  private readonly _server: ServerAdapter
   private readonly _context: AppContext
   private readonly _pluginManager: PluginManager
 
   constructor(options: IKondaOptions) {
-    this._server = options.server
-
     this._context = new AppContext(options.server, energizor)
     this._pluginManager = new PluginManager(options.plugins, options.config)
 
