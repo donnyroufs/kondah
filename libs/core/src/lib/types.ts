@@ -4,6 +4,7 @@ import { Energizor } from './energizor'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAppConfig {}
+
 export interface IAppContext {
   server: Omit<ServerAdapter, 'run'>
   energizor: Energizor
