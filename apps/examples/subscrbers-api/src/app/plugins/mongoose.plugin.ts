@@ -4,29 +4,19 @@ import {
   AppContext,
   ServerAdapter,
   IAppConfig,
-  Injectable,
 } from '@kondah/core'
 import mongoose from 'mongoose'
 
-@Injectable()
-export class MongooseRepository {}
-
-export class MongoosePlugin extends Plugin {
+export class MongoosePlugin extends Plugin<IAppConfig['mongoose']> {
   public name = 'mongoose'
 
-  protected async setup(
-    context: AppContext<ServerAdapter>,
-    config: IAppConfig['mongoose']
-  ) {
-    context.energizor.register(MongooseRepository)
-    // has access to config here
+  protected async setup(context: AppContext<ServerAdapter>) {
+    return
   }
 
   @AddToContext()
   async connectMongoose() {
-    // TODO: Does not get config here
-
-    await mongoose.connect(process.env.DB_URI, {
+    await mongoose.connect(this.config.uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,

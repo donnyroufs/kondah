@@ -1,11 +1,22 @@
-import { MetadataStore } from './metadata.store'
+import { MetaTypes } from './metadata.types'
 
-/**
- * @param propName The identifier for the context, by default it uses the target key.
- */
-export function AddToContext(propName?: string): MethodDecorator {
+export function AddToContext(): MethodDecorator {
   return function (target, propertyKey) {
-    const key = propName ? propName : propertyKey
-    MetadataStore.addToAppContext(key, target[key].bind(target[key]))
+    if (!Reflect.hasMetadata(MetaTypes.extensions, target.constructor)) {
+      Reflect.defineMetadata(MetaTypes.extensions, [], target.constructor)
+    }
+
+    const currentExtensions = Reflect.getMetadata(
+      MetaTypes.extensions,
+      target.constructor
+    )
+
+    currentExtensions.push(propertyKey)
+
+    Reflect.defineMetadata(
+      MetaTypes.extensions,
+      currentExtensions,
+      target.constructor
+    )
   }
 }

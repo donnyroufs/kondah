@@ -2,12 +2,14 @@ import { IAppConfig, AppContext, MetaTypes, Plugin } from '@kondah/core'
 import { Controller, MetadataStore } from './metadata.store'
 import { RouteDefinition } from './types'
 
-export class HttpControllerPlugin extends Plugin {
+export class HttpControllerPlugin extends Plugin<
+  IAppConfig['http-controller']
+> {
   public name = 'http-controller'
 
   private _routes: Record<string, RouteDefinition[]> = {}
 
-  protected setup(context: AppContext, config: IAppConfig['http-controller']) {
+  protected setup(context: AppContext) {
     const app = context.server.getRawServer()
 
     MetadataStore.controllers.forEach((controller) => {
@@ -33,7 +35,7 @@ export class HttpControllerPlugin extends Plugin {
       })
     })
 
-    if (config.serveRoutes) {
+    if (this.config.serveRoutes) {
       this.serveRoutes(context)
     }
 

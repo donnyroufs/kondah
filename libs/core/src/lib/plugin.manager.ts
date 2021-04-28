@@ -1,14 +1,12 @@
 import { Plugin } from './plugin'
 import { AppContext } from './app.context'
-import { MetadataStore } from './metadata.store'
 import { IAppConfig, NewablePlugin } from './types'
+import { MetaTypes } from './metadata.types'
 
 export class PluginManager {
   private readonly _plugins: Plugin[]
-  private readonly _config: IAppConfig
 
   constructor(plugins: NewablePlugin[] = [], config: IAppConfig) {
-    this._config = config
     this._plugins = plugins.map((plug) => new plug(config))
   }
 
@@ -23,9 +21,17 @@ export class PluginManager {
   }
 
   private addPluginExtensionsToContext(context: AppContext) {
-    Object.entries(MetadataStore.AppContext).forEach(
-      ([k, v]) => (context[k] = v)
-    )
-    MetadataStore.AppContext = {}
+    this._plugins.forEach((plugin) => {
+      const extensions = Reflect.getMetadata(
+        MetaTypes.extensions,
+        plugin.constructor
+      )
+
+      if (!extensions || extensions.length <= 0) return
+
+      extensions.forEach((methodName: string) => {
+        context[methodName] = plugin[methodName].bind(plugin)
+      })
+    })
   }
 }
