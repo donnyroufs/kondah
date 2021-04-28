@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/libs/plugins/http-controller',
     '<rootDir>/apps/examples/express-hbs',
     '<rootDir>/apps/development/playground',
+    '<rootDir>/apps/examples/subscrbers-api',
   ],
 }

@@ -10,6 +10,7 @@
     "examples-express-hbs": { "tags": [] },
     "plugins-http-controller": { "tags": [] },
     "adapters-express": { "tags": [] },
-    "development-playground": { "tags": [] }
+    "development-playground": { "tags": [] },
+    "examples-subscrbers-api": { "tags": [] }
   }
 }
