@@ -1,4 +1,4 @@
-import { MetaTypes } from './metadata.types'
+import { MetaTypes } from '../metadata.types'
 
 export function AddToContext(): MethodDecorator {
   return function (target, propertyKey) {

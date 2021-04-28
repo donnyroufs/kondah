@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { MetaTypes } from './metadata.types'
+import { MetaTypes } from '../metadata.types'
 
 export function Injectable(): ClassDecorator {
   return function (target) {
