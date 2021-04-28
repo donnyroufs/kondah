@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AppContext } from './app.context'
+
+import { AppContext } from './contexts'
 import { IAppConfig } from './types'
 
 export abstract class Plugin<T = any> {

@@ -1,6 +1,6 @@
-import { ServerAdapter } from './server-adapter'
-import { Energizor } from './energizor'
-import { PartialAppContext } from './types'
+import { ServerAdapter } from '../server-adapter'
+import { Energizor } from '../energizor'
+import { PartialAppContext } from '../types'
 
 const implement = <T>() => class {} as new () => T
 

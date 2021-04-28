@@ -1,5 +1,5 @@
 import { Plugin } from './plugin'
-import { AppContext } from './app.context'
+import { AppContext } from './contexts'
 import { IAppConfig, NewablePlugin } from './types'
 import { MetaTypes } from './metadata.types'
 
