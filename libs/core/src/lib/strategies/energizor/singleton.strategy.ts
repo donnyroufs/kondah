@@ -1,7 +1,7 @@
+import { IStrategy } from '../../types'
 import { DependencyData } from '../../dependency-data'
-import { Strategy } from './strategy'
 
-export const singletonStrategy = new (class extends Strategy {
+export const singletonStrategy = new (class implements IStrategy {
   execute<T>(dep: DependencyData<T>, resolvedDeps: unknown[]) {
     if (dep.cache) {
       return dep.cache as T

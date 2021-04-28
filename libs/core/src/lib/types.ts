@@ -1,6 +1,7 @@
 import { ServerAdapter } from './server-adapter'
 import { Plugin } from './plugin'
 import { Energizor } from './energizor'
+import { DependencyData } from './dependency-data'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAppConfig {}
@@ -37,3 +38,7 @@ export type HttpVerb =
 // making `KodaContext` invalid since it does not implement
 // the augmented interface
 export type PartialAppContext = Partial<IAppContext>
+
+export interface IStrategy {
+  execute<T>(dep: DependencyData<T>, resolvedDeps: unknown[]): T
+}

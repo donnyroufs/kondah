@@ -1,7 +1,8 @@
 import { DependencyData } from '../../dependency-data'
-import { Strategy } from './strategy'
+import { IStrategy } from '../../types'
 
-export const transientStrategy = new (class TransientStrategy extends Strategy {
+export const transientStrategy = new (class TransientStrategy
+  implements IStrategy {
   execute<T>(dep: DependencyData<T>, resolvedDeps: unknown[]) {
     return new dep.dependency(...resolvedDeps)
   }

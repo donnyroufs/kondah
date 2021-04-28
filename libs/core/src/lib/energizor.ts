@@ -1,14 +1,13 @@
 import { DependencyData } from './dependency-data'
 import { singletonStrategy, transientStrategy } from './strategies/energizor'
-import { Strategy } from './strategies/energizor/strategy'
-import { Dependency, Identifier, Scopes } from './types'
+import { Dependency, Identifier, IStrategy, Scopes } from './types'
 import { MetaTypes } from './metadata.types'
 import { Logger } from './logger'
 
 export class Energizor {
   private _dependencies: Map<string, DependencyData<unknown>> = new Map()
   private _defaultScope: Scopes = 'transient'
-  private _strategies: Record<Scopes, Strategy> = {
+  private _strategies: Record<Scopes, IStrategy> = {
     singleton: singletonStrategy,
     transient: transientStrategy,
   }
