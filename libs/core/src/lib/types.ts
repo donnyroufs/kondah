@@ -6,11 +6,11 @@ import { Energizor } from './energizor'
 export interface IAppConfig {}
 
 export interface IAppContext {
-  server: Omit<ServerAdapter, 'run'>
+  server: ServerAdapter
   energizor: Energizor
 }
 
-export type NewablePlugin = new (config: unknown) => Plugin
+export type NewablePlugin = new (_config: IAppConfig) => Plugin
 
 export interface IKondaOptions {
   server: ServerAdapter
