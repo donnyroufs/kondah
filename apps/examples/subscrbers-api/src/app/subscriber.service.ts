@@ -1,13 +1,9 @@
 import { Injectable } from '@kondah/core'
-import { MongooseRepository } from './plugins/mongoose.plugin'
 import { SubscriberRepository } from './subscriber.repository'
 
 @Injectable()
 export class SubscriberService {
-  constructor(
-    private readonly _subscriberRepo: SubscriberRepository
-  ) // private readonly _mongooseRepo: MongooseRepository
-  {}
+  constructor(private readonly _subscriberRepo: SubscriberRepository) {}
 
   public async getAllSubscribers() {
     const subscribers = await this._subscriberRepo.getAllSubscribers()

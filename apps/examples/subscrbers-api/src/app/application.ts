@@ -16,7 +16,6 @@ export class Application extends Kondah {
 
   protected async setup(ctx: AppContext<ExpressAdapter>) {
     await ctx.connectMongoose()
-
     ctx.server.use(express.json())
 
     ctx.server.run(5000)
