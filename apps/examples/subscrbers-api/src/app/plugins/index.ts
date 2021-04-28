@@ -1,9 +1,11 @@
-import { Model } from 'mongoose'
+import { Model, Document } from 'mongoose'
 
 declare module '@kondah/core' {
   interface AppContext {
     connectMongoose(): Promise<void>
-    logSubscribersOnVisit(model: Model<any>): Promise<void>
+    logSubscribersOnVisit<T extends Document>(
+      model: Model<T>
+    ): Promise<Model<T>>
   }
 
   interface IAppConfig {
