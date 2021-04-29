@@ -1,0 +1,29 @@
+{
+  "name": "@kondah/core",
+  "version": "0.0.2-alpha.5",
+  "description": "the very core of Kondah",
+  "author": "Donny Roufs <iamchets@yahoo.com>",
+  "homepage": "https://kondah.dev",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "chalk": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0"
+  }
+}
