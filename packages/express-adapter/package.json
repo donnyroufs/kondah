@@ -1,6 +1,6 @@
 {
   "name": "@kondah/express-adapter",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "> TODO: description",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "express server adapter for Kondah",
