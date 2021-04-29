@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { MetaTypes } from '@kondah/core'
-import { MetadataStore } from './metadata.store'
+import { MetadataStore } from '../metadata.store'
 
 export const Controller = (prefix = ''): ClassDecorator => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
