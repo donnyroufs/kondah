@@ -21,7 +21,7 @@ export interface IKondaOptions {
 
 export type Constructor<T> = new (...args: unknown[]) => T
 export type Scopes = 'transient' | 'singleton'
-export type Identifier = string
+export type Identifier = Token
 export type Dependency<T = unknown> = Constructor<T>
 export type PropOrFunction = string | (() => unknown)
 
@@ -42,4 +42,10 @@ export type PartialAppContext = Partial<IAppContext>
 
 export interface IStrategy {
   execute<T>(dep: DependencyData<T>, resolvedDeps: any[]): T
+}
+
+export type Token = string | symbol
+export interface IEnergizorBindingOptions<T> {
+  to?: Dependency<T>
+  scope?: Scopes
 }
