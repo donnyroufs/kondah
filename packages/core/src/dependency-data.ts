@@ -1,4 +1,4 @@
-import { Dependency, Scopes } from './types'
+import { Dependency, Scopes, Token } from './types'
 
 export class DependencyData<T> {
   public injectables: Dependency[]
@@ -9,7 +9,7 @@ export class DependencyData<T> {
      * used to get the dependency. Could be either the constructor name,
      * or a custom token (string, symbol)
      */
-    public token: string | symbol,
+    public token: Token,
     public dependency: Dependency<T>,
     injectables: Dependency[],
     public cache: null | T = null
