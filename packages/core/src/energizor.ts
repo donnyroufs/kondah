@@ -1,19 +1,45 @@
 import { DependencyData } from './dependency-data'
 import { singletonStrategy, transientStrategy } from './strategies/energizor'
-import { Dependency, Identifier, IStrategy, Scopes } from './types'
+import {
+  Dependency,
+  Identifier,
+  IEnergizorBindingOptions,
+  IStrategy,
+  Scopes,
+  Token,
+} from './types'
 import { MetaTypes } from './metadata.types'
 import { Logger } from './logger'
 
 export class Energizor {
-  private _dependencies: Map<string, DependencyData<unknown>> = new Map()
+  private _dependencies: Map<Token, DependencyData<unknown>> = new Map()
   private _defaultScope: Scopes = 'transient'
   private _strategies: Record<Scopes, IStrategy> = {
     singleton: singletonStrategy,
     transient: transientStrategy,
   }
 
-  public register<T>(dep: Dependency<T>, scope?: Scopes) {
-    const _scope = scope ? scope : this._defaultScope
+  public register<T>(
+    dep: Dependency<T> | Token,
+    options?: IEnergizorBindingOptions<T>
+  ) {
+    const _scope = options?.scope ? options.scope : this._defaultScope
+
+    // TODO: Refactor, perhaps 2 different handlers.
+    // 1. handles dependency injection
+    // 2. handles inversion of control
+    // or, use strategies (gotta love m right!)
+    if (this.isInversionOfControl<T>(dep, options)) {
+      if (!options || !options.to) return
+
+      try {
+        this.addIOCDependency(dep, options.to, _scope)
+        Logger.successRegister(dep.toString())
+      } catch (err) {
+        Logger.failedRegister(dep.toString())
+      }
+      return
+    }
 
     try {
       this.addDependency<T>(dep, _scope)
@@ -44,7 +70,7 @@ export class Energizor {
     this._defaultScope = scope
   }
 
-  public get<T>(identifier: Identifier | Dependency<T>) {
+  public get<T>(identifier: Token | Dependency<T>): T {
     const _identifier = this.getIdentifier(identifier)
 
     const dep = this._dependencies.get(_identifier)
@@ -74,12 +100,37 @@ export class Energizor {
     const injectables = this.getInjectables<T>(dep)
     this._dependencies.set(
       dep.name,
-      new DependencyData<T>(scope, dep, injectables)
+      new DependencyData<T>(scope, dep.name, dep, injectables)
+    )
+  }
+
+  private addIOCDependency<T>(token: Token, dep: Dependency<T>, scope: Scopes) {
+    const injectables = this.getInjectables<T>(dep)
+
+    // const _token = typeof token === 'symbol' ? token.toString() : token;
+
+    this._dependencies.set(
+      token,
+      new DependencyData<T>(
+        scope ? scope : this._defaultScope,
+        token,
+        dep,
+        injectables
+      )
     )
   }
 
   private getIdentifier(identifier: Identifier | Dependency) {
-    return typeof identifier === 'string' ? identifier : identifier.name
+    return typeof identifier === 'string' || typeof identifier === 'symbol'
+      ? identifier
+      : identifier.name
+  }
+
+  private isInversionOfControl<T>(
+    dep: Dependency<T> | Token,
+    options?: IEnergizorBindingOptions<T>
+  ): dep is Token {
+    return typeof dep === 'string' || typeof dep === 'symbol' || !!options?.to
   }
 }
 
