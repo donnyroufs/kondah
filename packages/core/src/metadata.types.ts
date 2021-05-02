@@ -1,5 +1,6 @@
 const injectables = Symbol('injectables')
 const extensions = Symbol('extensions')
+const parameters = Symbol('parameters')
 
 export const MetaTypes = {
   /**
@@ -10,4 +11,8 @@ export const MetaTypes = {
    * Class methods to add to AppContext
    */
   extensions,
+  /**
+   * Used for inversion of control injections
+   */
+  parameters,
 }

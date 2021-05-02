@@ -84,6 +84,7 @@ export class Energizor {
 
   private resolveDependencies(dep: DependencyData<unknown>) {
     if (!dep.injectables || dep.injectables.length <= 0) return []
+
     return dep.injectables.map(this.get.bind(this))
   }
 
@@ -97,7 +98,19 @@ export class Energizor {
   }
 
   private addDependency<T>(dep: Dependency<T>, scope: Scopes) {
-    const injectables = this.getInjectables<T>(dep)
+    let injectables = this.getInjectables<T>(dep)
+    const parameters = Reflect.getMetadata(MetaTypes.parameters, dep)
+
+    injectables = injectables.map((injectable, index) => {
+      const isInterface = injectable.toString().includes('Object()')
+
+      const token = isInterface
+        ? parameters.find((parameter) => parameter.index === index).identifier
+        : null
+
+      return isInterface ? token : injectable
+    })
+
     this._dependencies.set(
       dep.name,
       new DependencyData<T>(scope, dep.name, dep, injectables)
@@ -107,16 +120,9 @@ export class Energizor {
   private addIOCDependency<T>(token: Token, dep: Dependency<T>, scope: Scopes) {
     const injectables = this.getInjectables<T>(dep)
 
-    // const _token = typeof token === 'symbol' ? token.toString() : token;
-
     this._dependencies.set(
       token,
-      new DependencyData<T>(
-        scope ? scope : this._defaultScope,
-        token,
-        dep,
-        injectables
-      )
+      new DependencyData<T>(scope, token, dep, injectables)
     )
   }
 
