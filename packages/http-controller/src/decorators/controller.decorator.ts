@@ -11,7 +11,7 @@ export const Controller = (prefix = ''): ClassDecorator => {
       Reflect.defineMetadata('routes', [], target)
     }
 
-    const injectables = Reflect.getMetadata('design:paramtypes', target)
+    const injectables = Reflect.getMetadata('design:paramtypes', target) || []
     const normalizedInjectables = Utils.replaceInterfacesWithToken(
       injectables,
       target
