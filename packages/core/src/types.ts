@@ -50,3 +50,10 @@ export interface IEnergizorBindingOptions<T> {
   asClass?: Dependency<T>
   scope?: Scopes
 }
+
+export interface ILogger {
+  info(msg: string): void
+  success(msg: string): void
+  warning(msg: string): void
+  error(msg: string): void
+}
