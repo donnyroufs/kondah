@@ -24,47 +24,28 @@ export class Energizor {
     options?: IEnergizorBindingOptions<T>
   ) {
     const _scope = options?.scope ? options.scope : this._defaultScope
-
-    // TODO: Refactor, perhaps 2 different handlers.
-    // 1. handles dependency injection
-    // 2. handles inversion of control
-    // or, use strategies (gotta love m right!)
-    if (this.isInversionOfControl<T>(dep, options)) {
-      if (!options || !options.to) return
-
-      try {
-        this.addIOCDependency(dep, options.to, _scope)
-        Logger.successRegister(dep.toString())
-      } catch (err) {
-        Logger.failedRegister(dep.toString())
-      }
-      return
-    }
+    const token = this.isInversionOfControl(dep) ? dep : dep.name
 
     try {
-      this.addDependency<T>(dep, _scope)
-      Logger.successRegister(dep.name)
+      if (this.isInversionOfControl(dep) && options && options.asClass) {
+        this.addDependency<T>(options.asClass, _scope, token)
+        Logger.successRegister(dep.toString())
+        return
+      }
+
+      this.addDependency<T>(dep as Dependency<T>, _scope, token)
+      Logger.successRegister((dep as Dependency<T>).name)
     } catch (err) {
-      Logger.failedRegister(dep.name)
+      Logger.failedRegister(token.toString())
     }
   }
 
-  public rebind<T>(
-    identifier: Identifier | Dependency<T>,
-    newDependency: Dependency<T>,
-    scope?: Scopes
-  ) {
-    const _scope = scope ? scope : this._defaultScope
-    this.addDependency<T>(newDependency, _scope)
-
-    const _identifier = this.getIdentifier(identifier)
-    this._dependencies[_identifier] = newDependency
+  public rebind() {
+    throw new Error('this method is not yet implemented')
   }
 
   /**
-   *
    * @param scope defaults to Transient
-   *
    */
   public setDefaultScope(scope: Scopes) {
     this._defaultScope = scope
@@ -97,32 +78,23 @@ export class Energizor {
     return injectables ? Reflect.get(dep, MetaTypes.injectables) : null
   }
 
-  private addDependency<T>(dep: Dependency<T>, scope: Scopes) {
+  private addDependency<T>(dep: Dependency<T>, scope: Scopes, token: Token) {
     let injectables = this.getInjectables<T>(dep)
     const parameters = Reflect.getMetadata(MetaTypes.parameters, dep)
 
     injectables = injectables.map((injectable, index) => {
       const isInterface = injectable.toString().includes('Object()')
 
-      const token = isInterface
+      const _token = isInterface
         ? parameters.find((parameter) => parameter.index === index).identifier
         : null
 
-      return isInterface ? token : injectable
+      return isInterface ? _token : injectable
     })
 
     this._dependencies.set(
-      dep.name,
-      new DependencyData<T>(scope, dep.name, dep, injectables)
-    )
-  }
-
-  private addIOCDependency<T>(token: Token, dep: Dependency<T>, scope: Scopes) {
-    const injectables = this.getInjectables<T>(dep)
-
-    this._dependencies.set(
       token,
-      new DependencyData<T>(scope, token, dep, injectables)
+      new DependencyData<T>(scope, dep.name, dep, injectables)
     )
   }
 
@@ -132,11 +104,8 @@ export class Energizor {
       : identifier.name
   }
 
-  private isInversionOfControl<T>(
-    dep: Dependency<T> | Token,
-    options?: IEnergizorBindingOptions<T>
-  ): dep is Token {
-    return typeof dep === 'string' || typeof dep === 'symbol' || !!options?.to
+  private isInversionOfControl<T>(dep: Dependency<T> | Token): dep is Token {
+    return typeof dep === 'string' || typeof dep === 'symbol'
   }
 }
 
