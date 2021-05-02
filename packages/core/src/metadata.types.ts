@@ -1,6 +1,7 @@
 const injectables = Symbol('injectables')
 const extensions = Symbol('extensions')
-const parameters = Symbol('parameters')
+// const parameters = Symbol('parameters')
+const parameters = 'parameters'
 
 export const MetaTypes = {
   /**

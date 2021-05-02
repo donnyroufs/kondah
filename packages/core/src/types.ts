@@ -19,7 +19,7 @@ export interface IKondaOptions {
   plugins?: NewablePlugin[]
 }
 
-export type Constructor<T> = new (...args: unknown[]) => T
+export type Constructor<T> = new (...args: any[]) => T
 export type Scopes = 'transient' | 'singleton'
 export type Identifier = Token
 export type Dependency<T = unknown> = Constructor<T>

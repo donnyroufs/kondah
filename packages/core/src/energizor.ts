@@ -10,6 +10,7 @@ import {
 } from './types'
 import { MetaTypes } from './metadata.types'
 import { Logger } from './logger'
+import { Utils } from './utils'
 
 export class Energizor {
   private _dependencies: Map<Token, DependencyData<unknown>> = new Map()
@@ -29,7 +30,8 @@ export class Energizor {
     try {
       if (this.isInversionOfControl(dep) && options && options.asClass) {
         this.addDependency<T>(options.asClass, _scope, token)
-        Logger.successRegister(dep.toString())
+        const dependencyName = dep.toString().split('(')[1].slice(0, -1)
+        Logger.successRegister(dependencyName)
         return
       }
 
@@ -79,18 +81,10 @@ export class Energizor {
   }
 
   private addDependency<T>(dep: Dependency<T>, scope: Scopes, token: Token) {
-    let injectables = this.getInjectables<T>(dep)
-    const parameters = Reflect.getMetadata(MetaTypes.parameters, dep)
-
-    injectables = injectables.map((injectable, index) => {
-      const isInterface = injectable.toString().includes('Object()')
-
-      const _token = isInterface
-        ? parameters.find((parameter) => parameter.index === index).identifier
-        : null
-
-      return isInterface ? _token : injectable
-    })
+    const injectables = Utils.replaceInterfacesWithToken(
+      this.getInjectables(dep),
+      dep
+    )
 
     this._dependencies.set(
       token,
