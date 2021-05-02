@@ -48,6 +48,16 @@ describe('energizor', () => {
     expect(_energizor.get(InnerChildService)).toBeDefined()
   })
 
+  it('when using tokens and not providing an asClass value, the logger should mention it', () => {
+    const _energizor = new Energizor(new Logger())
+
+    const value = _energizor.register(types.childTwoService, {})
+
+    expect(value).toBe(
+      `childTwoService failed to register: missing value for 'asClass' property`
+    )
+  })
+
   // tests both singleton and transient no need to create seperate tests
   it('should change the default scope', () => {
     const _energizor = new Energizor(new Logger())

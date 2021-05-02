@@ -42,6 +42,12 @@ export class Energizor {
         return this._logger.success(`${dependencyName} has been registered`)
       }
 
+      if (this.isInversionOfControl(dep) && options && !options.asClass) {
+        return this._logger.error(
+          `${dependencyName} failed to register: missing value for 'asClass' property`
+        )
+      }
+
       this.addDependency<T>(dep as Dependency<T>, _scope, token)
       return this._logger.success(
         `${(dep as Dependency<T>).name} has been registered`
