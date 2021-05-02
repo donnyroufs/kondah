@@ -1,6 +1,6 @@
 {
   "name": "@kondah/express-adapter",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.1-alpha.0",
   "description": "> TODO: description",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "express server adapter for Kondah",
@@ -21,7 +21,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@kondah/core": "0.0.2-alpha.6",
+    "@kondah/core": "^0.0.3-alpha.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
