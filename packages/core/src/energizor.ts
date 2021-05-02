@@ -4,15 +4,18 @@ import {
   Dependency,
   Identifier,
   IEnergizorBindingOptions,
+  ILogger,
   IStrategy,
   Scopes,
   Token,
 } from './types'
 import { MetaTypes } from './metadata.types'
-import { Logger } from './logger'
 import { Utils } from './utils'
+import { UnknownDependencyException } from './exceptions/unknown-dependency.exception'
+import { Logger } from './logger'
 
 export class Energizor {
+  private _logger: ILogger
   private _dependencies: Map<Token, DependencyData<unknown>> = new Map()
   private _defaultScope: Scopes = 'transient'
   private _strategies: Record<Scopes, IStrategy> = {
@@ -20,25 +23,37 @@ export class Energizor {
     transient: transientStrategy,
   }
 
+  constructor(logger: ILogger) {
+    this._logger = logger
+  }
+
+  // TODO: Refactor, it's not open closed principle
   public register<T>(
     dep: Dependency<T> | Token,
     options?: IEnergizorBindingOptions<T>
   ) {
     const _scope = options?.scope ? options.scope : this._defaultScope
     const token = this.isInversionOfControl(dep) ? dep : dep.name
+    const dependencyName = this.depToReadAbleDependencyName(dep)
 
     try {
       if (this.isInversionOfControl(dep) && options && options.asClass) {
         this.addDependency<T>(options.asClass, _scope, token)
-        const dependencyName = dep.toString().split('(')[1].slice(0, -1)
-        Logger.successRegister(dependencyName)
-        return
+        return this._logger.success(`${dependencyName} has been registered`)
       }
 
       this.addDependency<T>(dep as Dependency<T>, _scope, token)
-      Logger.successRegister((dep as Dependency<T>).name)
+      return this._logger.success(
+        `${(dep as Dependency<T>).name} has been registered`
+      )
     } catch (err) {
-      Logger.failedRegister(token.toString())
+      if (err.message.includes('map')) {
+        return this._logger.error(
+          `${dependencyName} failed to register: missing @Injectable decorator`
+        )
+      }
+
+      return this._logger.error(`${dependencyName} failed to register`)
     }
   }
 
@@ -58,7 +73,10 @@ export class Energizor {
 
     const dep = this._dependencies.get(_identifier)
 
-    if (!dep) throw new Error('dependency does not exist in the container')
+    if (!dep)
+      throw new UnknownDependencyException(
+        this.depToReadAbleDependencyName(_identifier.toString())
+      )
 
     const resolvedDeps = this.resolveDependencies(dep)
 
@@ -101,6 +119,21 @@ export class Energizor {
   private isInversionOfControl<T>(dep: Dependency<T> | Token): dep is Token {
     return typeof dep === 'string' || typeof dep === 'symbol'
   }
+
+  private depToReadAbleDependencyName<T>(dep: Dependency<T> | Token) {
+    if (
+      (typeof dep === 'string' && dep.toString().includes('(')) ||
+      (typeof dep === 'symbol' && dep.toString().includes('('))
+    ) {
+      return dep.toString().split('(')[1].slice(0, -1)
+    }
+
+    if (dep.toString().includes('class')) {
+      return dep.toString().split(' ')[1].trim()
+    }
+
+    return dep.toString()
+  }
 }
 
-export const energizor = new Energizor()
+export const energizor = new Energizor(new Logger())
