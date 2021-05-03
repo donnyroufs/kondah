@@ -3,7 +3,7 @@ import { singletonStrategy, transientStrategy } from './strategies/energizor'
 import {
   Dependency,
   Identifier,
-  IEnergizorBindingOptions,
+  IEnergizorRegisterOptions,
   ILogger,
   IStrategy,
   Scopes,
@@ -30,7 +30,7 @@ export class Energizor {
   // TODO: Refactor, it's not open closed principle
   public register<T>(
     dep: Dependency<T> | Token,
-    options?: IEnergizorBindingOptions<T>
+    options?: IEnergizorRegisterOptions<T>
   ) {
     const _scope = options?.scope ? options.scope : this._defaultScope
     const token = this.isInversionOfControl(dep) ? dep : dep.name

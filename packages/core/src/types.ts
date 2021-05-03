@@ -46,7 +46,7 @@ export interface IStrategy {
 
 export type Token = string | symbol
 
-export interface IEnergizorBindingOptions<T> {
+export interface IEnergizorRegisterOptions<T> {
   asClass?: Dependency<T>
   scope?: Scopes
 }
