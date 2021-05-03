@@ -2,7 +2,6 @@ import { DependencyData } from './dependency-data'
 import { singletonStrategy, transientStrategy } from './strategies/energizor'
 import {
   Dependency,
-  Identifier,
   IEnergizorRegisterOptions,
   ILogger,
   IStrategy,
@@ -35,19 +34,19 @@ export class Energizor {
   ) {
     const _scope = options?.scope ? options.scope : this._defaultScope
     const token = this.isInversionOfControl(dep) ? dep : dep.name
-    const dependencyName = this.depToReadAbleDependencyName(dep)
-    const isInversionOfControl =
-      typeof dep === 'string' || typeof dep === 'symbol'
+    const parsedToken = this.getParsedToken(dep)
+
+    const isInversionOfControl = this.isInversionOfControl(dep)
 
     try {
       if (isInversionOfControl && options?.asClass) {
         this.addDependency<T>(options.asClass, _scope, token)
-        return this._logger.success(`${dependencyName} has been registered`)
+        return this._logger.success(`${parsedToken} has been registered`)
       }
 
       if (isInversionOfControl && !options?.asClass) {
         return this._logger.error(
-          `${dependencyName} failed to register: missing value for 'asClass' property`
+          `${parsedToken} failed to register: missing value for 'asClass' property`
         )
       }
 
@@ -59,16 +58,12 @@ export class Energizor {
     } catch (err) {
       if (err.message.includes('map')) {
         return this._logger.error(
-          `${dependencyName} failed to register: missing @Injectable decorator`
+          `${parsedToken} failed to register: missing @Injectable decorator`
         )
       }
 
-      return this._logger.error(`${dependencyName} failed to register`)
+      return this._logger.error(`${parsedToken} failed to register`)
     }
-  }
-
-  public rebind() {
-    throw new Error('this method is not yet implemented')
   }
 
   /**
@@ -84,9 +79,7 @@ export class Energizor {
     const dep = this._dependencies.get(_identifier)
 
     if (!dep)
-      throw new UnknownDependencyException(
-        this.depToReadAbleDependencyName(_identifier)
-      )
+      throw new UnknownDependencyException(this.getParsedToken(_identifier))
 
     const resolvedDeps = this.resolveDependencies(dep)
 
@@ -125,7 +118,7 @@ export class Energizor {
     return typeof dep === 'string' || typeof dep === 'symbol'
   }
 
-  private depToReadAbleDependencyName<T>(dep: Dependency<T> | Token) {
+  private getParsedToken<T>(dep: Dependency<T> | Token) {
     const isToken = this.isToken(dep)
     const stringifiedDep = this._parser.depOrTokenToString(dep)
 
