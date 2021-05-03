@@ -13,8 +13,10 @@ import { MetaTypes } from './metadata.types'
 import { Utils } from './utils'
 import { UnknownDependencyException } from './exceptions/unknown-dependency.exception'
 import { Logger } from './logger'
+import { EnergizorParser } from './energizor.parser'
 
 export class Energizor {
+  private readonly _parser: EnergizorParser = new EnergizorParser()
   private _logger: ILogger
   private _dependencies: Map<Token, DependencyData<unknown>> = new Map()
   private _defaultScope: Scopes = 'transient'
@@ -27,7 +29,6 @@ export class Energizor {
     this._logger = logger
   }
 
-  // TODO: Refactor, it's not open closed principle
   public register<T>(
     dep: Dependency<T> | Token,
     options?: IEnergizorRegisterOptions<T>
@@ -35,20 +36,23 @@ export class Energizor {
     const _scope = options?.scope ? options.scope : this._defaultScope
     const token = this.isInversionOfControl(dep) ? dep : dep.name
     const dependencyName = this.depToReadAbleDependencyName(dep)
+    const isInversionOfControl =
+      typeof dep === 'string' || typeof dep === 'symbol'
 
     try {
-      if (this.isInversionOfControl(dep) && options && options.asClass) {
+      if (isInversionOfControl && options?.asClass) {
         this.addDependency<T>(options.asClass, _scope, token)
         return this._logger.success(`${dependencyName} has been registered`)
       }
 
-      if (this.isInversionOfControl(dep) && options && !options.asClass) {
+      if (isInversionOfControl && !options?.asClass) {
         return this._logger.error(
           `${dependencyName} failed to register: missing value for 'asClass' property`
         )
       }
 
       this.addDependency<T>(dep as Dependency<T>, _scope, token)
+
       return this._logger.success(
         `${(dep as Dependency<T>).name} has been registered`
       )
@@ -81,7 +85,7 @@ export class Energizor {
 
     if (!dep)
       throw new UnknownDependencyException(
-        this.depToReadAbleDependencyName(_identifier.toString())
+        this.depToReadAbleDependencyName(_identifier)
       )
 
     const resolvedDeps = this.resolveDependencies(dep)
@@ -95,13 +99,8 @@ export class Energizor {
     return dep.injectables.map(this.get.bind(this))
   }
 
-  private hasInjectables<T>(dep: Dependency<T>) {
-    return !!Reflect.has(dep, MetaTypes.injectables)
-  }
-
   private getInjectables<T>(dep: Dependency<T>) {
-    const injectables = this.hasInjectables(dep)
-    return injectables ? Reflect.get(dep, MetaTypes.injectables) : null
+    return Reflect.get(dep, MetaTypes.injectables)
   }
 
   private addDependency<T>(dep: Dependency<T>, scope: Scopes, token: Token) {
@@ -116,7 +115,7 @@ export class Energizor {
     )
   }
 
-  private getIdentifier(identifier: Identifier | Dependency) {
+  private getIdentifier(identifier: Token | Dependency) {
     return typeof identifier === 'string' || typeof identifier === 'symbol'
       ? identifier
       : identifier.name
@@ -127,18 +126,22 @@ export class Energizor {
   }
 
   private depToReadAbleDependencyName<T>(dep: Dependency<T> | Token) {
-    if (
-      (typeof dep === 'string' && dep.toString().includes('(')) ||
-      (typeof dep === 'symbol' && dep.toString().includes('('))
-    ) {
-      return dep.toString().split('(')[1].slice(0, -1)
+    const isToken = this.isToken(dep)
+    const stringifiedDep = this._parser.depOrTokenToString(dep)
+
+    if (isToken && stringifiedDep.includes('(')) {
+      return this._parser.getNameFromSymbol(stringifiedDep)
     }
 
-    if (dep.toString().includes('class')) {
-      return dep.toString().split(' ')[1].trim()
+    if (stringifiedDep.includes('class')) {
+      return this._parser.getNameFromClassLikeString(stringifiedDep)
     }
 
-    return dep.toString()
+    return stringifiedDep
+  }
+
+  private isToken<T>(dep: Dependency<T> | Token) {
+    return ['string', 'symbol'].some((type) => (typeof dep).includes(type))
   }
 }
 
