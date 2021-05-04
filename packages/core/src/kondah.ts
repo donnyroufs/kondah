@@ -11,7 +11,7 @@ export abstract class Kondah {
   private readonly _pluginManager: PluginManager
 
   constructor(options: IKondaOptions) {
-    this._context = new AppContext(options.server, energizor)
+    this._context = new AppContext(options.server, energizor, options.logger)
     this._pluginManager = new PluginManager(options.plugins, options.config)
 
     this.initialize()
@@ -33,10 +33,16 @@ export abstract class Kondah {
   }
 
   private dirtyAddContextToIoc() {
-    // TODO: Fix type
-    // @ts-expect-error actually not sure yet, quick fix.
-    const data = new DependencyData('singleton', AppContext, [], this._context)
+    const data = new DependencyData<AppContext>(
+      'singleton',
+      // @ts-expect-error hacking away!
+      AppContext,
+      [],
+      this._context
+    )
     // @ts-expect-error dirty hack to add the current context to the Energizor container
     this._context.energizor._dependencies.set(AppContext.name, data)
+    // @ts-expect-error dirty hack to give energizor access to the current context
+    energizor._appContext = this._context
   }
 }
