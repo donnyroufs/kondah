@@ -5,13 +5,18 @@ import { AppContext } from './contexts'
 import { PluginManager } from './plugin.manager'
 import { IKondaOptions } from './types'
 import { DependencyData } from './dependency-data'
+import { Logger } from './logger'
 
 export abstract class Kondah {
   private readonly _context: AppContext
   private readonly _pluginManager: PluginManager
 
   constructor(options: IKondaOptions) {
-    this._context = new AppContext(options.server, energizor, options.logger)
+    this._context = new AppContext(
+      options.server,
+      energizor,
+      options.logger || new Logger()
+    )
     this._pluginManager = new PluginManager(options.plugins, options.config)
 
     this.initialize()

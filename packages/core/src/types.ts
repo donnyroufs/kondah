@@ -16,7 +16,7 @@ export type NewablePlugin = new (_config: IAppConfig) => Plugin
 export interface IKondaOptions {
   server: ServerAdapter
   config: IAppConfig
-  logger: ILogger
+  logger?: ILogger
   plugins?: NewablePlugin[]
 }
 
