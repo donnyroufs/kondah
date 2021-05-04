@@ -1,6 +1,5 @@
 export * from './kondah'
 export * from './types'
-export * from './server-adapter'
 export * from './plugin'
 export * from './decorators'
 export * from './metadata.types'

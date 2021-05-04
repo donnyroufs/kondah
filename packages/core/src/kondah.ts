@@ -1,5 +1,7 @@
 import 'reflect-metadata'
 
+import express = require('express')
+
 import { Energizor, energizor } from './energizor'
 import { AppContext } from './contexts'
 import { PluginManager } from './plugin.manager'
@@ -13,21 +15,35 @@ export abstract class Kondah {
 
   constructor(options: IKondaOptions) {
     this._context = new AppContext(
-      options.server,
+      express(),
       energizor,
       options.logger || new Logger()
     )
     this._pluginManager = new PluginManager(options.plugins, options.config)
 
     this.initialize()
+
+    this.onSuccessRun = this.onSuccessRun.bind(this)
   }
 
   public getContext() {
     return this._context
   }
 
+  public run(port: number, onSuccessCallback?: (port: number) => void) {
+    const callback = onSuccessCallback || this.onSuccessRun
+
+    this._context.server.listen(port, () => {
+      callback(port)
+    })
+  }
+
   protected abstract configureServices(services: Energizor): Promise<void>
   protected abstract setup(context: AppContext): Promise<void>
+
+  private onSuccessRun(port: number) {
+    this._context.logger.info(`server is running on http://localhost:${port}`)
+  }
 
   private async initialize() {
     this.dirtyAddContextToIoc()
