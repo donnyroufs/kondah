@@ -1,9 +1,9 @@
-import { bgGreen, bgRed, bgBlue, bgYellow } from 'chalk'
+import { bgGreen, bgRed, bgGrey, bgBlue, bgYellow } from 'chalk'
 import { ILogger } from './types'
 
 export class Logger implements ILogger {
   info(msg: string): void {
-    console.log(bgBlue.bold.white(` INFO `) + ' ' + msg)
+    console.log(bgBlue.bold.black(` INFO `) + ' ' + msg)
   }
 
   success(msg: string): void {

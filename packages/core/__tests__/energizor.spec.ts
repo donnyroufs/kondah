@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AppContext } from '../src'
 import { Energizor } from '../src/energizor'
 import {
   UserService,
@@ -14,13 +13,11 @@ import {
   PureService,
 } from '../utils/energizor.utils'
 
-const appContext = new AppContext(undefined!, undefined!, new Logger())
-
 describe('energizor', () => {
   let energizor: Energizor
 
   beforeEach(() => {
-    energizor = new Energizor(appContext)
+    energizor = new Energizor(new Logger())
 
     energizor.register(ChildService)
     energizor.register(UserService)
@@ -39,20 +36,20 @@ describe('energizor', () => {
   })
 
   it('should be defined', () => {
-    const _energizor = new Energizor(appContext)
+    const _energizor = new Energizor(new Logger())
 
     expect(_energizor).toBeDefined()
   })
 
   it('should register a dependency', () => {
-    const _energizor = new Energizor(appContext)
+    const _energizor = new Energizor(new Logger())
     _energizor.register(InnerChildService)
 
     expect(_energizor.get(InnerChildService)).toBeDefined()
   })
 
   it('when using tokens and not providing an asClass value, the logger should mention it', () => {
-    const _energizor = new Energizor(appContext)
+    const _energizor = new Energizor(new Logger())
 
     const value = _energizor.register(types.childTwoService, {})
 
@@ -63,7 +60,7 @@ describe('energizor', () => {
 
   // tests both singleton and transient no need to create seperate tests
   it('should change the default scope', () => {
-    const _energizor = new Energizor(appContext)
+    const _energizor = new Energizor(new Logger())
     _energizor.register(InnerChildService)
 
     expect(_energizor.get(InnerChildService).value).toBe(1)
@@ -81,7 +78,7 @@ describe('energizor', () => {
   })
 
   it('should set the scope for the given dependency when using classes', () => {
-    const _energizor = new Energizor(appContext)
+    const _energizor = new Energizor(new Logger())
     _energizor.register(InnerChildService, {
       scope: 'singleton',
     })
@@ -94,7 +91,7 @@ describe('energizor', () => {
   })
 
   it('should set the scope for the given dependency when using tokens', () => {
-    const _energizor = new Energizor(appContext)
+    const _energizor = new Energizor(new Logger())
     _energizor.register(types.innerChild, {
       asClass: InnerChildService,
       scope: 'singleton',

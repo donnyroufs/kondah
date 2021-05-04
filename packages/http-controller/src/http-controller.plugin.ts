@@ -11,6 +11,8 @@ export class HttpControllerPlugin extends Plugin<
 
   protected async setup(context: AppContext) {
     // TODO: Fix type
+    const app = context.server.getRawServer() as any
+
     MetadataStore.controllers.forEach((controller) => {
       const resolvedDeps = this.hasInjectables(controller)
         ? Reflect.get(controller, MetaTypes.injectables).map((dep) => {
@@ -24,7 +26,7 @@ export class HttpControllerPlugin extends Plugin<
       this._routes[prefix] = routes
 
       routes.forEach((route) => {
-        context.server[route.requestMethod](
+        app[route.requestMethod](
           prefix + route.path,
           ...route.middleware,
           (request, response) => {

@@ -1,5 +1,4 @@
-import express = require('express')
-
+import { ServerAdapter } from './server-adapter'
 import { Plugin } from './plugin'
 import { Energizor } from './energizor'
 import { DependencyData } from './dependency-data'
@@ -8,15 +7,15 @@ import { DependencyData } from './dependency-data'
 export interface IAppConfig {}
 
 export interface IAppContext {
-  server: express.Application
+  server: ServerAdapter
   energizor: Energizor
 }
 
 export type NewablePlugin = new (_config: IAppConfig) => Plugin
 
 export interface IKondaOptions {
+  server: ServerAdapter
   config: IAppConfig
-  logger?: ILogger
   plugins?: NewablePlugin[]
 }
 

@@ -1,10 +1,10 @@
 {
   "name": "@kondah/http-controller",
-  "version": "0.0.3",
+  "version": "0.0.3-alpha.2",
   "description": "official kondah plugin that provides utilities to easily register http controllers",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",
-  "license": "MIT",
+  "license": "ISC",
   "main": "lib/index.js",
   "directories": {
     "lib": "lib",
@@ -28,7 +28,7 @@
     "url": "https://github.com/donnyroufs/kondah/issues"
   },
   "dependencies": {
-    "@kondah/core": "^0.0.3",
+    "@kondah/core": "^0.0.3-alpha.1",
     "reflect-metadata": "^0.1.13"
   }
 }

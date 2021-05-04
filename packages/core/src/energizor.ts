@@ -3,6 +3,7 @@ import { singletonStrategy, transientStrategy } from './strategies/energizor'
 import {
   Dependency,
   IEnergizorRegisterOptions,
+  ILogger,
   IStrategy,
   Scopes,
   Token,
@@ -10,12 +11,12 @@ import {
 import { MetaTypes } from './metadata.types'
 import { Utils } from './utils'
 import { UnknownDependencyException } from './exceptions/unknown-dependency.exception'
+import { Logger } from './logger'
 import { EnergizorParser } from './energizor.parser'
-import { AppContext } from './contexts'
 
 export class Energizor {
   private readonly _parser: EnergizorParser = new EnergizorParser()
-  private readonly _appContext: AppContext
+  private _logger: ILogger
   private _dependencies: Map<Token, DependencyData<unknown>> = new Map()
   private _defaultScope: Scopes = 'transient'
   private _strategies: Record<Scopes, IStrategy> = {
@@ -23,8 +24,8 @@ export class Energizor {
     transient: transientStrategy,
   }
 
-  constructor(appContext: AppContext) {
-    this._appContext = appContext
+  constructor(logger: ILogger) {
+    this._logger = logger
   }
 
   public register<T>(
@@ -40,30 +41,28 @@ export class Energizor {
     try {
       if (isInversionOfControl && options?.asClass) {
         this.addDependency<T>(options.asClass, _scope, token)
-        return this._appContext.logger.success(
-          `${parsedToken} has been registered`
-        )
+        return this._logger.success(`${parsedToken} has been registered`)
       }
 
       if (isInversionOfControl && !options?.asClass) {
-        return this._appContext.logger.error(
+        return this._logger.error(
           `${parsedToken} failed to register: missing value for 'asClass' property`
         )
       }
 
       this.addDependency<T>(dep as Dependency<T>, _scope, token)
 
-      return this._appContext.logger.success(
+      return this._logger.success(
         `${(dep as Dependency<T>).name} has been registered`
       )
     } catch (err) {
       if (err.message.includes('map')) {
-        return this._appContext.logger.error(
+        return this._logger.error(
           `${parsedToken} failed to register: missing @Injectable decorator`
         )
       }
 
-      return this._appContext.logger.error(`${parsedToken} failed to register`)
+      return this._logger.error(`${parsedToken} failed to register`)
     }
   }
 
@@ -139,5 +138,4 @@ export class Energizor {
   }
 }
 
-// We are dirty adding this inside Kondah because logger is replaceable.
-export const energizor = new Energizor(undefined!)
+export const energizor = new Energizor(new Logger())

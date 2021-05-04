@@ -1,9 +1,8 @@
 import express = require('express')
+import { HttpVerb, ServerAdapter } from '@kondah/core'
 
-import { HttpVerb } from '@kondah/core'
-
-export class ExpressAdapter {
-  protected server = express()
+export class ExpressAdapter extends ServerAdapter {
+  public server = express()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public run(port: number, onSuccess?: () => void) {
@@ -76,9 +75,5 @@ export class ExpressAdapter {
     handlers: express.RequestHandler[]
   ) {
     this.server[verb](path, handlers)
-  }
-
-  private onSuccessListen(port: number) {
-    console.log(`server is running on http://localhost:${port}`)
   }
 }

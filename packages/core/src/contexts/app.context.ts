@@ -1,22 +1,18 @@
-import express = require('express')
+import { ServerAdapter } from '../server-adapter'
 import { Energizor } from '../energizor'
-import { ILogger, PartialAppContext } from '../types'
+import { PartialAppContext } from '../types'
 
 const implement = <T>() => class {} as new () => T
 
-export class AppContext extends implement<PartialAppContext>() {
-  public readonly server: express.Application
+export class AppContext<
+  T extends ServerAdapter = ServerAdapter
+> extends implement<PartialAppContext>() {
+  public readonly server: T
   public readonly energizor: Energizor
-  public readonly logger: ILogger
 
-  constructor(
-    server: express.Application,
-    energizor: Energizor,
-    logger: ILogger
-  ) {
+  constructor(server: T, energizor: Energizor) {
     super()
     this.server = server
     this.energizor = energizor
-    this.logger = logger
   }
 }
