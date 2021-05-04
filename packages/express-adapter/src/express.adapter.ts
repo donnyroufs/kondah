@@ -2,7 +2,7 @@ import express = require('express')
 import { HttpVerb, ServerAdapter } from '@kondah/core'
 
 export class ExpressAdapter extends ServerAdapter {
-  public server = express()
+  protected server = express()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public run(port: number, onSuccess?: () => void) {

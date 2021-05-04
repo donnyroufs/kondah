@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export abstract class ServerAdapter {
-  public abstract readonly server: unknown
+  protected abstract readonly server: unknown
 
   public abstract run(port: number, onSuccess?: () => void): void
   public abstract use(path: string, fn: unknown): void
