@@ -4,7 +4,7 @@
   "description": "official kondah plugin that provides utilities to easily register http controllers",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",
-  "license": "ISC",
+  "license": "MIT",
   "main": "lib/index.js",
   "directories": {
     "lib": "lib",
