@@ -1,12 +1,18 @@
 import express = require('express')
-import { HttpVerb, ServerAdapter } from '@kondah/core'
 
-export class ExpressAdapter extends ServerAdapter {
-  public server = express()
+import { ILogger, HttpVerb } from './types'
+
+export class KondahServer {
+  private readonly _server = express()
+  private readonly _logger: ILogger
+
+  constructor(logger: ILogger) {
+    this._logger = logger
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public run(port: number, onSuccess?: () => void) {
-    this.server.listen(port, () => this.onSuccessListen(port))
+    this._server.listen(port, () => this.onSuccessListen(port))
   }
 
   public use(path: string, fn: express.RequestHandler): void
@@ -15,16 +21,16 @@ export class ExpressAdapter extends ServerAdapter {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public use(...args: any[]) {
     if (args.length === 1) {
-      this.server.use(args[0])
+      this._server.use(args[0])
       return
     }
 
-    this.server.use(args[0], args[1])
+    this._server.use(args[0], args[1])
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public set(setting: string, val: any): void {
-    this.server.set(setting, val)
+    this._server.set(setting, val)
   }
 
   public engine(
@@ -38,7 +44,7 @@ export class ExpressAdapter extends ServerAdapter {
     //   callback: (e: any, rendered?: string) => void
     // ) => void
   ) {
-    this.server.engine(ext, fn)
+    this._server.engine(ext, fn)
   }
 
   public get(path: string, ...handlers: express.RequestHandler[]) {
@@ -69,11 +75,19 @@ export class ExpressAdapter extends ServerAdapter {
     this.registerRoute('options', path, handlers)
   }
 
+  public getRawServer() {
+    return this._server as express.Application
+  }
+
   private registerRoute(
     verb: HttpVerb,
     path: string,
     handlers: express.RequestHandler[]
   ) {
-    this.server[verb](path, handlers)
+    this._server[verb](path, handlers)
+  }
+
+  private onSuccessListen(port: number) {
+    this._logger.info(`server is running on http://localhost:${port}`)
   }
 }

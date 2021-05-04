@@ -1,22 +1,23 @@
-import { ServerAdapter } from './server-adapter'
 import { Plugin } from './plugin'
 import { Energizor } from './energizor'
 import { DependencyData } from './dependency-data'
+import { KondahServer } from './kondah-server'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAppConfig {}
 
 export interface IAppContext {
-  server: ServerAdapter
+  server: KondahServer
   energizor: Energizor
+  logger: ILogger
 }
 
 export type NewablePlugin = new (_config: IAppConfig) => Plugin
 
 export interface IKondaOptions {
-  server: ServerAdapter
-  config: IAppConfig
+  logger?: ILogger
   plugins?: NewablePlugin[]
+  config: IAppConfig
 }
 
 export type Constructor<T> = new (...args: any[]) => T

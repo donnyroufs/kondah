@@ -1,18 +1,18 @@
-import { ServerAdapter } from '../server-adapter'
 import { Energizor } from '../energizor'
-import { PartialAppContext } from '../types'
+import { PartialAppContext, ILogger } from '../types'
+import { KondahServer } from '../kondah-server'
 
 const implement = <T>() => class {} as new () => T
 
-export class AppContext<
-  T extends ServerAdapter = ServerAdapter
-> extends implement<PartialAppContext>() {
-  public readonly server: T
+export class AppContext extends implement<PartialAppContext>() {
+  public readonly server: KondahServer
   public readonly energizor: Energizor
+  public readonly logger: ILogger
 
-  constructor(server: T, energizor: Energizor) {
+  constructor(server: KondahServer, energizor: Energizor, logger: ILogger) {
     super()
     this.server = server
+    this.logger = logger
     this.energizor = energizor
   }
 }
