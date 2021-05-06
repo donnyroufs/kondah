@@ -1,6 +1,6 @@
 {
   "name": "@kondah/http-context",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "creates a http context which is stored inside req.kondah",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",
@@ -28,7 +28,7 @@
     "url": "https://github.com/donnyroufs/konda/issues"
   },
   "dependencies": {
-    "@kondah/core": "^0.0.3-alpha.3",
+    "@kondah/core": "^0.0.3-alpha.4",
     "reflect-metadata": "^0.1.13"
   }
 }
