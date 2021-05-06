@@ -4,6 +4,12 @@ import { IAppConfig } from './types'
 
 export abstract class Plugin<T = any> {
   public abstract name: string
+  /**
+   * A plugin can depend on other plugins which will cause race conditions,
+   * therefor you need to let Kondah know which plugins need to be installed
+   * before installing this one.
+   */
+  public dependencies: string[] = []
 
   constructor(private readonly _config: IAppConfig) {}
 

@@ -5,6 +5,7 @@ import { RouteDefinition } from './types'
 export class HttpControllerPlugin extends Plugin<
   IAppConfig['http-controller']
 > {
+  public dependencies = ['http-context']
   public name = 'http-controller'
 
   private _routes: Record<string, RouteDefinition[]> = {}

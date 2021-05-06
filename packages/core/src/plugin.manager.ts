@@ -7,13 +7,25 @@ export class PluginManager {
   private readonly _plugins: Plugin[]
 
   constructor(plugins: NewablePlugin[] = [], config: IAppConfig) {
-    this._plugins = plugins.map((plug) => new plug(config))
+    this._plugins = plugins.map((plug) => {
+      const plugin = new plug(config)
+
+      // @ts-expect-error Hacky way of attaching data that only we care about
+      plugin.__pure__ = plugin.dependencies.length <= 0
+
+      return plugin
+    })
   }
 
   public async install(context: AppContext) {
     if (this._plugins.length <= 0) return
 
-    for (const plug of this._plugins) {
+    const sortedPlugins = [...this._plugins].sort(
+      // @ts-expect-error it exists
+      (a, b) => b.__pure__ - a.__pure__
+    )
+
+    for (const plug of sortedPlugins) {
       await plug.install(context)
     }
 

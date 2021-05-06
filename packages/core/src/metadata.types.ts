@@ -1,6 +1,7 @@
-const injectables = Symbol('injectables')
-const extensions = Symbol('extensions')
-// const parameters = Symbol('parameters')
+// Symbols seem to not work when sharing across packages
+
+const injectables = 'injectables'
+const extensions = 'extensions'
 const parameters = 'parameters'
 
 export const MetaTypes = {
