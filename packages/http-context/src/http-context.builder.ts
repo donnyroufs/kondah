@@ -3,9 +3,11 @@ import { HttpContext } from './http.context'
 export class HttpContextBuilder {
   private _httpContext = new HttpContext()
 
-  constructor(req, res) {
+  // TODO: Types
+  constructor(req, res, logger) {
     this._httpContext.req = req
     this._httpContext.res = res
+    this._httpContext.logger = logger
   }
 
   public add<T = unknown>(key: string, value: T) {

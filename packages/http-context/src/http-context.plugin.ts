@@ -11,7 +11,7 @@ export class HttpContextPlugin extends Plugin {
   protected async setup(context: AppContext) {
     // @ts-expect-error we dont have types for this
     context.server.use((req: Request & { kondah: any }, res, next) => {
-      req.kondah.httpContext = new HttpContextBuilder(req, res)
+      req.kondah.httpContext = new HttpContextBuilder(req, res, context.logger)
         .addMany(this._state)
         .build()
 
@@ -20,7 +20,7 @@ export class HttpContextPlugin extends Plugin {
   }
 
   @AddToContext()
-  addToHttpContext<T = any>(key: string, value: T) {
+  addToHttpContext<T = unknown>(key: string, value: T) {
     if (this._state[key]) {
       // TODO: Add custom exception
       throw new Error('already exists')
