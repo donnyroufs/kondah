@@ -53,8 +53,8 @@ export interface IEnergizorRegisterOptions<T> {
 }
 
 export interface ILogger {
-  info(msg: string): void
-  success(msg: string): void
-  warning(msg: string): void
-  error(msg: string): void
+  info(msg: string, label?: string): void
+  success(msg: string, label?: string): void
+  warning(msg: string, label?: string): void
+  error(msg: string, label?: string): void
 }

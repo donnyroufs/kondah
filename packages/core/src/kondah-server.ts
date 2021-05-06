@@ -88,6 +88,6 @@ export class KondahServer {
   }
 
   private onSuccessListen(port: number) {
-    this._logger.info(`server is running on http://localhost:${port}`)
+    this._logger.info(`server is running on http://localhost:${port}`, 'SERVER')
   }
 }

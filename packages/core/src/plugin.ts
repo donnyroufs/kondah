@@ -9,7 +9,7 @@ export abstract class Plugin<T = any> {
    * therefor you need to let Kondah know which plugins need to be installed
    * before installing this one.
    */
-  public dependencies: NewablePlugin[] | string[] = []
+  public dependencies: NewablePlugin[] = []
 
   constructor(private readonly _config: IAppConfig) {}
 

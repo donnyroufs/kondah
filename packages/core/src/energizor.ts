@@ -41,29 +41,36 @@ export class Energizor {
       if (isInversionOfControl && options?.asClass) {
         this.addDependency<T>(options.asClass, _scope, token)
         return this._appContext.logger.success(
-          `${parsedToken} has been registered`
+          `${parsedToken} has been registered`,
+          'ENERGIZOR'
         )
       }
 
       if (isInversionOfControl && !options?.asClass) {
         return this._appContext.logger.error(
-          `${parsedToken} failed to register: missing value for 'asClass' property`
+          `${parsedToken} failed to register: missing value for 'asClass' property`,
+          'ENERGIZOR'
         )
       }
 
       this.addDependency<T>(dep as Dependency<T>, _scope, token)
 
       return this._appContext.logger.success(
-        `${(dep as Dependency<T>).name} has been registered`
+        `${(dep as Dependency<T>).name} has been registered`,
+        'ENERGIZOR'
       )
     } catch (err) {
       if (err.message.includes('map')) {
         return this._appContext.logger.error(
-          `${parsedToken} failed to register: missing @Injectable decorator`
+          `${parsedToken} failed to register: missing @Injectable decorator`,
+          'ENERGIZOR'
         )
       }
 
-      return this._appContext.logger.error(`${parsedToken} failed to register`)
+      return this._appContext.logger.error(
+        `${parsedToken} failed to register`,
+        'ENERGIZOR'
+      )
     }
   }
 

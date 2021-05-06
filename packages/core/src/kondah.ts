@@ -2,7 +2,7 @@ import 'reflect-metadata'
 
 import { Energizor, energizor } from './energizor'
 import { AppContext } from './contexts'
-import { PluginManager } from './plugin.manager'
+import { PluginManager } from './plugin.handler'
 import { IKondaOptions } from './types'
 import { DependencyData } from './dependency-data'
 import { Logger } from './logger'
