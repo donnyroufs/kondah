@@ -1,19 +1,17 @@
 import { IAppConfig, AppContext, MetaTypes, Plugin } from '@kondah/core'
+import { HttpContextPlugin } from '@kondah/http-context'
 import { Controller, MetadataStore } from './metadata.store'
 import { RouteDefinition } from './types'
 
 export class HttpControllerPlugin extends Plugin<
   IAppConfig['http-controller']
 > {
-  public dependencies = ['http-context']
   public name = 'http-controller'
+  public dependencies = [HttpContextPlugin]
 
   private _routes: Record<string, RouteDefinition[]> = {}
 
   protected async setup(context: AppContext) {
-    // TODO: Fix type
-    const app = context.server.getRawServer() as any
-
     MetadataStore.controllers.forEach((controller) => {
       const resolvedDeps = this.hasInjectables(controller)
         ? Reflect.get(controller, MetaTypes.injectables).map((dep) => {
@@ -27,12 +25,12 @@ export class HttpControllerPlugin extends Plugin<
       this._routes[prefix] = routes
 
       routes.forEach((route) => {
-        app[route.requestMethod](
+        context.server[route.requestMethod](
           prefix + route.path,
           ...route.middleware,
-          (request, response) => {
-            // TODO: Fix type
-            instance[route.methodName](request, response)
+          (req) => {
+            const httpContext = req.kondah.httpContext
+            instance[route.methodName](httpContext)
           }
         )
       })

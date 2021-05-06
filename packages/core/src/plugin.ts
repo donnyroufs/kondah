@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppContext } from './contexts'
-import { IAppConfig } from './types'
+import { IAppConfig, NewablePlugin } from './types'
 
 export abstract class Plugin<T = any> {
   public abstract name: string
@@ -9,7 +9,7 @@ export abstract class Plugin<T = any> {
    * therefor you need to let Kondah know which plugins need to be installed
    * before installing this one.
    */
-  public dependencies: string[] = []
+  public dependencies: NewablePlugin[] | string[] = []
 
   constructor(private readonly _config: IAppConfig) {}
 

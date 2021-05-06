@@ -39,6 +39,16 @@ export abstract class Kondah {
   }
 
   private dirtyHacks() {
+    this._context.server.use((req, res, next) => {
+      // @ts-expect-error because we don't type this
+      if (!req.kondah) {
+        // @ts-expect-error because we don't type this
+        req.kondah = {}
+      }
+
+      next()
+    })
+
     const data = new DependencyData(
       'singleton',
       AppContext.name,

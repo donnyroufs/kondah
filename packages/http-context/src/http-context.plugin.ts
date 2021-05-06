@@ -1,30 +1,31 @@
 import 'reflect-metadata'
 
 import { AddToContext, AppContext, Plugin } from '@kondah/core'
+import { HttpContextBuilder } from './http-context.builder'
 
 export class HttpContextPlugin extends Plugin {
   name = 'http-context'
 
-  protected async setup(context: AppContext) {
-    context.server.use((req, res, next) => {
-      // @ts-expect-error does not exist yet
-      if (!req.kondah) {
-        // @ts-expect-error does not exist yet
-        req.kondah = {}
-      }
+  private _state = {}
 
-      // @ts-expect-error does not exist yet
-      req.kondah.httpContext = {
-        req,
-        res,
-      }
+  protected async setup(context: AppContext) {
+    // @ts-expect-error we dont have types for this
+    context.server.use((req: Request & { kondah: any }, res, next) => {
+      req.kondah.httpContext = new HttpContextBuilder(req, res)
+        .addMany(this._state)
+        .build()
 
       next()
     })
   }
 
   @AddToContext()
-  addToHttpContext<T>(key: string, fn: T) {
-    console.log({ key, fn })
+  addToHttpContext<T = any>(key: string, value: T) {
+    if (this._state[key]) {
+      // TODO: Add custom exception
+      throw new Error('already exists')
+    }
+
+    this._state[key] = value
   }
 }
