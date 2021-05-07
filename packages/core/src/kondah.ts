@@ -2,7 +2,7 @@ import 'reflect-metadata'
 
 import { Energizor, energizor } from './energizor'
 import { AppContext } from './contexts'
-import { PluginManager } from './plugin.handler'
+import { PluginHandler } from './plugin.handler'
 import { IKondaOptions } from './types'
 import { DependencyData } from './dependency-data'
 import { Logger } from './logger'
@@ -10,12 +10,12 @@ import { KondahServer } from './kondah-server'
 
 export abstract class Kondah {
   private readonly _context: AppContext
-  private readonly _pluginManager: PluginManager
+  private readonly _pluginHandler: PluginHandler
 
   constructor(options: IKondaOptions) {
     const logger = options.logger || new Logger()
     this._context = new AppContext(new KondahServer(logger), energizor, logger)
-    this._pluginManager = new PluginManager(
+    this._pluginHandler = new PluginHandler(
       options.plugins,
       options.config,
       this._context
@@ -38,7 +38,7 @@ export abstract class Kondah {
 
     await this.configureServices(this._context.energizor)
     await this.$beforeInstallPlugins(this._context)
-    await this._pluginManager.install(this._context)
+    await this._pluginHandler.install(this._context)
     await this.setup(this._context)
   }
 
