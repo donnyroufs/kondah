@@ -1,9 +1,9 @@
-import { IAppConfig, AppContext, MetaTypes, Plugin } from '@kondah/core'
+import { IAppConfig, AppContext, MetaTypes, KondahPlugin } from '@kondah/core'
 import { HttpContextPlugin } from '@kondah/http-context'
 import { Controller, MetadataStore } from './metadata.store'
 import { RouteDefinition } from './types'
 
-export class HttpControllerPlugin extends Plugin<
+export class HttpControllerPlugin extends KondahPlugin<
   IAppConfig['http-controller']
 > {
   public name = 'http-controller'

@@ -2,7 +2,7 @@
 import { AppContext } from './contexts'
 import { IAppConfig, NewablePlugin } from './types'
 
-export abstract class Plugin<T = any> {
+export abstract class KondahPlugin<T = any> {
   public abstract name: string
   /**
    * A plugin can depend on other plugins which will cause race conditions,
@@ -11,10 +11,13 @@ export abstract class Plugin<T = any> {
    */
   public dependencies: NewablePlugin[] = []
 
-  constructor(private readonly _config: IAppConfig) {}
+  constructor(
+    private readonly _config: IAppConfig,
+    protected readonly appContext: AppContext
+  ) {}
 
-  public async install(context: AppContext) {
-    await this.setup(context)
+  public async install() {
+    await this.setup(this.appContext)
   }
 
   protected abstract setup(context: AppContext): Promise<void>

@@ -1,16 +1,20 @@
-import { Plugin } from './plugin'
+import { KondahPlugin } from './kondah-plugin'
 import { AppContext } from './contexts'
 import { IAppConfig, NewablePlugin } from './types'
 import { MetaTypes } from './metadata.types'
 
 export class PluginManager {
-  private readonly _plugins: Plugin[] = []
+  private readonly _plugins: KondahPlugin[] = []
 
-  constructor(plugins: NewablePlugin[] = [], config: IAppConfig) {
+  constructor(
+    plugins: NewablePlugin[] = [],
+    config: IAppConfig,
+    appContext: AppContext
+  ) {
     const _plugs = plugins.reduce<NewablePlugin[]>((acc, curr) => {
       acc.push(curr)
 
-      new curr(config).dependencies.forEach((dep) => {
+      new curr(config, appContext).dependencies.forEach((dep) => {
         acc.push(dep)
       })
 
@@ -19,7 +23,7 @@ export class PluginManager {
 
     this._plugins = _plugs
       .filter((plug, index, self) => self.indexOf(plug) === index)
-      .map((plug) => new plug(config))
+      .map((plug) => new plug(config, appContext))
   }
 
   public async install(context: AppContext) {
@@ -27,7 +31,7 @@ export class PluginManager {
 
     for (const plug of this.getPurePlugins()) {
       context.logger.success(`Installed ${plug.name}`, 'PLUGIN')
-      await plug.install(context)
+      await plug.install()
     }
 
     for (const plug of this.getNonPurePlugins()) {
@@ -35,7 +39,7 @@ export class PluginManager {
         `Installed ${plug.name} with ${plug.dependencies?.length} dependency`,
         'PLUGIN'
       )
-      await plug.install(context)
+      await plug.install()
     }
 
     this.addPluginExtensionsToContext(context)
