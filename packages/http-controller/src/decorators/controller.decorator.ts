@@ -1,11 +1,22 @@
 import 'reflect-metadata'
 import { MetaTypes, Utils } from '@kondah/core'
 import { MetadataStore } from '../metadata.store'
+import { IControllerOptions } from '../types'
 
-export const Controller = (prefix = ''): ClassDecorator => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const Controller = (
+  prefix = '/',
+  options?: IControllerOptions
+): ClassDecorator => {
   return (target: any) => {
     Reflect.defineMetadata('prefix', prefix, target)
+
+    if (options) {
+      if (options.only && options.except) {
+        throw new Error('You cannot have both only and except defined')
+      }
+
+      Reflect.defineMetadata('global:middleware', options, target)
+    }
 
     if (!Reflect.hasMetadata('routes', target)) {
       Reflect.defineMetadata('routes', [], target)

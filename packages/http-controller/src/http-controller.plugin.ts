@@ -1,7 +1,7 @@
 import { IAppConfig, AppContext, MetaTypes, KondahPlugin } from '@kondah/core'
 import { HttpContextPlugin } from '@kondah/http-context'
 import { Controller, MetadataStore } from './metadata.store'
-import { RouteDefinition } from './types'
+import { RouteDefinition, IControllerOptions } from './types'
 
 export class HttpControllerPlugin extends KondahPlugin<
   IAppConfig['http-controller']
@@ -20,14 +20,20 @@ export class HttpControllerPlugin extends KondahPlugin<
         : []
 
       const instance = new controller(...resolvedDeps) as any
-      const [prefix, routes] = this.getMetaData(controller)
+      const [prefix, routes, middlewareOptions] = this.getMetaData(controller)
 
       this._routes[prefix] = routes
 
       routes.forEach((route) => {
         context.server.router[route.requestMethod](
           prefix + route.path,
-          ...route.middleware,
+          [
+            ...route.middleware,
+            ...(middlewareOptions &&
+            this.shouldAddGlobalMiddleware(route.methodName, middlewareOptions)
+              ? middlewareOptions.middleware
+              : []),
+          ],
           (req) => {
             const httpContext = req.kondah.httpContext
             instance[route.methodName](httpContext)
@@ -41,6 +47,25 @@ export class HttpControllerPlugin extends KondahPlugin<
     }
 
     return undefined
+  }
+
+  private shouldAddGlobalMiddleware(
+    route: string,
+    { only, except }: IControllerOptions
+  ) {
+    if (only && except) {
+      throw new Error('cannot declare both only and except')
+    }
+
+    if (only) {
+      return only.includes(route)
+    }
+
+    if (except) {
+      return !except.includes(route)
+    }
+
+    return true
   }
 
   private serveRoutes(context: AppContext) {
@@ -63,9 +88,13 @@ export class HttpControllerPlugin extends KondahPlugin<
 
   private getMetaData(controller: Controller) {
     const prefix = Reflect.getMetadata('prefix', controller)
+    const globalMiddleware = Reflect.getMetadata(
+      'global:middleware',
+      controller
+    )
 
     const routes: RouteDefinition[] = Reflect.getMetadata('routes', controller)
 
-    return [prefix, routes]
+    return [prefix, routes, globalMiddleware]
   }
 }
