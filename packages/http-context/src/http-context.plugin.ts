@@ -9,18 +9,20 @@ export class HttpContextPlugin extends KondahPlugin {
   private _state = {}
 
   protected async setup() {
-    // @ts-expect-error we dont have types for this
-    this.appContext.server.use((req: Request & { kondah: any }, res, next) => {
-      req.kondah.httpContext = new HttpContextBuilder(
-        req,
-        res,
-        this.appContext.logger
-      )
-        .addMany(this._state)
-        .build()
+    this.appContext.server.addGlobalMiddleware(
+      // @ts-expect-error we dont have types for this
+      (req: Request & { kondah: any }, res, next) => {
+        req.kondah.httpContext = new HttpContextBuilder(
+          req,
+          res,
+          this.appContext.logger
+        )
+          .addMany(this._state)
+          .build()
 
-      next()
-    })
+        next()
+      }
+    )
   }
 
   @AddToContext()

@@ -1,49 +1,42 @@
 import express = require('express')
 
-import { ILogger, HttpVerb } from './types'
+import { ILogger, HttpVerb, ServerRunFn, Middleware } from './types'
 
 export class KondahServer {
-  private readonly _server = express()
+  private _server: express.Application
   private readonly _logger: ILogger
 
   constructor(logger: ILogger) {
+    this._server = express()
     this._logger = logger
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public run(port: number, onSuccess?: () => void) {
     this._server.listen(port, () => this.onSuccessListen(port))
   }
 
-  public use(path: string, fn: express.RequestHandler): void
-  public use(fn: express.RequestHandler): void
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public use(...args: any[]) {
-    if (args.length === 1) {
-      this._server.use(args[0])
-      return
-    }
-
-    this._server.use(args[0], args[1])
+  public addGlobalMiddleware(...middleware: Middleware[]) {
+    this._server.use(middleware)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public set(setting: string, val: any): void {
+  public addMiddleware(path: string, ...middleware: Middleware[]) {
+    this._server.use(path, middleware)
+  }
+
+  public set<T>(setting: string, val: T): void {
     this._server.set(setting, val)
   }
 
   public engine(
     ext: string,
-    // TODO: Fix
-    fn: any
-    // fn: (
-    //   path: string,
-    //   options: Record<string, unknown>,
-    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //   callback: (e: any, rendered?: string) => void
-    // ) => void
+    fn: (
+      path: string,
+      options: Record<string, unknown>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      callback: (e: any, rendered?: string | undefined) => void
+    ) => void
   ) {
+    // @ts-expect-error originally express uses object but we decided on using a Record type
     this._server.engine(ext, fn)
   }
 
@@ -77,6 +70,10 @@ export class KondahServer {
 
   public getRawServer() {
     return this._server as express.Application
+  }
+
+  public overrideServerRun(callback: ServerRunFn) {
+    this.run = callback
   }
 
   private registerRoute(

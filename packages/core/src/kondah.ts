@@ -31,6 +31,7 @@ export abstract class Kondah {
   protected abstract configureServices(services: Energizor): Promise<void>
   protected abstract setup(context: AppContext): Promise<void>
 
+  // TODO: Implement with auto generated hooks
   protected async $beforeInstallPlugins(context: AppContext) {}
 
   private async initialize() {
@@ -43,7 +44,7 @@ export abstract class Kondah {
   }
 
   private dirtyHacks() {
-    this._context.server.use((req, res, next) => {
+    this._context.server.addGlobalMiddleware((req, res, next) => {
       // @ts-expect-error because we don't type this
       if (!req.kondah) {
         // @ts-expect-error because we don't type this

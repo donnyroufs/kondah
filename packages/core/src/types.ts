@@ -1,3 +1,4 @@
+import express = require('express')
 import { KondahPlugin } from './kondah-plugin'
 import { Energizor } from './energizor'
 import { DependencyData } from './dependency-data'
@@ -62,3 +63,7 @@ export interface ILogger {
   warning(msg: string, label?: string): void
   error(msg: string, label?: string): void
 }
+
+export type ServerRunFn = (port: number) => void
+
+export type Middleware = express.RequestHandler
