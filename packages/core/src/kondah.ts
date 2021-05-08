@@ -28,8 +28,10 @@ export abstract class Kondah {
     return this._context
   }
 
-  protected abstract configureServices(services: Energizor): Promise<void>
-  protected abstract setup(context: AppContext): Promise<void>
+  protected abstract configureServices(
+    services: Energizor
+  ): Promise<void> | void
+  protected abstract setup(context: AppContext): Promise<void> | void
 
   // TODO: Implement with auto generated hooks
   protected async $beforeInstallPlugins(context: AppContext) {}

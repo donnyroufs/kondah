@@ -20,7 +20,7 @@ export abstract class KondahPlugin<T = any> {
     await this.setup(this.appContext)
   }
 
-  protected abstract setup(context: AppContext): Promise<void>
+  protected abstract setup(context: AppContext): Promise<void> | void
 
   protected get config(): T {
     return this._config[this.name]
