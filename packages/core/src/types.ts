@@ -1,11 +1,11 @@
 import express = require('express')
+
 import { KondahPlugin } from './kondah-plugin'
 import { Energizor } from './energizor'
 import { DependencyData } from './dependency-data'
 import { KondahServer } from './kondah-server'
 import { AppContext } from './contexts'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAppConfig {}
 
 export interface IAppContext {
