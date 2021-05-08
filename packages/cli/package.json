@@ -1,0 +1,40 @@
+{
+  "name": "@kondah/cli",
+  "version": "0.0.1-alpha.0",
+  "description": "CLI to easily scaffold Kondah projects",
+  "author": "Donny Roufs <iamchets@yahoo.com>",
+  "homepage": "https://kondah.dev",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "bin": {
+    "kondah": "./lib/kondah"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donnyroufs/konda.git"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "tsc --w",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/donnyroufs/konda/issues"
+  },
+  "dependencies": {
+    "fs-extra": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.11"
+  }
+}
