@@ -1,11 +1,3 @@
-# `core`
+# Kondah's Core
 
-> TODO: description
-
-## Usage
-
-```
-const core = require('core');
-
-// TODO: DEMONSTRATE API
-```
+T.B.A.

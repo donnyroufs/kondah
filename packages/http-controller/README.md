@@ -1,11 +1,3 @@
-# `http-controller`
+# Official Kondah Plugin
 
-> TODO: description
-
-## Usage
-
-```
-const httpController = require('http-controller');
-
-// TODO: DEMONSTRATE API
-```
+T.B.A.
