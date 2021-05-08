@@ -33,6 +33,8 @@ export abstract class Kondah {
 
   // TODO: Implement with auto generated hooks
   protected async $beforeInstallPlugins(context: AppContext) {}
+  protected async $afterInstallPlugins(context: AppContext) {}
+  protected async $afterSetupKondah(context: AppContext) {}
 
   private async initialize() {
     this.dirtyHacks()
@@ -40,7 +42,9 @@ export abstract class Kondah {
     await this.configureServices(this._context.energizor)
     await this.$beforeInstallPlugins(this._context)
     await this._pluginHandler.install(this._context)
+    await this.$afterInstallPlugins(this._context)
     await this.setup(this._context)
+    await this.$afterSetupKondah(this._context)
   }
 
   private dirtyHacks() {
