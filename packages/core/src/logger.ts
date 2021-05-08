@@ -19,39 +19,39 @@ export class Logger implements ILogger {
     this._mode = mode
   }
 
-  info(msg: string): void {
+  info(msg: string, label = ' INFO '): void {
     if (this._mode === 'background') {
-      console.log(bgBlue.bold.white(` INFO `) + ' ' + msg)
+      console.log(bgBlue.bold.white(label) + ' ' + msg)
       return
     }
 
-    console.log('[' + blue('INFO') + ']' + ' ' + msg)
+    console.log('[' + blue(label.trim()) + ']' + ' ' + msg)
   }
 
-  success(msg: string): void {
+  success(msg: string, label = ' SUCCESS '): void {
     if (this._mode === 'background') {
-      console.log(bgGreen.bold.black(` SUCCESS `) + ' ' + msg)
+      console.log(bgGreen.bold.black(label) + ' ' + msg)
       return
     }
 
-    console.log('[' + green('SUCCESS') + ']' + ' ' + msg)
+    console.log('[' + green(label.trim()) + ']' + ' ' + msg)
   }
 
-  warning(msg: string): void {
+  warning(msg: string, label = ' WARNING '): void {
     if (this._mode === 'background') {
-      console.log(bgYellow.bold.black(` WARNING `) + ' ' + msg)
+      console.log(bgYellow.bold.black(label) + ' ' + msg)
       return
     }
 
-    console.log('[' + yellow('WARNING') + ']' + ' ' + msg)
+    console.log('[' + yellow(label.trim()) + ']' + ' ' + msg)
   }
 
-  error(msg: string): void {
+  error(msg: string, label = ' ERROR '): void {
     if (this._mode === 'background') {
-      console.log(bgRed.bold.white(` ERROR `) + ' ' + msg)
+      console.log(bgRed.bold.white(label) + ' ' + msg)
       return
     }
 
-    console.log('[' + red('ERROR') + ']' + ' ' + msg)
+    console.log('[' + red(label.trim()) + ']' + ' ' + msg)
   }
 }

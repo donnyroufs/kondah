@@ -1,9 +1,11 @@
-import { Plugin } from './plugin'
+import express = require('express')
+
+import { KondahPlugin } from './kondah-plugin'
 import { Energizor } from './energizor'
 import { DependencyData } from './dependency-data'
 import { KondahServer } from './kondah-server'
+import { AppContext } from './contexts'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAppConfig {}
 
 export interface IAppContext {
@@ -12,7 +14,10 @@ export interface IAppContext {
   logger: ILogger
 }
 
-export type NewablePlugin = new (_config: IAppConfig) => Plugin
+export type NewablePlugin = new (
+  _config: IAppConfig,
+  appContext: AppContext
+) => KondahPlugin
 
 export interface IKondaOptions {
   logger?: ILogger
@@ -53,8 +58,18 @@ export interface IEnergizorRegisterOptions<T> {
 }
 
 export interface ILogger {
-  info(msg: string): void
-  success(msg: string): void
-  warning(msg: string): void
-  error(msg: string): void
+  info(msg: string, label?: string): void
+  success(msg: string, label?: string): void
+  warning(msg: string, label?: string): void
+  error(msg: string, label?: string): void
 }
+
+export type ServerRunFn = (port: number) => void
+
+export type Middleware = express.RequestHandler
+export type ErrorMiddlewareFn = (
+  err: Error,
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => void

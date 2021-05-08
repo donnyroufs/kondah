@@ -2,7 +2,7 @@ import 'reflect-metadata'
 
 import { Energizor, energizor } from './energizor'
 import { AppContext } from './contexts'
-import { PluginManager } from './plugin.manager'
+import { PluginHandler } from './plugin.handler'
 import { IKondaOptions } from './types'
 import { DependencyData } from './dependency-data'
 import { Logger } from './logger'
@@ -10,12 +10,16 @@ import { KondahServer } from './kondah-server'
 
 export abstract class Kondah {
   private readonly _context: AppContext
-  private readonly _pluginManager: PluginManager
+  private readonly _pluginHandler: PluginHandler
 
   constructor(options: IKondaOptions) {
     const logger = options.logger || new Logger()
     this._context = new AppContext(new KondahServer(logger), energizor, logger)
-    this._pluginManager = new PluginManager(options.plugins, options.config)
+    this._pluginHandler = new PluginHandler(
+      options.plugins,
+      options.config,
+      this._context
+    )
 
     this.initialize()
   }
@@ -24,21 +28,38 @@ export abstract class Kondah {
     return this._context
   }
 
-  protected abstract configureServices(services: Energizor): Promise<void>
-  protected abstract setup(context: AppContext): Promise<void>
+  protected abstract configureServices(
+    services: Energizor
+  ): Promise<void> | void
+  protected abstract setup(context: AppContext): Promise<void> | void
 
+  // TODO: Implement with auto generated hooks
   protected async $beforeInstallPlugins(context: AppContext) {}
+  protected async $afterInstallPlugins(context: AppContext) {}
+  protected async $afterSetupKondah(context: AppContext) {}
 
   private async initialize() {
     this.dirtyHacks()
 
     await this.configureServices(this._context.energizor)
     await this.$beforeInstallPlugins(this._context)
-    await this._pluginManager.install(this._context)
+    await this._pluginHandler.install(this._context)
+    await this.$afterInstallPlugins(this._context)
     await this.setup(this._context)
+    await this.$afterSetupKondah(this._context)
   }
 
   private dirtyHacks() {
+    this._context.server.addGlobalMiddleware((req, res, next) => {
+      // @ts-expect-error because we don't type this
+      if (!req.kondah) {
+        // @ts-expect-error because we don't type this
+        req.kondah = {}
+      }
+
+      next()
+    })
+
     const data = new DependencyData(
       'singleton',
       AppContext.name,

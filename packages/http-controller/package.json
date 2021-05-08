@@ -22,6 +22,7 @@
   },
   "scripts": {
     "tsc": "tsc",
+    "dev": "tsc --w",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
