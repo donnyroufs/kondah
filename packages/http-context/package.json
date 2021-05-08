@@ -29,7 +29,7 @@
     "url": "https://github.com/donnyroufs/konda/issues"
   },
   "dependencies": {
-    "@kondah/core": "^0.0.3",
+    "@kondah/core": "^0.0.4",
     "reflect-metadata": "^0.1.13"
   }
 }
