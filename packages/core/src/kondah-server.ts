@@ -1,12 +1,17 @@
 import express = require('express')
+import { ServerRouter } from './server.router'
 
-import { ILogger, HttpVerb, ServerRunFn, Middleware } from './types'
+import { ILogger, ServerRunFn, Middleware, ErrorMiddlewareFn } from './types'
 
 export class KondahServer {
+  public readonly router: ServerRouter
+
   private _server: express.Application
   private readonly _logger: ILogger
 
   constructor(logger: ILogger) {
+    this.router = new ServerRouter(this)
+
     this._server = express()
     this._logger = logger
   }
@@ -21,6 +26,11 @@ export class KondahServer {
 
   public addMiddleware(path: string, ...middleware: Middleware[]) {
     this._server.use(path, middleware)
+  }
+
+  public handleGlobalExceptions(handler: ErrorMiddlewareFn) {
+    // @ts-ignore
+    this._server.use(handler)
   }
 
   public set<T>(setting: string, val: T): void {
@@ -40,48 +50,12 @@ export class KondahServer {
     this._server.engine(ext, fn)
   }
 
-  public get(path: string, ...handlers: express.RequestHandler[]) {
-    this.registerRoute('get', path, handlers)
-  }
-
-  public post(path: string, ...handlers: express.RequestHandler[]) {
-    this.registerRoute('post', path, handlers)
-  }
-
-  public put(path: string, ...handlers: express.RequestHandler[]) {
-    this.registerRoute('put', path, handlers)
-  }
-
-  public patch(path: string, ...handlers: express.RequestHandler[]) {
-    this.registerRoute('patch', path, handlers)
-  }
-
-  public delete(path: string, ...handlers: express.RequestHandler[]) {
-    this.registerRoute('delete', path, handlers)
-  }
-
-  public head(path: string, ...handlers: express.RequestHandler[]) {
-    this.registerRoute('head', path, handlers)
-  }
-
-  public options(path: string, ...handlers: express.RequestHandler[]) {
-    this.registerRoute('options', path, handlers)
-  }
-
-  public getRawServer() {
-    return this._server as express.Application
-  }
-
   public overrideServerRun(callback: ServerRunFn) {
     this.run = callback
   }
 
-  private registerRoute(
-    verb: HttpVerb,
-    path: string,
-    handlers: express.RequestHandler[]
-  ) {
-    this._server[verb](path, handlers)
+  public getRawServer() {
+    return this._server as express.Application
   }
 
   private onSuccessListen(port: number) {

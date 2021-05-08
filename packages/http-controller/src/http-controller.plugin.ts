@@ -25,7 +25,7 @@ export class HttpControllerPlugin extends KondahPlugin<
       this._routes[prefix] = routes
 
       routes.forEach((route) => {
-        context.server[route.requestMethod](
+        context.server.router[route.requestMethod](
           prefix + route.path,
           ...route.middleware,
           (req) => {
@@ -48,7 +48,7 @@ export class HttpControllerPlugin extends KondahPlugin<
       'view active routes at: http://localhost:5000/development/routes'
     )
 
-    context.server.get('/development/routes', (req, res) => {
+    context.server.router.get('/development/routes', (req, res) => {
       res.json(
         Object.entries(this._routes).map(([k, v]) => ({
           [k]: v.map((route) => `${route.requestMethod} -> ` + route.path),

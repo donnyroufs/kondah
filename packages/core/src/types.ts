@@ -67,3 +67,9 @@ export interface ILogger {
 export type ServerRunFn = (port: number) => void
 
 export type Middleware = express.RequestHandler
+export type ErrorMiddlewareFn = (
+  err: Error,
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => void
