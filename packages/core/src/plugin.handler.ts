@@ -18,10 +18,11 @@ export class PluginHandler {
   public async install(context: AppContext) {
     if (this._plugins.length <= 0) return
 
+    // Might become a problem later on.
+    this.addPluginExtensionsToContext(context)
+
     await this.installPurePlugins(context)
     await this.installNonPurePlugins(context)
-
-    this.addPluginExtensionsToContext(context)
   }
 
   /**
