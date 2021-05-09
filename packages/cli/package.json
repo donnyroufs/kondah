@@ -1,6 +1,6 @@
 {
   "name": "@kondah/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CLI to easily scaffold Kondah projects",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",
