@@ -3,7 +3,9 @@ import * as path from 'path'
 import * as inquirer from 'inquirer'
 
 import { exec } from 'child_process'
+import { Logger } from '@kondah/core'
 
+const logger = new Logger('border')
 export interface IAnswers {
   pckg: 'yarn' | 'npm'
   plugins: string[]
@@ -16,18 +18,20 @@ function getTemplateDir(plugins: string[]) {
     return path.join(__dirname, '../templates/basic')
   }
 
-  // if (plugins.length === 1 && plugins.includes('http-controller')) {
-  //   return path.join(__dirname, '../templates/http-controller')
-  // }
+  if (plugins.length === 1 && plugins.includes('http-controller')) {
+    return path.join(__dirname, '../templates/http-controller')
+  }
 
-  // if (plugins.length === 1 && plugins.includes('http-context')) {
-  //   return path.join(__dirname, '../templates/http-context')
-  // }
+  if (plugins.length === 1 && plugins.includes('http-context')) {
+    return path.join(__dirname, '../templates/http-context')
+  }
 
   return path.join(__dirname, '../templates/controller-context')
 }
 
 export function cli() {
+  logger.info('Create a project\n', 'KONDAH')
+
   inquirer
     .prompt([
       {
@@ -35,13 +39,13 @@ export function cli() {
         type: 'list',
         message: 'What package manager to use?',
         choices: ['yarn', 'npm'],
-        default: 'npm',
+        default: 'yarn',
       },
       {
         type: 'checkbox',
         name: 'plugins',
         message: 'What plugins do you want to be included?',
-        choices: ['http-controller (comes with http-context)'],
+        choices: ['http-controller', 'http-context'],
       },
       {
         type: 'confirm',
@@ -57,13 +61,24 @@ export function cli() {
     ])
     .then(
       ({ plugins, installHere, pckg, installDir: _installDir }: IAnswers) => {
-        console.log('scaffolding project...')
+        logger.info('Generating files...', 'KONDAH')
+
         const templateDir = getTemplateDir(plugins)
         const installDir = !installHere
           ? process.cwd() + '/' + _installDir
           : process.cwd()
 
+        setTimeout(
+          () => logger.info('Copying generated files...', 'KONDAH'),
+          4000
+        )
+
         fse.copy(templateDir, installDir).then(() => {
+          setTimeout(
+            () => logger.info('Installing packages...', 'KONDAH'),
+            6000
+          )
+
           if (pckg === 'npm') {
             return exec(`cd ${installDir} && npm install`)
           }

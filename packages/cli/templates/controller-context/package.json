@@ -1,8 +1,8 @@
 {
-  "name": "server",
+  "name": "kondah-app",
   "version": "1.0.0",
   "main": "bootstrap.ts",
-  "author": "donnyroufs",
+  "author": "kondah",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --no-notify src/bootstrap.ts",
     "test": "jest --collect-coverage",
@@ -32,8 +32,8 @@
     ]
   },
   "dependencies": {
-    "@kondah/core": "^0.0.5",
-    "@kondah/http-context": "^0.0.2",
-    "@kondah/http-controller": "^0.0.5"
+    "@kondah/core": "latest",
+    "@kondah/http-context": "latest",
+    "@kondah/http-controller": "latest"
   }
 }

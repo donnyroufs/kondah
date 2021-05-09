@@ -32,6 +32,7 @@
     ]
   },
   "dependencies": {
-    "@kondah/core": "latest"
+    "@kondah/core": "latest",
+    "@kondah/http-controller": "latest"
   }
 }

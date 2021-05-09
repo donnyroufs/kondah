@@ -1,21 +1,13 @@
 import { Logger } from '@kondah/core'
-import { HttpControllerPlugin } from '@kondah/http-controller'
 import { HttpContextPlugin } from '@kondah/http-context'
-
-import path from 'path'
 
 import { Application } from './application'
 import { WelcomePlugin } from './plugins/welcome.plugin'
 
 new Application({
   logger: new Logger('border'),
-  plugins: [WelcomePlugin, HttpControllerPlugin, HttpContextPlugin],
-  config: {
-    'http-controller': {
-      controllersPath: [path.join(__dirname, '../src/controllers')],
-      catchExceptions: true,
-    },
-  },
+  plugins: [WelcomePlugin, HttpContextPlugin],
+  config: {},
 })
 
 /*** Kondah is currently in pre-alpha! ***/
