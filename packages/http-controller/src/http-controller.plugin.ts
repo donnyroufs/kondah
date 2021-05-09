@@ -1,4 +1,10 @@
-import { IAppConfig, AppContext, MetaTypes, KondahPlugin } from '@kondah/core'
+import {
+  IAppConfig,
+  AppContext,
+  MetaTypes,
+  KondahPlugin,
+  AddToContext,
+} from '@kondah/core'
 import { HttpContextPlugin } from '@kondah/http-context'
 import { Controller, MetadataStore } from './metadata.store'
 import { RouteDefinition, IControllerOptions } from './types'
@@ -12,10 +18,28 @@ export class HttpControllerPlugin extends KondahPlugin<
   private _routes: Record<string, RouteDefinition[]> = {}
 
   protected async setup(context: AppContext) {
+    if (this.config.serveRoutes) {
+      this.serveRoutes(context)
+    }
+
+    return undefined
+  }
+
+  // TODO: Add glob pattern
+  @AddToContext()
+  async addControllers() {
+    for (const path of this.config.controllersPath) {
+      await import(path)
+    }
+
+    this.registerControllers()
+  }
+
+  private registerControllers() {
     MetadataStore.controllers.forEach((controller) => {
       const resolvedDeps = this.hasInjectables(controller)
         ? Reflect.get(controller, MetaTypes.injectables).map((dep) => {
-            return context.energizor.get(dep)
+            return this.appContext.energizor.get(dep)
           })
         : []
 
@@ -25,7 +49,7 @@ export class HttpControllerPlugin extends KondahPlugin<
       this._routes[prefix] = routes
 
       routes.forEach((route) => {
-        context.server.router[route.requestMethod](
+        this.appContext.server.router[route.requestMethod](
           prefix + route.path,
           [
             ...route.middleware,
@@ -41,12 +65,6 @@ export class HttpControllerPlugin extends KondahPlugin<
         )
       })
     })
-
-    if (this.config.serveRoutes) {
-      this.serveRoutes(context)
-    }
-
-    return undefined
   }
 
   private shouldAddGlobalMiddleware(

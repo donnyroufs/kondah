@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "publish": "lerna run tsc && lerna publish",
-    "dev": "lerna run dev",
+    "dev": "lerna run --parallel dev",
     "prepare": "husky install"
   },
   "devDependencies": {
