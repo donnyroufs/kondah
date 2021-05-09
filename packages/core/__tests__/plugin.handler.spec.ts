@@ -33,6 +33,18 @@ describe('plugin handler', () => {
     expect(plugins).toHaveLength(3)
   })
 
+  it('should include the dependencies', () => {
+    const handler = new PluginHandler([PluginC], {}, undefined!)
+    const plugins = handler.getPlugins()
+
+    expect(plugins).toHaveLength(3)
+    expect(plugins).toStrictEqual([
+      pluginInstances[2],
+      pluginInstances[0],
+      pluginInstances[1],
+    ])
+  })
+
   it.skip('should install pure plugins before installing non-pure plugins', () => {})
 
   it('should add hello to the app context', async () => {

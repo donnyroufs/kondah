@@ -25,7 +25,7 @@ export class PluginHandler {
   }
 
   /**
-   * returns Really only used for testing
+   * returns current plugins, mainly used for testing
    */
   public getPlugins() {
     return this._plugins
@@ -84,7 +84,7 @@ export class PluginHandlerUtils {
     config: IAppConfig,
     appContext: AppContext
   ): KondahPlugin[] {
-    return plugins
+    return this.getAllPluginsFromConstructor(plugins)
       .filter((plug, index, self) => self.indexOf(plug) === index)
       .map((plug) => new plug(config, appContext))
   }
