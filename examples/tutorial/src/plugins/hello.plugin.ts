@@ -3,7 +3,7 @@ import { AddToContext, AppContext, KondahPlugin } from '@kondah/core'
 export class HelloPlugin extends KondahPlugin {
   public name = 'hello-plugin'
 
-  async setup(ctx: AppContext) {}
+  async setup() {}
 
   @AddToContext()
   hi() {
