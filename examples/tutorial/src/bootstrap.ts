@@ -1,17 +1,21 @@
-import 'dotenv/config'
+import path from 'path'
 
-import { ExpressAdapter } from '@kondah/express-adapter'
+import { Logger } from '@kondah/core'
 import { HttpControllerPlugin } from '@kondah/http-controller'
 
 import { Application } from './application'
-import { HelloPlugin } from './plugins/hello.plugin'
+import { WelcomePlugin } from './plugins/welcome.plugin'
 
 new Application({
-  server: new ExpressAdapter(),
-  plugins: [HttpControllerPlugin, HelloPlugin],
+  logger: new Logger('border'),
+  plugins: [HttpControllerPlugin, WelcomePlugin],
   config: {
     'http-controller': {
-      serveRoutes: true,
+      controllersPath: [path.join(__dirname, '../src/controllers')],
+      catchExceptions: true,
+    },
+    'welcome-plugin': {
+      amount: 5,
     },
   },
 })

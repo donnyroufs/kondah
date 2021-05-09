@@ -1,11 +1,9 @@
-import { AddToContext, AppContext, Plugin } from '@kondah/core'
+import { AddToContext, AppContext, KondahPlugin } from '@kondah/core'
 
-export class HelloPlugin extends Plugin {
+export class HelloPlugin extends KondahPlugin {
   public name = 'hello-plugin'
 
-  async setup(ctx: AppContext) {
-    console.log('installing', this.name)
-  }
+  async setup(ctx: AppContext) {}
 
   @AddToContext()
   hi() {
