@@ -17,13 +17,7 @@ export class HttpControllerPlugin extends KondahPlugin<
 
   private _routes: Record<string, RouteDefinition[]> = {}
 
-  protected async setup(context: AppContext) {
-    if (this.config.serveRoutes) {
-      this.serveRoutes(context)
-    }
-
-    return undefined
-  }
+  protected async setup(context: AppContext) {}
 
   // TODO: Add glob pattern
   @AddToContext()
@@ -58,7 +52,16 @@ export class HttpControllerPlugin extends KondahPlugin<
               ? middlewareOptions.middleware
               : []),
           ],
-          (req) => {
+          async (req, res, next) => {
+            if (this.config.catchExceptions) {
+              try {
+                const httpContext = req.kondah.httpContext
+                return await instance[route.methodName](httpContext)
+              } catch (err) {
+                return next(err)
+              }
+            }
+
             const httpContext = req.kondah.httpContext
             instance[route.methodName](httpContext)
           }
@@ -84,20 +87,6 @@ export class HttpControllerPlugin extends KondahPlugin<
     }
 
     return true
-  }
-
-  private serveRoutes(context: AppContext) {
-    console.log(
-      'view active routes at: http://localhost:5000/development/routes'
-    )
-
-    context.server.router.get('/development/routes', (req, res) => {
-      res.json(
-        Object.entries(this._routes).map(([k, v]) => ({
-          [k]: v.map((route) => `${route.requestMethod} -> ` + route.path),
-        }))
-      )
-    })
   }
 
   private hasInjectables(controller: Controller) {
