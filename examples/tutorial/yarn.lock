@@ -482,31 +482,31 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@kondah/core@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@kondah/core/-/core-0.0.6.tgz#4d70ef0d78ded01bd7943b2f7b2a4415662365f3"
-  integrity sha512-5ffw00/GIrO6a0fiiy9uvodndqNNfRIbXD4h78EkTYaNzjdl9Fwrf6EKXAii8Uj04k0HI6ToBbEfuFPzzJxuMQ==
+"@kondah/core@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@kondah/core/-/core-0.0.7.tgz#15e66e2aa60b1bd0d121b90c0262b23fde1b2c02"
+  integrity sha512-KAEZ/S2ufc9NeD1VYD6FWjfDucDm5WhggKptXCq4nqDhWw3Dno8qjI+Ybf1AyIDRqDgYqMhlkM0LpvDVJBEEvg==
   dependencies:
     "@types/express" "^4.17.11"
     chalk "^4.1.1"
     express "^4.17.1"
     reflect-metadata "^0.1.13"
 
-"@kondah/http-context@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@kondah/http-context/-/http-context-0.0.3.tgz#15d1ea49bfd41c6a906a7d499fc01de649110914"
-  integrity sha512-Y73oS7p118DbN3yBJITg8VRq59TiXqOSZP46C+H7DjURYuvp4QsXiBUPNboP8WMeW4UYRJm5q9R6RUAJsnO2RQ==
+"@kondah/http-context@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@kondah/http-context/-/http-context-0.0.4.tgz#79d4946315375739c25231a018a6712355b8a93a"
+  integrity sha512-HsAgIm+MGYsOoEGgPgt5Bw4KB9RQL6hNZkD/2+iXD5gWvVjCHKWx3Kn5oG3NKwLf4iG0eH1upDhChD3P5pBOfQ==
   dependencies:
-    "@kondah/core" "^0.0.6"
+    "@kondah/core" "^0.0.7"
     reflect-metadata "^0.1.13"
 
-"@kondah/http-controller@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@kondah/http-controller/-/http-controller-0.0.6.tgz#843718878ede9599029ec419ec1aaa3061a498b7"
-  integrity sha512-tYY7EhCfaXBCZ7RNDRoVxj4YhzzG+7So1/GzAauRunUcQ2hU2YBV0iL81B4/x5CeBsI0eRalcByFmvlkGRXn9g==
+"@kondah/http-controller@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@kondah/http-controller/-/http-controller-0.0.7.tgz#d4ee96a86e567a3b0d791e709b69b8908b8361cc"
+  integrity sha512-X0l1di4MbD2zSgCkVZdS4Tb0EPHdP/K78gibFE7Rsj4kkAXHGxGSKzez2uUi3pqcM1G4TL+deM0Cl54SdVGZmA==
   dependencies:
-    "@kondah/core" "^0.0.6"
-    "@kondah/http-context" "^0.0.3"
+    "@kondah/core" "^0.0.7"
+    "@kondah/http-context" "^0.0.4"
     reflect-metadata "^0.1.13"
 
 "@sinonjs/commons@^1.7.0":
@@ -3343,10 +3343,10 @@ prelude-ls@~1.1.2:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
 
-prettier@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
-  integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
+prettier@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.0.tgz#b6a5bf1284026ae640f17f7ff5658a7567fc0d18"
+  integrity sha512-kXtO4s0Lz/DW/IJ9QdWhAf7/NmPWQXkFr/r/WkR3vyI+0v8amTDxiaQSLzs8NBlytfLWX/7uQUMIW677yLKl4w==
 
 pretty-format@^26.0.0, pretty-format@^26.6.2:
   version "26.6.2"
