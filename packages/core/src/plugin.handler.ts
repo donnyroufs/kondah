@@ -76,6 +76,7 @@ export class PluginHandlerUtils {
       new curr(undefined!, undefined!).dependencies.forEach((dep) => {
         if (new dep(undefined!, undefined!).dependencies.length > 0)
           throw new ComposedPluginHasDepsException()
+
         acc.push(dep)
       })
 

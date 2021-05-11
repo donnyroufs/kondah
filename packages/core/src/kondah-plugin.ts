@@ -17,10 +17,10 @@ export abstract class KondahPlugin<T = any> {
   ) {}
 
   public async install() {
-    await this.setup(this.appContext)
+    await this.setup()
   }
 
-  protected abstract setup(context: AppContext): Promise<void> | void
+  protected abstract setup(): Promise<void> | void
 
   protected get config(): T {
     return this._config[this.name]

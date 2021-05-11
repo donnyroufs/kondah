@@ -17,7 +17,7 @@ export class HttpControllerPlugin extends KondahPlugin<
 
   private _routes: Record<string, RouteDefinition[]> = {}
 
-  protected async setup(context: AppContext) {}
+  protected async setup() {}
 
   // TODO: Add glob pattern
   @AddToContext()
