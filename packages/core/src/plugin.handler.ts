@@ -2,6 +2,7 @@ import { KondahPlugin } from './kondah-plugin'
 import { AppContext } from './contexts'
 import { IAppConfig, NewablePlugin } from './types'
 import { MetaTypes } from './metadata.types'
+import { ComposedPluginHasDepsException } from './exceptions/composed-plugin-has-deps.exception'
 
 export class PluginHandler {
   private readonly _plugins: KondahPlugin[] = []
@@ -73,6 +74,8 @@ export class PluginHandlerUtils {
       // no need to pass depenendencies here, however it would be better prac
       // if we could make this a static prop
       new curr(undefined!, undefined!).dependencies.forEach((dep) => {
+        if (new dep(undefined!, undefined!).dependencies.length > 0)
+          throw new ComposedPluginHasDepsException()
         acc.push(dep)
       })
 

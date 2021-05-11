@@ -43,3 +43,10 @@ export class PluginWithContextExtensionsB extends KondahPlugin {
     return 'hello'
   }
 }
+
+export class PluginWithComposedPluginAsDep extends KondahPlugin {
+  public name = 'plugin-with-composed-plugin-as-dep'
+  public dependencies = [PluginC]
+
+  protected async setup(context: AppContext) {}
+}

@@ -7,6 +7,7 @@ import {
   PurePluginA,
   PurePluginB,
   PluginWithContextExtensions,
+  PluginWithComposedPluginAsDep,
 } from '../utils/plugin.handler.utils'
 
 const wait = async () => new Promise((res) => setTimeout(res, 1000))
@@ -22,6 +23,10 @@ describe('plugin handler', () => {
   it('should be defined', () => {
     const handler = new PluginHandler([], {}, undefined!)
     expect(handler).toBeDefined()
+  })
+
+  it('should throw an exception when a plugin tries to add composed plugins as a dependency', () => {
+    expect(() => {new PluginHandler([PluginWithComposedPluginAsDep], {}, undefined!)}).toThrow()
   })
 
   it('should have a list of unique plugins', () => {

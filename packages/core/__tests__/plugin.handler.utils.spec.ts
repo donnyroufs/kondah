@@ -1,6 +1,7 @@
 import { PluginHandlerUtils } from '../src/plugin.handler'
 import {
   PluginC,
+  PluginWithComposedPluginAsDep,
   PurePluginA,
   PurePluginB,
 } from '../utils/plugin.handler.utils'
@@ -12,6 +13,12 @@ describe('plugin handler utils', () => {
     const utils = new PluginHandlerUtils()
 
     expect(utils).toBeDefined()
+  })
+
+  it('should throw an exception when a composed plugin has non pure dependencies', () => {
+    expect(() => {
+      utils.getAllPluginsFromConstructor([PluginWithComposedPluginAsDep])
+    }).toThrow()
   })
 
   it('should take all the plugins and put them in an array', () => {
