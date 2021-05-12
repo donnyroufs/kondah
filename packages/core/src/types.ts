@@ -20,6 +20,7 @@ export type NewablePlugin = new (
 ) => KondahPlugin
 
 export interface IKondaOptions {
+  mode?: 'boot' | 'no-boot'
   logger?: ILogger
   plugins?: NewablePlugin[]
   config: IAppConfig

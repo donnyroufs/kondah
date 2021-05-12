@@ -21,7 +21,9 @@ export abstract class Kondah {
       this._context
     )
 
-    this.initialize()
+    if (options.mode === 'boot' || !options.mode) {
+      this.boot()
+    }
   }
 
   public getContext() {
@@ -38,7 +40,10 @@ export abstract class Kondah {
   protected async $afterInstallPlugins(context: AppContext) {}
   protected async $afterSetupKondah(context: AppContext) {}
 
-  private async initialize() {
+  /**
+   * Used to run the application
+   */
+  async boot() {
     this.dirtyHacks()
 
     await this.configureServices(this._context.energizor)
