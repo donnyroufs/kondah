@@ -43,7 +43,9 @@ export class PluginHandler {
   private async installNonPurePlugins(context: AppContext) {
     for (const plug of this._utils.getNonPurePlugins(this._plugins)) {
       context.logger.success(
-        `Installed ${plug.name} with ${plug.dependencies?.length} dependency`,
+        `Installed ${plug.name} with ${
+          plug.dependencies?.length
+        } ${this._utils.pluralize(plug.dependencies?.length)}`,
         'PLUGIN'
       )
       await plug.install()
@@ -100,5 +102,13 @@ export class PluginHandlerUtils {
 
   public getPurePlugins(plugins: KondahPlugin[]) {
     return plugins.filter((plug) => plug.dependencies?.length <= 0)
+  }
+
+  public pluralize(amount: number) {
+    if (amount > 1) {
+      return 'dependencies'
+    }
+
+    return 'dependency'
   }
 }

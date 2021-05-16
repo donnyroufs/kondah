@@ -82,4 +82,14 @@ describe('plugin handler utils', () => {
 
     expect(purePlugins).toStrictEqual([new PluginC({}, undefined!)])
   })
+
+  it('should not pluralize when its less or equal to 1', () => {
+    expect(utils.pluralize(0)).toBe('dependency')
+    expect(utils.pluralize(1)).toBe('dependency')
+  })
+
+  it('should pluralize when it has more than 1', () => {
+    expect(utils.pluralize(2)).toBe('dependencies')
+    expect(utils.pluralize(5)).toBe('dependencies')
+  })
 })
