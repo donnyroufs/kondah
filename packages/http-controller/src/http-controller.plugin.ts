@@ -44,7 +44,6 @@ export class HttpControllerPlugin extends KondahPlugin<
 
       routes.forEach((route) => {
         const endpoint = this.removeDoubleSlash(apiPrefix + prefix + route.path)
-        console.log(endpoint)
         this.appContext.server.router[route.requestMethod](
           endpoint,
           [
