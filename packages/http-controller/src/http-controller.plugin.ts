@@ -21,15 +21,15 @@ export class HttpControllerPlugin extends KondahPlugin<
 
   // TODO: Add glob pattern
   @AddToContext()
-  async addControllers() {
+  async addControllers(apiPrefix = '') {
     for (const path of this.config.controllersPath) {
       await import(path)
     }
 
-    this.registerControllers()
+    this.registerControllers(apiPrefix)
   }
 
-  private registerControllers() {
+  private registerControllers(apiPrefix: string) {
     MetadataStore.controllers.forEach((controller) => {
       const resolvedDeps = this.hasInjectables(controller)
         ? Reflect.get(controller, MetaTypes.injectables).map((dep) => {
@@ -43,8 +43,10 @@ export class HttpControllerPlugin extends KondahPlugin<
       this._routes[prefix] = routes
 
       routes.forEach((route) => {
+        const endpoint = this.removeDoubleSlash(apiPrefix + prefix + route.path)
+        console.log(endpoint)
         this.appContext.server.router[route.requestMethod](
-          prefix + route.path,
+          endpoint,
           [
             ...route.middleware,
             ...(middlewareOptions &&
@@ -103,5 +105,9 @@ export class HttpControllerPlugin extends KondahPlugin<
     const routes: RouteDefinition[] = Reflect.getMetadata('routes', controller)
 
     return [prefix, routes, globalMiddleware]
+  }
+
+  private removeDoubleSlash(endpoint: string) {
+    return endpoint.replace(/\/\//g, '/')
   }
 }

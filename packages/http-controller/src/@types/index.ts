@@ -1,8 +1,6 @@
-import { Controller } from '../metadata.store'
-
 declare module '@kondah/core' {
   interface AppContext {
-    addControllers()
+    addControllers(apiPrefix?: string)
   }
   interface IAppConfig {
     'http-controller': {
