@@ -39,9 +39,9 @@ export class Energizor {
 
     try {
       if (isInversionOfControl && options?.asClass) {
-        this.addDependency<T>(options.asClass, _scope, token)
+        const isRebind = this.addDependency<T>(options.asClass, _scope, token)
         return this._appContext.logger.success(
-          `${parsedToken} has been registered`,
+          `${parsedToken} has been ${isRebind ? 'rebound' : 'registered'}`,
           'ENERGIZOR'
         )
       }
@@ -53,10 +53,16 @@ export class Energizor {
         )
       }
 
-      this.addDependency<T>(dep as Dependency<T>, _scope, token)
+      const isRebind = this.addDependency<T>(
+        dep as Dependency<T>,
+        _scope,
+        token
+      )
 
       return this._appContext.logger.success(
-        `${(dep as Dependency<T>).name} has been registered`,
+        `${(dep as Dependency<T>).name} has been ${
+          isRebind ? 'rebound' : 'registered'
+        }`,
         'ENERGIZOR'
       )
     } catch (err) {
@@ -94,6 +100,17 @@ export class Energizor {
     return this._strategies[dep.scope].execute(dep, resolvedDeps) as T
   }
 
+  /**
+   * requires options inorder to rebind
+   */
+  public rebind<T>(
+    identifier: Token | Dependency<T>,
+    options: IEnergizorRegisterOptions<T>
+  ) {
+    const _identifier = this.getIdentifier(identifier)
+    return this.register(_identifier, options)
+  }
+
   private resolveDependencies(dep: DependencyData<unknown>) {
     if (!dep.injectables || dep.injectables.length <= 0) return []
 
@@ -110,10 +127,14 @@ export class Energizor {
       dep
     )
 
+    const isRebind = this._dependencies.has(token)
+
     this._dependencies.set(
       token,
       new DependencyData<T>(scope, dep.name, dep, injectables)
     )
+
+    return isRebind
   }
 
   private getIdentifier(identifier: Token | Dependency) {

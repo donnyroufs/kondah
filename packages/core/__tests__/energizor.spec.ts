@@ -12,6 +12,7 @@ import {
   ChildTwoService,
   IocWithClassType,
   PureService,
+  ModifiedChildService,
 } from '../utils/energizor.utils'
 
 const appContext = new AppContext(undefined!, undefined!, new Logger())
@@ -208,6 +209,33 @@ describe('energizor', () => {
       const dependency = energizor.get(IocWithClassType)
 
       expect(dependency).toBeDefined()
+    })
+  })
+
+  describe('when rebinding a service', () => {
+    it('should keep its original token', () => {
+      const value = energizor.rebind(ChildService, {
+        asClass: ModifiedChildService,
+      })
+
+      expect(energizor.get(ChildService)).toBeDefined()
+      expect(value).toContain('ChildService')
+    })
+
+    it('should rebind by the given token', () => {
+      energizor.rebind(ChildService, {
+        asClass: ModifiedChildService,
+      })
+
+      expect(energizor.get(ChildService).woef()).toBe('doef')
+    })
+
+    it('should log rebound when rebinding', () => {
+      const value = energizor.rebind(ChildService, {
+        asClass: ModifiedChildService,
+      })
+
+      expect(value).toBe('ChildService has been rebound')
     })
   })
 })

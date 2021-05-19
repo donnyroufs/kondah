@@ -36,6 +36,22 @@ export class ChildService {
     public readonly innerChild: InnerChildService,
     @Inject(types.innerChild) public readonly innerIocChild: any
   ) {}
+
+  woef() {
+    return 'woef'
+  }
+}
+
+@Injectable()
+export class ModifiedChildService {
+  constructor(
+    public readonly innerChild: InnerChildService,
+    @Inject(types.innerChild) public readonly innerIocChild: any
+  ) {}
+
+  woef() {
+    return 'doef'
+  }
 }
 
 @Injectable()
