@@ -4,6 +4,7 @@ import {
   MetaTypes,
   KondahPlugin,
   AddToContext,
+  Middleware,
 } from '@kondah/core'
 import { HttpContextPlugin } from '@kondah/http-context'
 import { Controller, MetadataStore } from './metadata.store'
@@ -44,13 +45,18 @@ export class HttpControllerPlugin extends KondahPlugin<
 
       routes.forEach((route) => {
         const endpoint = this.removeDoubleSlash(apiPrefix + prefix + route.path)
+        // Order could be an issue here with global middleware
         this.appContext.server.router[route.requestMethod](
           endpoint,
           [
-            ...route.middleware,
+            ...route.middleware.map((m) =>
+              this.config.catchExceptions ? this.wrapMiddleware(m) : m
+            ),
             ...(middlewareOptions &&
             this.shouldAddGlobalMiddleware(route.methodName, middlewareOptions)
-              ? middlewareOptions.middleware
+              ? middlewareOptions.middleware.map((m) =>
+                  this.config.catchExceptions ? this.wrapMiddleware(m) : m
+                )
               : []),
           ],
           async (req, res, next) => {
@@ -69,6 +75,17 @@ export class HttpControllerPlugin extends KondahPlugin<
         )
       })
     })
+  }
+
+  private wrapMiddleware(middleware: Middleware) {
+    return (req, res, next) => {
+      try {
+        // TODO: Pass httpContext here
+        middleware(req, res, next)
+      } catch (err) {
+        return next(err)
+      }
+    }
   }
 
   private shouldAddGlobalMiddleware(
