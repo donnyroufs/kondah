@@ -78,10 +78,10 @@ export class HttpControllerPlugin extends KondahPlugin<
   }
 
   private wrapMiddleware(middleware: Middleware) {
-    return (req, res, next) => {
+    return async (req, res, next) => {
       try {
         // TODO: Pass httpContext here
-        middleware(req, res, next)
+        await middleware(req, res, next)
       } catch (err) {
         return next(err)
       }
