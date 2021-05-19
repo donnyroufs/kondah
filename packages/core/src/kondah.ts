@@ -14,7 +14,11 @@ export abstract class Kondah {
 
   constructor(options: IKondaOptions) {
     const logger = options.logger || new Logger()
-    this._context = new AppContext(new KondahServer(logger), energizor, logger)
+    this._context = new AppContext(
+      new KondahServer(logger, options.disableServer || false),
+      energizor,
+      logger
+    )
     this._pluginHandler = new PluginHandler(
       options.plugins,
       options.config,

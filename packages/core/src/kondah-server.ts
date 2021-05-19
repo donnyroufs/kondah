@@ -8,15 +8,18 @@ export class KondahServer {
 
   private _server: express.Application
   private readonly _logger: ILogger
+  private readonly _disableServer: boolean
 
-  constructor(logger: ILogger) {
+  constructor(logger: ILogger, disableServer: boolean) {
     this.router = new ServerRouter(this)
 
+    this._disableServer = disableServer
     this._server = express()
     this._logger = logger
   }
 
   public run(port: number, onSuccess?: () => void) {
+    if (this._disableServer) return
     this._server.listen(port, () => this.onSuccessListen(port))
   }
 

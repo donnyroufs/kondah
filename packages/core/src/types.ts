@@ -24,6 +24,7 @@ export interface IKondaOptions {
   logger?: ILogger
   plugins?: NewablePlugin[]
   config: IAppConfig
+  disableServer?: boolean
 }
 
 export type Constructor<T> = new (...args: any[]) => T
