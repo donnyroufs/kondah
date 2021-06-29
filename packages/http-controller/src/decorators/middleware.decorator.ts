@@ -1,6 +1,8 @@
-import { RouteDefinition } from '../types'
+import { Constr, IMiddleware, RouteDefinition } from '../types'
 
-export function Middleware(...middleware: any[]): MethodDecorator {
+export function Middleware(
+  ...middleware: Array<Constr<IMiddleware>>
+): MethodDecorator {
   return function (target, propertyKey) {
     if (!Reflect.hasMetadata('routes', target.constructor)) {
       Reflect.defineMetadata('routes', [], target.constructor)

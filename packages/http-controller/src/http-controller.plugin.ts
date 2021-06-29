@@ -1,14 +1,7 @@
-import {
-  IAppConfig,
-  AppContext,
-  MetaTypes,
-  KondahPlugin,
-  AddToContext,
-  Middleware,
-} from '@kondah/core'
+import { IAppConfig, MetaTypes, KondahPlugin, AddToContext } from '@kondah/core'
 import { HttpContextPlugin } from '@kondah/http-context'
 import { Controller, MetadataStore } from './metadata.store'
-import { RouteDefinition, IControllerOptions } from './types'
+import { RouteDefinition, IControllerOptions, IMiddleware } from './types'
 
 export class HttpControllerPlugin extends KondahPlugin<
   IAppConfig['http-controller']
@@ -41,15 +34,36 @@ export class HttpControllerPlugin extends KondahPlugin<
       const instance = new controller(...resolvedDeps) as any
       const [prefix, routes, middlewareOptions] = this.getMetaData(controller)
 
+      middlewareOptions.middleware = middlewareOptions.middleware.map(
+        (middleware) => {
+          const deps = Reflect.get(middleware, MetaTypes.injectables).map(
+            (dep) => this.appContext.energizor.get(dep)
+          )
+          return new middleware(...deps)
+        }
+      )
+
       this._routes[prefix] = routes
 
       routes.forEach((route) => {
+        let middlewares: any[] = []
+
         const endpoint = this.removeDoubleSlash(apiPrefix + prefix + route.path)
+
+        if (route.middleware.length > 0) {
+          middlewares = route.middleware.map((middleware) => {
+            const deps = Reflect.get(middleware, MetaTypes.injectables).map(
+              (dep) => this.appContext.energizor.get(dep)
+            )
+            return new middleware(...deps)
+          })
+        }
+
         // Order could be an issue here with global middleware
         this.appContext.server.router[route.requestMethod](
           endpoint,
           [
-            ...route.middleware.map((m) =>
+            ...middlewares.map((m) =>
               this.config.catchExceptions ? this.wrapMiddleware(m) : m
             ),
             ...(middlewareOptions &&
@@ -77,11 +91,14 @@ export class HttpControllerPlugin extends KondahPlugin<
     })
   }
 
-  private wrapMiddleware(middleware: Middleware) {
+  private wrapMiddleware(middleware: IMiddleware) {
     return async (req, res, next) => {
       try {
         // TODO: Pass httpContext here
-        await middleware(req, res, next)
+        const httpContext = req.kondah.httpContext
+        const _next = await middleware.execute(httpContext)
+
+        if (_next) next()
       } catch (err) {
         return next(err)
       }
