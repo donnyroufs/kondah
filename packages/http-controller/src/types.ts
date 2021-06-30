@@ -1,11 +1,11 @@
-import { HttpVerb, Middleware } from '@kondah/core'
+import { Dependency, HttpVerb, Middleware } from '@kondah/core'
 import { HttpContext } from '@kondah/http-context'
 
 export interface RouteDefinition {
   path: string
   requestMethod: HttpVerb
   methodName: string
-  middleware?: Array<Constr<IMiddleware>>
+  middleware: MiddlewareType[]
 }
 
 export interface IControllerOptions {
@@ -19,3 +19,10 @@ export interface IMiddleware<T extends HttpContext = HttpContext> {
 }
 
 export type Constr<T> = new (...args: any[]) => T
+export type Dependencies = Array<Dependency<unknown>>
+
+export interface IHandler<T> {
+  createInstanceWithDeps(constr: Constr<T>): T
+}
+
+export type MiddlewareType = Constr<IMiddleware> | IMiddleware

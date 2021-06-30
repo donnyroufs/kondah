@@ -1,8 +1,6 @@
-import { Constr, IMiddleware, RouteDefinition } from '../types'
+import { MiddlewareType, RouteDefinition } from '../types'
 
-export function Middleware(
-  ...middleware: Array<Constr<IMiddleware>>
-): MethodDecorator {
+export function Middleware(middleware: MiddlewareType[]): MethodDecorator {
   return function (target, propertyKey) {
     if (!Reflect.hasMetadata('routes', target.constructor)) {
       Reflect.defineMetadata('routes', [], target.constructor)
@@ -21,7 +19,7 @@ export function Middleware(
 
     if (!route) {
       // @ts-expect-error this prevents issues with the order of decorators
-      routes.push({ middleware, methodName: propertyKey })
+      routes.push({ middleware: middleware, methodName: propertyKey })
     }
 
     Reflect.defineMetadata('routes', routes, target.constructor)

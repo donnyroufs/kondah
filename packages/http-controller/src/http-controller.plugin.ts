@@ -1,7 +1,9 @@
-import { IAppConfig, MetaTypes, KondahPlugin, AddToContext } from '@kondah/core'
+import { IAppConfig, KondahPlugin, AddToContext } from '@kondah/core'
 import { HttpContextPlugin } from '@kondah/http-context'
-import { Controller, MetadataStore } from './metadata.store'
-import { RouteDefinition, IControllerOptions, IMiddleware } from './types'
+import { ControllerHandler } from './controller.handler'
+import { MetadataStore } from './metadata.store'
+import { MiddlewareHandler } from './middleware.handler'
+import { RouteDefinition } from './types'
 
 export class HttpControllerPlugin extends KondahPlugin<
   IAppConfig['http-controller']
@@ -10,8 +12,20 @@ export class HttpControllerPlugin extends KondahPlugin<
   public dependencies = [HttpContextPlugin]
 
   private _routes: Record<string, RouteDefinition[]> = {}
+  private _controllerHandler!: ControllerHandler
+  private _middlewareHandler!: MiddlewareHandler
 
-  protected async setup() {}
+  protected async setup() {
+    this._controllerHandler = new ControllerHandler(
+      this.appContext.energizor,
+      this.config.catchExceptions
+    )
+
+    this._middlewareHandler = new MiddlewareHandler(
+      this.appContext.energizor,
+      this.config.catchExceptions
+    )
+  }
 
   // TODO: Add glob pattern
   @AddToContext()
@@ -25,122 +39,49 @@ export class HttpControllerPlugin extends KondahPlugin<
 
   private registerControllers(apiPrefix: string) {
     MetadataStore.controllers.forEach((controller) => {
-      const resolvedDeps = this.hasInjectables(controller)
-        ? Reflect.get(controller, MetaTypes.injectables).map((dep) => {
-            return this.appContext.energizor.get(dep)
-          })
-        : []
+      const metadata = this._controllerHandler.getMetaData(controller)
+      const instance =
+        this._controllerHandler.createInstanceWithDeps(controller)
 
-      const instance = new controller(...resolvedDeps) as any
-      const [prefix, routes, middlewareOptions] = this.getMetaData(controller)
+      this.registerRouteInformation(metadata.prefix, metadata.routes)
 
-      middlewareOptions.middleware = middlewareOptions.middleware.map(
-        (middleware) => {
-          const deps = Reflect.get(middleware, MetaTypes.injectables).map(
-            (dep) => this.appContext.energizor.get(dep)
+      metadata.routes.forEach((route) => {
+        const endpoint = this.getSerializedEndpoint(
+          apiPrefix + metadata.prefix + route.path
+        )
+        const globalMiddlewares =
+          this._middlewareHandler.createGlobalMiddleware(
+            metadata.options?.middleware,
+            route.methodName,
+            metadata.options
           )
-          return new middleware(...deps)
-        }
-      )
 
-      this._routes[prefix] = routes
+        const routeMiddlewares = this._middlewareHandler.createRouteMiddleware(
+          route.middleware
+        )
 
-      routes.forEach((route) => {
-        let middlewares: any[] = []
+        const routeHandler = this._controllerHandler.createRouteHandler(
+          instance,
+          route.methodName
+        )
 
-        const endpoint = this.removeDoubleSlash(apiPrefix + prefix + route.path)
-
-        if (route.middleware.length > 0) {
-          middlewares = route.middleware.map((middleware) => {
-            const deps = Reflect.get(middleware, MetaTypes.injectables).map(
-              (dep) => this.appContext.energizor.get(dep)
-            )
-            return new middleware(...deps)
-          })
-        }
-
-        // Order could be an issue here with global middleware
         this.appContext.server.router[route.requestMethod](
           endpoint,
-          [
-            ...middlewares.map((m) =>
-              this.config.catchExceptions ? this.wrapMiddleware(m) : m
-            ),
-            ...(middlewareOptions &&
-            this.shouldAddGlobalMiddleware(route.methodName, middlewareOptions)
-              ? middlewareOptions.middleware.map((m) =>
-                  this.config.catchExceptions ? this.wrapMiddleware(m) : m
-                )
-              : []),
-          ],
-          async (req, res, next) => {
-            if (this.config.catchExceptions) {
-              try {
-                const httpContext = req.kondah.httpContext
-                return await instance[route.methodName](httpContext)
-              } catch (err) {
-                return next(err)
-              }
-            }
-
-            const httpContext = req.kondah.httpContext
-            instance[route.methodName](httpContext)
-          }
+          ...globalMiddlewares,
+          ...routeMiddlewares,
+          routeHandler
         )
       })
     })
   }
 
-  private wrapMiddleware(middleware: IMiddleware) {
-    return async (req, res, next) => {
-      try {
-        // TODO: Pass httpContext here
-        const httpContext = req.kondah.httpContext
-        const _next = await middleware.execute(httpContext)
+  // this._controllerHandler.createRouteHandler(instance, methodName)
 
-        if (_next) next()
-      } catch (err) {
-        return next(err)
-      }
-    }
+  private registerRouteInformation(prefix: string, routes: RouteDefinition[]) {
+    this._routes[prefix] = routes
   }
 
-  private shouldAddGlobalMiddleware(
-    route: string,
-    { only, except }: IControllerOptions
-  ) {
-    if (only && except) {
-      throw new Error('cannot declare both only and except')
-    }
-
-    if (only) {
-      return only.includes(route)
-    }
-
-    if (except) {
-      return !except.includes(route)
-    }
-
-    return true
-  }
-
-  private hasInjectables(controller: Controller) {
-    return Reflect.get(controller, MetaTypes.injectables)
-  }
-
-  private getMetaData(controller: Controller) {
-    const prefix = Reflect.getMetadata('prefix', controller)
-    const globalMiddleware = Reflect.getMetadata(
-      'global:middleware',
-      controller
-    )
-
-    const routes: RouteDefinition[] = Reflect.getMetadata('routes', controller)
-
-    return [prefix, routes, globalMiddleware]
-  }
-
-  private removeDoubleSlash(endpoint: string) {
+  private getSerializedEndpoint(endpoint: string) {
     return endpoint.replace(/\/\//g, '/')
   }
 }
