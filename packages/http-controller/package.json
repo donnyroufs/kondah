@@ -1,6 +1,6 @@
 {
   "name": "@kondah/http-controller",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "official kondah plugin that provides utilities to easily register http controllers",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",
