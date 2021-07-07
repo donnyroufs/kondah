@@ -1,10 +1,12 @@
 import { Dependency, Energizor, MetaTypes } from '@kondah/core'
+import { HttpContext } from '../../http-context/lib'
 import { Controller } from './metadata.store'
 import { MiddlewareTypeIsInvalidException } from './middleware-type-is-invalid.exception'
 import { MiddlewareFailedException } from './middlware-failed.exception'
 import {
   Constr,
   Dependencies,
+  ExecuteFn,
   IControllerOptions,
   IHandler,
   IMiddleware,
@@ -48,13 +50,16 @@ export class MiddlewareHandler implements IHandler<IMiddleware> {
       throw new MiddlewareTypeIsInvalidException()
     }
 
-    if (!Utils.isClass(middleware)) {
+    if (!Utils.isClass(middleware) && this.isExecuteFn(middleware)) {
       return {
-        execute(context: any) {
-          // @ts-expect-error This is not a constructor
+        execute(context: HttpContext) {
           return middleware(context)
         },
       }
+    }
+
+    if (!this.isMiddlewareClass(middleware)) {
+      throw new MiddlewareTypeIsInvalidException()
     }
 
     const dependencies = this.resolveInjectables(middleware)
@@ -109,6 +114,7 @@ export class MiddlewareHandler implements IHandler<IMiddleware> {
         throw new MiddlewareFailedException(middleware.constructor.name)
     }
   }
+
   private wrapMiddlewareWithExceptionHandling(middleware: IMiddleware) {
     return async (req, res, next) => {
       try {
@@ -136,5 +142,16 @@ export class MiddlewareHandler implements IHandler<IMiddleware> {
 
   private getInjectables(controller: Controller): Dependencies {
     return Reflect.get(controller, MetaTypes.injectables)
+  }
+
+  private isMiddlewareClass(
+    variableToCheck: any
+  ): variableToCheck is Constr<IMiddleware> {
+    // @ts-ignore
+    return (variableToCheck as IMiddleware).injectables !== undefined
+  }
+
+  private isExecuteFn(variableToCheck: any): variableToCheck is ExecuteFn {
+    return (variableToCheck as ExecuteFn) !== undefined
   }
 }

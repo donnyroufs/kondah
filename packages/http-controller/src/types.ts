@@ -14,6 +14,8 @@ export interface IControllerOptions {
   except?: string[]
 }
 
+export type ExecuteFn = (context: HttpContext) => Promise<boolean> | boolean
+
 export interface IMiddleware<T extends HttpContext = HttpContext> {
   execute(context: T): Promise<boolean> | boolean
 }
@@ -25,4 +27,8 @@ export interface IHandler<T> {
   createInstanceWithDeps(constr: Constr<T>): T
 }
 
-export type MiddlewareType = Constr<IMiddleware> | IMiddleware
+export type MiddlewareWithHttpContext = (
+  httpContext: HttpContext
+) => Promise<boolean> | boolean
+
+export type MiddlewareType = Constr<IMiddleware> | IMiddleware | ExecuteFn
