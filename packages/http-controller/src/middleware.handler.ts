@@ -59,6 +59,7 @@ export class MiddlewareHandler implements IHandler<IMiddleware> {
     }
 
     if (!this.isMiddlewareClass(middleware)) {
+      console.log(middleware)
       throw new MiddlewareTypeIsInvalidException()
     }
 
@@ -148,7 +149,7 @@ export class MiddlewareHandler implements IHandler<IMiddleware> {
     variableToCheck: any
   ): variableToCheck is Constr<IMiddleware> {
     // @ts-ignore
-    return (variableToCheck as IMiddleware).injectables !== undefined
+    return (variableToCheck as IMiddleware).prototype.execute !== undefined
   }
 
   private isExecuteFn(variableToCheck: any): variableToCheck is ExecuteFn {
