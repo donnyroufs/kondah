@@ -1,5 +1,5 @@
 import { ILogger } from '@kondah/core'
-import { Request, Response } from 'express-serve-static-core'
+import { Request, Response } from 'express'
 
 export class HttpContext {
   public req!: Request

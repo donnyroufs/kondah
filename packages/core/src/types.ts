@@ -75,3 +75,5 @@ export type ErrorMiddlewareFn = (
   res: express.Response,
   next: express.NextFunction
 ) => void
+
+export interface IKondahRequestData {}
