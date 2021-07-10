@@ -1,6 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-lerna run tsc
-yarn run jest
+lerna run build
+# yarn run jest
 yarn lint-staged
