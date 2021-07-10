@@ -6,6 +6,8 @@
   "homepage": "https://kondah.dev",
   "license": "MIT",
   "main": "lib/index.js",
+  "module": "lib/my-lib.mjs",
+  "typings": "lib/my-lib.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -21,6 +23,7 @@
     "url": "git+https://github.com/donnyroufs/kondah.git"
   },
   "scripts": {
+    "build": "rollup -c",
     "tsc": "tsc",
     "dev": "tsc --w",
     "test": "echo \"Error: run tests from root\" && exit 1"
