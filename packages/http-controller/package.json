@@ -1,6 +1,6 @@
 {
   "name": "@kondah/http-controller",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "official kondah plugin that provides utilities to easily register http controllers",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",
@@ -31,8 +31,8 @@
     "url": "https://github.com/donnyroufs/kondah/issues"
   },
   "dependencies": {
-    "@kondah/core": "^0.0.13",
-    "@kondah/http-context": "^0.0.10",
+    "@kondah/core": "^0.0.14",
+    "@kondah/http-context": "^0.0.11",
     "reflect-metadata": "^0.1.13"
   }
 }
