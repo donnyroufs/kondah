@@ -2,7 +2,7 @@
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"outDir": "./lib",
-		"skipLibCheck": false
+		"skipLibCheck": false,
 	},
 	"include": [
 		"./src"

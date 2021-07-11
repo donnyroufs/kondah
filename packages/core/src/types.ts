@@ -7,6 +7,7 @@ import { KondahServer } from './kondah-server'
 import { AppContext } from './contexts'
 
 export interface IAppConfig {}
+export type Middleware = express.RequestHandler
 
 export interface IAppContext {
   server: KondahServer
@@ -68,7 +69,6 @@ export interface ILogger {
 
 export type ServerRunFn = (port: number) => void
 
-export type Middleware = express.RequestHandler
 export type ErrorMiddlewareFn = (
   err: Error,
   req: express.Request,

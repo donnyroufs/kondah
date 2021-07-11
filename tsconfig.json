@@ -13,7 +13,7 @@
 		"lib": [
 			"es6",
 			"DOM"
-		]
+		],
 	},
 	"exclude": [
 		"node_modules",

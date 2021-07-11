@@ -9,19 +9,17 @@ export class HttpContextPlugin extends KondahPlugin {
   private _state = {}
 
   protected async setup() {
-    this.appContext.server.addGlobalMiddleware(
-      (req: Request & { kondah: any }, res, next) => {
-        req.kondah.httpContext = new HttpContextBuilder(
-          req,
-          res,
-          this.appContext.logger
-        )
-          .addMany(this._state)
-          .build()
+    this.appContext.server.addGlobalMiddleware((req, res, next) => {
+      req.kondah.httpContext = new HttpContextBuilder(
+        req,
+        res,
+        this.appContext.logger
+      )
+        .addMany(this._state)
+        .build()
 
-        next()
-      }
-    )
+      next()
+    })
   }
 
   @AddToContext()

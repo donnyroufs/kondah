@@ -1,10 +1,8 @@
 import express = require('express')
-// import { IKondahRequestData } from '../../types'
+import { IKondahRequestData } from '../../types'
 
-// declare global {
-//   namespace Express {
-//     interface Request {
-//       kondah: IKondahRequestData
-//     }
-//   }
-// }
+declare module 'express-serve-static-core' {
+  interface Request {
+    kondah: IKondahRequestData
+  }
+}
