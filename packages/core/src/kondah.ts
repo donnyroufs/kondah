@@ -22,7 +22,7 @@ export abstract class Kondah {
       logger
     )
 
-    this._libraryHandler = new LibraryHandler(options.libraries)
+    this._libraryHandler = new LibraryHandler(options.libraries || [])
 
     this._pluginHandler = new PluginHandler(
       options.plugins,

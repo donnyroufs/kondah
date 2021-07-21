@@ -27,7 +27,7 @@ export interface IKondaOptions {
   plugins?: NewablePlugin[]
   config: IAppConfig
   disableServer?: boolean
-  libraries: NewableKondahLibrary[]
+  libraries?: NewableKondahLibrary[]
 }
 
 export type Constructor<T> = new (...args: any[]) => T
