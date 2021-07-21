@@ -10,8 +10,8 @@ export * from './decorators'
 export * from './metadata.types'
 export * from './utils'
 export * from './logger'
+export * from './kondah-library'
 
-export { energizor } from './energizor'
 export { AppContext } from './contexts'
 
 export type { Energizor } from './energizor'

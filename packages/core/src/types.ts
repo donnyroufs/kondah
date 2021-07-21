@@ -5,6 +5,7 @@ import { Energizor } from './energizor'
 import { DependencyData } from './dependency-data'
 import { KondahServer } from './kondah-server'
 import { AppContext } from './contexts'
+import { KondahLibrary } from './kondah-library'
 
 export interface IAppConfig {}
 export type Middleware = express.RequestHandler
@@ -26,6 +27,7 @@ export interface IKondaOptions {
   plugins?: NewablePlugin[]
   config: IAppConfig
   disableServer?: boolean
+  libraries: NewableKondahLibrary[]
 }
 
 export type Constructor<T> = new (...args: any[]) => T
@@ -77,3 +79,13 @@ export type ErrorMiddlewareFn = (
 ) => void
 
 export interface IKondahRequestData {}
+
+export interface IConfigureServices {
+  configureServices(services: Energizor): void
+}
+
+export interface IHandler {
+  install(appContext: AppContext): Promise<void> | void
+}
+
+export type NewableKondahLibrary = Constructor<KondahLibrary>

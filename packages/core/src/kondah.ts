@@ -7,10 +7,12 @@ import { IKondaOptions } from './types'
 import { DependencyData } from './dependency-data'
 import { Logger } from './logger'
 import { KondahServer } from './kondah-server'
+import { LibraryHandler } from './library.handler'
 
 export abstract class Kondah {
   private readonly _context: AppContext
   private readonly _pluginHandler: PluginHandler
+  private readonly _libraryHandler: LibraryHandler
 
   constructor(options: IKondaOptions) {
     const logger = options.logger || new Logger()
@@ -19,6 +21,9 @@ export abstract class Kondah {
       energizor,
       logger
     )
+
+    this._libraryHandler = new LibraryHandler(options.libraries)
+
     this._pluginHandler = new PluginHandler(
       options.plugins,
       options.config,
@@ -52,6 +57,7 @@ export abstract class Kondah {
 
     await this.configureServices(this._context.energizor)
     await this.$beforeInstallPlugins(this._context)
+    await this._libraryHandler.install(this._context)
     await this._pluginHandler.install(this._context)
     await this.$afterInstallPlugins(this._context)
     await this.setup(this._context)

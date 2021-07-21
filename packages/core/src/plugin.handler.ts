@@ -1,10 +1,10 @@
 import { KondahPlugin } from './kondah-plugin'
 import { AppContext } from './contexts'
-import { IAppConfig, NewablePlugin } from './types'
+import { IAppConfig, IHandler, NewablePlugin } from './types'
 import { MetaTypes } from './metadata.types'
 import { ComposedPluginHasDepsException } from './exceptions/composed-plugin-has-deps.exception'
 
-export class PluginHandler {
+export class PluginHandler implements IHandler {
   private readonly _plugins: KondahPlugin[] = []
   private readonly _utils = new PluginHandlerUtils()
 
