@@ -1,5 +1,5 @@
-import { AbstractPckg } from "./packages/abstract-pckg"
-import { DependencyConstr, IBootablePckg, Identifier, Token } from "./types"
+import { AbstractPckg } from './packages/abstract-pckg'
+import { DependencyConstr, IBootablePckg, Identifier, Token } from './types'
 
 export class Registry {
   private readonly _data: Map<Identifier, AbstractPckg> = new Map()

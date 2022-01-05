@@ -1,5 +1,5 @@
-import { Energizor } from "../energizor"
-import { MockedLogger } from "./mocked-logger"
+import { Energizor } from '../energizor'
+import { MockedLogger } from './mocked-logger'
 import {
   ICollection,
   ILogger,
@@ -8,8 +8,9 @@ import {
   DepOrToken,
   IRebind,
   Package,
-} from "../types"
+} from '../types'
 
+// TODO: Allow to rebind as value
 export class TestableEnergizor extends Energizor implements IRebind {
   public constructor(
     collections: Constructor<ICollection>[] = [],

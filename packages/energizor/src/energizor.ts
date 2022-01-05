@@ -53,7 +53,7 @@ export class Energizor implements IEnergizor {
   }
 
   public get<T>(depOrToken: DepOrToken<T>): ExcludeHooks<T> {
-    if (this._registry.hasBootablePckgs() && !this._booted) {
+    if (!this._booted) {
       throw new BootContainerBeforeUsingException()
     }
 

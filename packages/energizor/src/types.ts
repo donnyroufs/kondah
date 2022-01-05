@@ -1,6 +1,6 @@
-import { ClsArgument, InvertedClsArgument } from "./cls-argument"
-import { Energizor } from "./energizor"
-import { AbstractPckg } from "./packages/abstract-pckg"
+import { ClsArgument, InvertedClsArgument } from './cls-argument'
+import { Energizor } from './energizor'
+import { AbstractPckg } from './packages/abstract-pckg'
 
 export type Constructor<T = unknown> = new (...args: any[]) => T
 
@@ -27,12 +27,12 @@ export interface ILogger {
 }
 
 export enum Package {
-  TRANSIENT = "transient",
-  SINGLETON = "singleton",
+  TRANSIENT = 'transient',
+  SINGLETON = 'singleton',
 }
 
 export interface ICollection {
-  configureServices(services: ExcludeHooks<Energizor>): void
+  configureServices(services: ExcludeHooks<IEnergizor>): void
 }
 
 export interface IRebind {
