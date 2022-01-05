@@ -1,5 +1,4 @@
 import { ClsArgument, InvertedClsArgument } from './cls-argument'
-import { Energizor } from './energizor'
 import { AbstractPckg } from './packages/abstract-pckg'
 
 export type Constructor<T = unknown> = new (...args: any[]) => T
