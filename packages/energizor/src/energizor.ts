@@ -42,7 +42,7 @@ export class Energizor implements IEnergizor {
 
     for (const pckg of pckgs) {
       const value = cast<IBootablePckg>(pckg.getValue(this._registry))
-      await value.onBoot(this._logger)
+      await value.onBoot()
     }
 
     this._booted = true

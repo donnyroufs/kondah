@@ -11,7 +11,7 @@ export type ClsArgumentOrInverted = ClsArgument | InvertedClsArgument
 export interface IBootablePckg extends IBoot, AbstractPckg {}
 
 export interface IBoot {
-  onBoot(logger: ILogger): void | Promise<void>
+  onBoot(): void | Promise<void>
 }
 
 export type ExcludeHooks<T> = {
