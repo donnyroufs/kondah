@@ -1,6 +1,7 @@
 {
   "packages": ["packages/*"],
   "changelogPreset": "angular",
+  "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true
 }
