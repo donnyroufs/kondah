@@ -21,7 +21,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "tsc --w",
-    "test": "echo no tests for core."
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@types/express": "^4.17.11",

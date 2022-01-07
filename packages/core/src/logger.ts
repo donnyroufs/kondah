@@ -1,26 +1,27 @@
 import { ILogger } from '@kondah/energizor'
 import { bgGreen, bgRed, bgBlue, bgYellow } from 'chalk'
+import { Label } from './label'
 
 export class Logger {
-  public danger(msg: string, label = ' ERROR '): string | void {
-    console.log(bgRed.bold.white(label) + ' ' + msg)
+  public danger(msg: string, label = 'ERROR'): string | void {
+    console.log(bgRed.bold.white(Label.create(label).value) + ' ' + msg)
   }
 
-  public info(msg: string, label = ' INFO '): void {
-    console.log(bgBlue.bold.white(label) + ' ' + msg)
+  public info(msg: string, label = 'INFO'): void {
+    console.log(bgBlue.bold.white(Label.create(label).value) + ' ' + msg)
   }
 
-  public success(msg: string, label = ' SUCCESS '): void {
-    console.log(bgGreen.bold.black(label) + ' ' + msg)
+  public success(msg: string, label = 'SUCCESS'): void {
+    console.log(bgGreen.bold.black(Label.create(label).value) + ' ' + msg)
   }
 
-  public warning(msg: string, label = ' WARNING '): void {
-    console.log(bgYellow.bold.black(label) + ' ' + msg)
+  public warning(msg: string, label = 'WARNING'): void {
+    console.log(bgYellow.bold.black(Label.create(label).value) + ' ' + msg)
   }
 }
 
 export class EnergizorLoggerAdapter implements ILogger {
-  private readonly _label = ' ENERGIZOR '
+  private readonly _label = Label.create('ENERGIZOR').value
 
   public constructor(private readonly _logger: Logger) {}
 

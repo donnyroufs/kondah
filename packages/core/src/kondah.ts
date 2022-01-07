@@ -16,11 +16,13 @@ export abstract class Kondah {
   protected abstract setup(energizor: IEnergizor): Promise<void> | void
 
   public async boot() {
+    this._energizor.addSingleton(Logger)
+
     this.configureServices(this._energizor)
 
     await this._energizor.boot()
     await this.setup(this._energizor)
 
-    this._logger.info('Kondah is up and running.')
+    this._logger.info('Kondah is up and running.', 'KONDAH')
   }
 }
