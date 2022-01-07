@@ -65,8 +65,6 @@ describe('energizor', () => {
     expect(result).toThrowError()
   })
 
-  test.todo('can register custom methods to energizor')
-
   describe('boot()', () => {
     test('throws BootContainerBeforeUsingException() when it has not been booted yet.', async () => {
       const energizor = new Energizor(new MockedLogger())
@@ -84,7 +82,6 @@ describe('energizor', () => {
       const energizor = new Energizor(new MockedLogger())
 
       energizor.addTransient(CountService)
-      energizor.addTransient(BootableService)
       energizor.addTransient(BootableService)
 
       await energizor.boot()
@@ -104,7 +101,7 @@ describe('energizor', () => {
 
       await energizor.boot()
 
-      expect(spy).toHaveBeenCalledTimes(2)
+      expect(spy).toHaveBeenCalledWith('Energizor successfuly booted. (1)')
     })
   })
 
