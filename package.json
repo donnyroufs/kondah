@@ -8,7 +8,7 @@
     "publish": "lerna run build && lerna publish",
     "dev": "lerna run --parallel dev",
     "prepare": "husky install",
-    "test:ci": "lerna run test --stream --since master"
+    "test:ci": "lerna run test --stream"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
