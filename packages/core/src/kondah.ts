@@ -1,89 +1,26 @@
-import 'reflect-metadata'
+import { Energizor, IEnergizor } from '@kondah/energizor'
 
-import { Energizor, energizor } from './energizor'
-import { AppContext } from './contexts'
-import { PluginHandler } from './plugin.handler'
-import { IKondaOptions } from './types'
-import { DependencyData } from './dependency-data'
-import { Logger } from './logger'
-import { KondahServer } from './kondah-server'
-import { LibraryHandler } from './library.handler'
+import { EnergizorLoggerAdapter, Logger } from './logger'
+import { IKondahLogger } from './types'
 
 export abstract class Kondah {
-  private readonly _context: AppContext
-  private readonly _pluginHandler: PluginHandler
-  private readonly _libraryHandler: LibraryHandler
+  private readonly _energizor: IEnergizor
+  private readonly _logger: IKondahLogger
 
-  constructor(options: IKondaOptions) {
-    const logger = options.logger || new Logger()
-    this._context = new AppContext(
-      new KondahServer(logger, options.disableServer || false),
-      energizor,
-      logger
-    )
-
-    this._libraryHandler = new LibraryHandler(options.libraries || [])
-
-    this._pluginHandler = new PluginHandler(
-      options.plugins,
-      options.config,
-      this._context
-    )
-
-    if (options.mode === 'boot' || !options.mode) {
-      this.boot()
-    }
+  public constructor(logger?: IKondahLogger) {
+    this._logger = logger || new Logger()
+    this._energizor = new Energizor(new EnergizorLoggerAdapter(this._logger))
   }
 
-  public getContext() {
-    return this._context
-  }
+  protected abstract configureServices(energizor: IEnergizor): void
+  protected abstract setup(energizor: IEnergizor): Promise<void> | void
 
-  protected abstract configureServices(
-    services: Energizor
-  ): Promise<void> | void
-  protected abstract setup(context: AppContext): Promise<void> | void
+  public async boot() {
+    this.configureServices(this._energizor)
 
-  // TODO: Implement with auto generated hooks
-  protected async $beforeInstallPlugins(context: AppContext) {}
-  protected async $afterInstallPlugins(context: AppContext) {}
-  protected async $afterSetupKondah(context: AppContext) {}
+    await this._energizor.boot()
+    await this.setup(this._energizor)
 
-  /**
-   * Used to run the application
-   */
-  async boot() {
-    this.dirtyHacks()
-
-    await this.configureServices(this._context.energizor)
-    await this.$beforeInstallPlugins(this._context)
-    await this._libraryHandler.install(this._context)
-    await this._pluginHandler.install(this._context)
-    await this.$afterInstallPlugins(this._context)
-    await this.setup(this._context)
-    await this.$afterSetupKondah(this._context)
-  }
-
-  private dirtyHacks() {
-    this._context.server.addGlobalMiddleware((req, res, next) => {
-      if (!req.kondah) {
-        req.kondah = {}
-      }
-
-      next()
-    })
-
-    const data = new DependencyData(
-      'singleton',
-      AppContext.name,
-      AppContext,
-      [],
-      this._context
-    )
-    // @ts-expect-error dirty hack to add the current context to the Energizor container
-    this._context.energizor._dependencies.set(AppContext.name, data)
-
-    // @ts-expect-error dirty hack to give energizor access to the current context
-    energizor._appContext = this._context
+    this._logger.info('Kondah is up and running.')
   }
 }

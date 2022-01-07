@@ -1,20 +1,38 @@
-<p align="center" style="text-align: center;">
-  <img src="https://kondah.dev/logo.svg" width="350" title="hover text">
+# <img src="https://kondah.dev/logo.svg" width="32" /> ondah
+
+<p>
+  Kondah is a micro framework that promotes an OO style of programming in TypeScript. It has it's own dependency container which you as a user can extend with anything you like. Its goal is to be as minimalistic as possible with the option for you to compose anything together for your need.
 </p>
 
----
+```ts
+import { Kondah, ExcludeHooks, IEnergizor } from '@kondah/core'
 
-**Kondah** is a micro framework that lets you create your own web framework. It's driven by a **plugin** architecture supported by it's own dependency container known as **Energizor**.
+import { AppController } from './AppController'
 
-Its goal is to take away the opinions of the author and let you design a system that works for you, whilst having strong types and being able to share your own plugins that others can use.
+export class Application extends Kondah {
+  public configureServices(services: IEnergizor) {
+    services.addSingleton(AppController)
+  }
 
-As of now there's no official roadmap, but to give you a general idea of what's to come:
+  public async boot(services: IEnergizor) {
+    await services.boot()
+  }
+}
+```
 
-- Plugins (implemented)
-- Dependency Injection (implemented)
-- Inversion of control (implemented)
-- It's own CLI (very simple one has been implemented for now)
-- Injectable strategies (extends Energizor's usecases, not implemented yet)
-- Interactive self hosted environment to quickly compose projects with your own or official plugins from Kondah.
+# Roadmap
 
----
+There's no set roadmap for this project because it's more a hobby project than anything else. However, I am building it to use for my own serious projects so please feel free to give Kondah a fair shot!
+
+- [x] Remove old POC and add base for Kondah and Energizor.
+- [x] Allow for registering dependencies and resolving through Reflect API.
+- [x] Register services at boundaries (ICollection).
+- [x] Use Energizor during unit tests.
+- [ ] Add a testable kondah instance.
+- [ ] Add custom services to Energizor which allows for composition.
+- [ ] Implement the Express Http Platform to create **restful APIs** with ease.
+- [ ] Register constants (functions, values) to Energizor which improves testability.
+- [ ] Create new Kondah website with up to date documentation.
+- [ ] Add OpenAPI support to http platforms.
+- [ ] Add CLI to scaffold files.
+- [ ] Add a REPL to easily play around with your codebase.

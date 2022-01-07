@@ -5,11 +5,14 @@
     "packages/*"
   ],
   "scripts": {
-    "publish": "lerna run build && lerna publish",
+    "publish": "lerna run build && lerna publish --conventional-commits",
     "dev": "lerna run --parallel dev",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test:ci": "lerna run test --stream"
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.0.1",
+    "@commitlint/config-conventional": "^16.0.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.0.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",

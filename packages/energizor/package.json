@@ -1,7 +1,7 @@
 {
-  "name": "@kondah/core",
-  "version": "0.0.15",
-  "description": "the very core of Kondah",
+  "name": "@kondah/energizor",
+  "version": "0.0.1",
+  "description": "extendable dependency container",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",
   "license": "MIT",
@@ -21,15 +21,11 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "tsc --w",
-    "test": "echo no tests for core."
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@types/express": "^4.17.11",
-    "chalk": "^4.1.1",
-    "express": "^4.17.1",
     "reflect-metadata": "^0.1.13"
   },
-  "devDependencies": {
-    "@types/chalk": "^2.2.0"
-  }
+  "devDependencies": {}
 }

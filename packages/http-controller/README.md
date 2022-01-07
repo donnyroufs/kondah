@@ -1,3 +1,0 @@
-# Official Kondah Plugin
-
-T.B.A...
