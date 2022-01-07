@@ -1,3 +1,3 @@
-# Kondah's Core
+# @kondah/core
 
-T.B.A...
+Documentation will be written in the near future.

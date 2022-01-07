@@ -1,11 +1,3 @@
-# `cli`
+# @kondah/cli
 
-> TODO: description
-
-## Usage
-
-```
-const cli = require('cli');
-
-// TODO: DEMONSTRATE API
-```
+Documentation will be written in the near future.
