@@ -1,6 +1,6 @@
 import { Energizor, IEnergizor } from '@kondah/energizor'
-import { Logger } from './logger'
-import { TestableKondah } from './testable-kondah'
+
+import { EnergizorLoggerAdapter, Logger } from './logger'
 import { IKondahLogger } from './types'
 
 export abstract class Kondah {
@@ -9,7 +9,7 @@ export abstract class Kondah {
 
   public constructor(logger?: IKondahLogger) {
     this._logger = logger || new Logger()
-    this._energizor = new Energizor(this._logger)
+    this._energizor = new Energizor(new EnergizorLoggerAdapter(this._logger))
   }
 
   protected abstract configureServices(energizor: IEnergizor): void
@@ -22,10 +22,5 @@ export abstract class Kondah {
     await this.setup(this._energizor)
 
     this._logger.info('Kondah is up and running.')
-  }
-
-  // TODO: Implement
-  public static createTestableKondah(): TestableKondah {
-    return new TestableKondah()
   }
 }
