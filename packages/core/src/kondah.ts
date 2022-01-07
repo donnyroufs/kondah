@@ -23,6 +23,6 @@ export abstract class Kondah {
     await this._energizor.boot()
     await this.setup(this._energizor)
 
-    this._logger.info('Kondah is up and running.', ' KONDAH ')
+    this._logger.info('Kondah is up and running.', 'KONDAH')
   }
 }
