@@ -27,7 +27,7 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "tsc --w",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "echo no tests for cli."
   },
   "bugs": {
     "url": "https://github.com/donnyroufs/konda/issues"

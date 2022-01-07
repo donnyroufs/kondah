@@ -1,0 +1,23 @@
+name: test
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: install yarn
+        run: npm install -g yarn
+
+      - name: install lerna
+        run: npm install -g lerna
+
+      - name: install dependencies
+        run: lerna bootstrap
+
+      - name: run tests
+        run: yarn test

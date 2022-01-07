@@ -2,5 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 lerna run build
-# yarn run jest
+yarn run jest
 yarn lint-staged
