@@ -10,7 +10,6 @@ import {
   Package,
 } from '../types'
 
-// TODO: Allow to rebind as value
 export class TestableEnergizor extends Energizor implements IRebind {
   public constructor(
     collections: Constructor<ICollection>[] = [],

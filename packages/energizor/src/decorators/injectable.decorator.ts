@@ -1,13 +1,12 @@
-import { ClsArgument } from "../cls-argument"
-import { EnergizorException } from "../exceptions/energizor.exception"
-import { MissingInvertedDependencyException } from "../exceptions/missing-inverted-dependency.exception"
-import { MetadataKey } from "../metadata.enum"
-import { ClsArgumentOrInverted, DependencyConstr } from "../types"
-import { Utils } from "../utils"
+import { ClsArgument } from '../cls-argument'
+import { MissingInvertedDependencyException } from '../exceptions/missing-inverted-dependency.exception'
+import { MetadataKey } from '../metadata.enum'
+import { ClsArgumentOrInverted, DependencyConstr } from '../types'
+import { Utils } from '../utils'
 
 export function Injectable(): ClassDecorator {
   return (target: any) => {
-    const rawArgs = Reflect.getMetadata("design:paramtypes", target) || []
+    const rawArgs = Reflect.getMetadata('design:paramtypes', target) || []
     const args = rawArgs.map(
       (arg: DependencyConstr) => new ClsArgument(arg, arg)
     )
@@ -17,7 +16,7 @@ export function Injectable(): ClassDecorator {
     )
 
     const enhancedInjectables = args.map((arg: ClsArgument, index: number) => {
-      const isInverted = arg.target.toString().includes("Object()")
+      const isInverted = arg.target.toString().includes('Object()')
 
       if (!isInverted) {
         return arg.target

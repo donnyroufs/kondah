@@ -1,23 +1,26 @@
 import 'reflect-metadata'
 
 import { Registry } from './registry'
+import { Logger } from './logger'
+import { PckgFactory } from './pckg.factory'
+import { Utils } from './utils'
+import { Dependency } from './dependency'
+import { BootContainerBeforeUsingException } from './exceptions/boot-container-before-using.exception'
+import { UnknownDependencyException } from './exceptions/unknown-dependency.exception'
+import { CollectionAlreadyExistsException } from './exceptions/collection-already-exists.exception'
+import { cast } from './cast.util'
 import {
   Constructor,
   DepOrToken,
   IBootablePckg,
   IEnergizor,
   ILogger,
+  ICollection,
+  DependencyConstr,
+  ExcludeHooks,
+  Package,
+  Token,
 } from './types'
-import { Logger } from './logger'
-import { PckgFactory } from './pckg.factory'
-import { Utils } from './utils'
-import { DependencyConstr, ExcludeHooks, Package, Token } from './types'
-import { Dependency } from './dependency'
-import { ICollection } from './types'
-import { BootContainerBeforeUsingException } from './exceptions/boot-container-before-using.exception'
-import { UnknownDependencyException } from './exceptions/unknown-dependency.exception'
-import { CollectionAlreadyExistsException } from './exceptions/collection-already-exists.exception'
-import { cast } from './cast.util'
 
 export class Energizor implements IEnergizor {
   private readonly _registry = new Registry()
@@ -43,7 +46,7 @@ export class Energizor implements IEnergizor {
     }
 
     this._booted = true
-    this._logger.info(`⚡ Energizor successfuly booted. (${pckgs.length})`)
+    this._logger.info(`Energizor successfuly booted. (${pckgs.length})`)
   }
 
   private configureCollections() {
