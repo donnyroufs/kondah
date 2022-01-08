@@ -101,7 +101,7 @@ describe('energizor', () => {
 
       await energizor.boot()
 
-      expect(spy).toHaveBeenCalledWith('Energizor successfuly booted. (1)')
+      expect(spy).toHaveBeenCalledWith('Successfuly booted. (1)')
     })
   })
 

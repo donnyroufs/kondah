@@ -46,7 +46,7 @@ export class Energizor implements IEnergizor {
     }
 
     this._booted = true
-    this._logger.info(`Energizor successfuly booted. (${pckgs.length})`)
+    this._logger.info(`Successfuly booted. (${pckgs.length})`)
   }
 
   private configureCollections() {
