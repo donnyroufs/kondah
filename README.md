@@ -28,11 +28,11 @@ There's no set roadmap for this project because it's more a hobby project than a
 - [x] Allow for registering dependencies and resolving through Reflect API.
 - [x] Register services at boundaries (ICollection).
 - [x] Use Energizor during unit tests.
-- [ ] Add a testable kondah instance.
+- [x] Register constants (functions, values) to Energizor which improves testability.
+- [ ] Implement the base of the Express Http Platform to create **restful APIs** with ease.
 - [ ] Add custom services to Energizor which allows for composition.
-- [ ] Implement the Express Http Platform to create **restful APIs** with ease.
-- [ ] Register constants (functions, values) to Energizor which improves testability.
+- [ ] Add a testable kondah instance.
 - [ ] Create new Kondah website with up to date documentation.
-- [ ] Add OpenAPI support to http platforms.
 - [ ] Add CLI to scaffold files.
 - [ ] Add a REPL to easily play around with your codebase.
+- [ ] Add OpenAPI support to http platforms.
