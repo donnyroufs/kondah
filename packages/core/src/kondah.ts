@@ -4,7 +4,7 @@ import { EnergizorLoggerAdapter, Logger } from './logger'
 import { IKondahLogger } from './types'
 
 export abstract class Kondah {
-  private readonly _energizor: IEnergizor
+  private readonly _energizor: Energizor
   private readonly _logger: IKondahLogger
 
   public constructor(logger?: IKondahLogger) {
@@ -12,8 +12,8 @@ export abstract class Kondah {
     this._energizor = new Energizor(new EnergizorLoggerAdapter(this._logger))
   }
 
-  public abstract configureServices(energizor: IEnergizor): void
-  public abstract setup(energizor: IEnergizor): Promise<void> | void
+  public abstract configureServices(services: IEnergizor): void
+  public abstract setup(services: IEnergizor): Promise<void> | void
 
   public async boot() {
     this._energizor.addSingleton(Logger)

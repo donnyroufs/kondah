@@ -1,6 +1,6 @@
 export interface IKondahLogger {
-  info(msg: string, label?: string): void | string
-  warning(msg: string, label?: string): void | string
-  success(msg: string, label?: string): void | string
-  danger(msg: string, label?: string): void | string
+  info(msg: string, label?: string): void
+  warning(msg: string, label?: string): void
+  success(msg: string, label?: string): void
+  danger(msg: string, label?: string): void
 }

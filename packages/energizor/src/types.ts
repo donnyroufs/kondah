@@ -19,10 +19,10 @@ export type ExcludeHooks<T> = {
 }
 
 export interface ILogger {
-  info(msg: string): void | string
-  warning(msg: string): void | string
-  success(msg: string): void | string
-  danger(msg: string): void | string
+  info(msg: string): void
+  warning(msg: string): void
+  success(msg: string): void
+  danger(msg: string): void
 }
 
 export enum Package {
@@ -31,7 +31,7 @@ export enum Package {
 }
 
 export interface ICollection {
-  configureServices(services: ExcludeHooks<IEnergizor>): void
+  configureServices(services: IEnergizor): void
 }
 
 export interface IRebind {
@@ -60,5 +60,4 @@ export interface IEnergizor {
   ): void
 
   addCollection(collection: Constructor<ICollection>): void
-  boot(): Promise<void>
 }
