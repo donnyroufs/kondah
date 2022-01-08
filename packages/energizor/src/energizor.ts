@@ -106,7 +106,7 @@ export class Energizor implements IEnergizor {
     depOrToken: DepOrToken<T>,
     constr?: DependencyConstr<T>
   ) {
-    const isInverted = constr && !Utils.isConstructor(depOrToken)
+    const isInverted = !!(constr && !Utils.isConstructor(depOrToken))
 
     const dependencyConstructor = isInverted
       ? constr
@@ -117,5 +117,9 @@ export class Energizor implements IEnergizor {
     const pckg = this._pckgFactory.makePckg(type, dependency)
 
     this._registry.set(depOrToken, pckg)
+  }
+
+  protected getRegistry(): Registry {
+    return this._registry
   }
 }

@@ -1,8 +1,7 @@
-import { IBoot } from ".."
-import { Dependency } from "../dependency"
-import { UnknownPackageException } from "../exceptions/unknown-package.exception"
-import { Registry } from "../registry"
-import { DependencyConstr } from "../types"
+import { Dependency } from '../dependency'
+import { UnknownPackageException } from '../exceptions/unknown-package.exception'
+import { Registry } from '../registry'
+import { DependencyConstr } from '../types'
 
 export abstract class AbstractPckg {
   public constructor(protected readonly dependency: Dependency) {}
@@ -14,6 +13,10 @@ export abstract class AbstractPckg {
   }
 
   protected getResolvedDependency(registry: Registry) {
+    if (this.dependency.isConstantValue()) {
+      return this.dependency.getConstantValue()
+    }
+
     const constr = this.dependency.getConstructor()
     const args = this.dependency.getArguments()
 
