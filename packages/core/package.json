@@ -19,7 +19,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "rimraf lib && rollup -c",
     "dev": "tsc --w",
     "test": "jest",
     "test:watch": "jest --watch"

@@ -1,5 +1,6 @@
 import dts from 'rollup-plugin-dts'
 import esbuild from 'rollup-plugin-esbuild'
+import typescript from '@rollup/plugin-typescript'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const name = require('./package.json').main.replace(/\.js$/, '')
@@ -12,7 +13,12 @@ const bundle = (config) => ({
 
 export default [
   bundle({
-    plugins: [esbuild()],
+    plugins: [
+      esbuild(),
+      typescript({
+        exclude: ['**/__tests__', '**/*.spec.ts'],
+      }),
+    ],
     output: [
       {
         file: `${name}.js`,
