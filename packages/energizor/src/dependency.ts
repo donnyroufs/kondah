@@ -1,11 +1,13 @@
-import { MetadataKey } from "./metadata.enum"
-import { DependencyConstr, Identifier } from "./types"
-import { Utils } from "./utils"
+import { MetadataKey } from './metadata.enum'
+import { DependencyConstr, Identifier } from './types'
+import { Utils } from './utils'
 
 export class Dependency<T = unknown> {
+  private _constantValue: any = null
+
   public constructor(
     private readonly _identifier: Identifier,
-    private readonly _constructor: DependencyConstr<T>
+    private _constructor: DependencyConstr<T>
   ) {}
 
   /**
@@ -13,6 +15,22 @@ export class Dependency<T = unknown> {
    */
   public getIdentifier() {
     return this._identifier
+  }
+
+  public setConstructor(constr: DependencyConstr<T>) {
+    this._constructor = constr
+  }
+
+  public getConstantValue() {
+    return this._constantValue
+  }
+
+  public isConstantValue(): boolean {
+    return this._constantValue != null
+  }
+
+  public flagAsConstantValue(value: unknown) {
+    this._constantValue = value
   }
 
   /**

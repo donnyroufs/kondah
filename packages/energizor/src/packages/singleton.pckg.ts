@@ -3,7 +3,7 @@ import { DependencyConstr } from '../types'
 import { AbstractPckg } from './abstract-pckg'
 
 export class SingletonPckg extends AbstractPckg {
-  private _cache: DependencyConstr | null = null
+  private _cache!: DependencyConstr
 
   public getValue(registry: Registry): DependencyConstr {
     if (!this._cache) {
