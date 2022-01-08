@@ -12,8 +12,8 @@ export abstract class Kondah {
     this._energizor = new Energizor(new EnergizorLoggerAdapter(this._logger))
   }
 
-  protected abstract configureServices(energizor: IEnergizor): void
-  protected abstract setup(energizor: IEnergizor): Promise<void> | void
+  public abstract configureServices(energizor: IEnergizor): void
+  public abstract setup(energizor: IEnergizor): Promise<void> | void
 
   public async boot() {
     this._energizor.addSingleton(Logger)
@@ -23,6 +23,6 @@ export abstract class Kondah {
     await this._energizor.boot()
     await this.setup(this._energizor)
 
-    this._logger.info('Kondah is up and running.', 'KONDAH')
+    this._logger.info('Successfuly booted.', 'KONDAH')
   }
 }
