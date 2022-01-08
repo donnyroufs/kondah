@@ -90,6 +90,7 @@ import { TestableEnergizor } from '@kondah/energizor'
 
 import { CountController } from './count.controller'
 import { DatabaseService } from './database.service'
+import { InfraCollection } from './infra.collection'
 
 const mockedDatabaseService = mock<DatabaseService>()
 
@@ -97,8 +98,7 @@ describe('example kondah', () => {
   let services: TestableEnergizor
 
   beforeAll(async () => {
-    // Add ICollection to energizor if needed
-    services = new TestableEnergizor([])
+    services = new TestableEnergizor([InfraCollection])
 
     services.rebind(DatabaseService, mockedDatabaseService)
   })
