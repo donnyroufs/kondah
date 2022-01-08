@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/donnyroufs/konda/compare/@kondah/core@0.1.0...@kondah/core@0.2.0) (2022-01-08)
+
+
+### Features
+
+* **core:** expose energizor imports in core ([903da58](https://github.com/donnyroufs/konda/commit/903da58094e609c2812999d7edcf4e39f967f74b))
+* expose kondah methods ([7f4c360](https://github.com/donnyroufs/konda/commit/7f4c360e1dc3124f1436547118a59a7c317bc7cc))
+* **logger:** do not expose logger in IBoot and make labels consistent ([4f31f36](https://github.com/donnyroufs/konda/commit/4f31f36fd13116e30e69be8cf242a3f52fe8eb80))
+
+
+
+
+
 # [0.1.0](https://github.com/donnyroufs/konda/compare/@kondah/core@0.0.15...@kondah/core@0.1.0) (2022-01-07)
 
 
