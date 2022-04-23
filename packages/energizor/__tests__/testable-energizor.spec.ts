@@ -5,6 +5,8 @@ import { Injectable } from '../src/decorators/injectable.decorator'
 import { CanNotRebindUnknownDependencyException } from '../src/exceptions/can-not-rebind-unknown-dependency.exception'
 import { TestableEnergizor } from '../src/test-utils/testable-energizor'
 import { ExcludeHooks, ICollection, IEnergizor } from '../src/types'
+import { AppCollection } from './mocks/app.collection'
+import { CountService } from './mocks/count.service'
 
 describe('testable-energizor', () => {
   test('is defined', () => {
@@ -14,6 +16,21 @@ describe('testable-energizor', () => {
   })
 
   describe('rebind()', () => {
+    test('rebinds dependency from collection', async () => {
+      const mockedCountService = mock<CountService>()
+      const ref = new TestableEnergizor([AppCollection])
+
+      await ref.boot()
+
+      ref.rebind(CountService, mockedCountService)
+
+      const resolvedService = ref.get(CountService)
+
+      resolvedService.getCount()
+
+      expect(mockedCountService.getCount).toHaveBeenCalled()
+    })
+
     test('throws CanNotRebindUnknownDependencyException when trying to rebind a service that does not exist', () => {
       const ref = new TestableEnergizor()
 
