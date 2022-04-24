@@ -5,11 +5,13 @@ import { Logger } from './logger'
 import { IKondahLogger } from './types'
 import { EnergizorLoggerAdapter } from './adapters/energizor-logger.adapter'
 import { IHttpDriver } from './http/http-adapter.interface'
+import { controllers } from './http/rest'
+import { IResponse } from './http/request-handler'
 
-export abstract class Kondah {
+export abstract class Kondah<TRequest, TResponse extends IResponse, TDriver> {
   private readonly _energizor: Energizor
   private readonly _logger: IKondahLogger
-  private readonly _httpDriver: IHttpDriver
+  private readonly _httpDriver: IHttpDriver<TRequest, TResponse, TDriver>
 
   public constructor(opts: KondahOptions) {
     this._httpDriver = opts.httpDriver

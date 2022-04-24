@@ -3,7 +3,8 @@ import { IKondahLogger } from './types'
 
 export class KondahOptions {
   public constructor(
-    public httpDriver: IHttpDriver,
+    // TODO: Add types
+    public httpDriver: IHttpDriver<any, any, any>,
     public logger?: IKondahLogger
   ) {}
 }

@@ -1,14 +1,21 @@
 import { HttpMethod } from './http-method.enum'
-import { IRequestHandler } from './request-handler.interface'
+import { IResponse, RequestHandler } from './request-handler'
 
-export interface IHttpDriver {
+export interface IHttpDriver<TRequest, TResponse extends IResponse, TDriver> {
   addRoute(
     method: HttpMethod,
     path: string,
-    handler: IRequestHandler
-  ): IHttpDriver
+    handler: RequestHandler<TRequest, TResponse>
+  ): IHttpDriver<TRequest, TResponse, TDriver>
 
-  addMiddleware(handler: IRequestHandler): IHttpDriver
-  addMiddleware(path: string, handler: IRequestHandler): IHttpDriver
-  run(port: number, message?: string)
+  addMiddleware(
+    handler: RequestHandler<TRequest, TResponse>
+  ): IHttpDriver<TRequest, TResponse, TDriver>
+
+  addMiddleware(
+    path: string,
+    handler: RequestHandler<TRequest, TResponse>
+  ): IHttpDriver<TRequest, TResponse, TDriver>
+
+  run(port: number, message?: string): Promise<void>
 }
