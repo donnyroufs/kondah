@@ -1,12 +1,12 @@
 import { IEnergizor } from '.'
 import { KondahPlugin } from './plugin'
 
-class PlatformOpts<T> {
+export class KondahPlatformOpts<T> {
   public constructor(public readonly plugins: KondahPlugin<T>[] = []) {}
 }
 
 export abstract class KondahPlatform<
-  T extends PlatformOpts<unknown> = PlatformOpts<unknown>
+  T extends KondahPlatformOpts<unknown> = KondahPlatformOpts<unknown>
 > {
   public energizor!: IEnergizor
 
