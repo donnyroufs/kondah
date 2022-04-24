@@ -7,6 +7,13 @@ export class ExpressHttpAdapter
   implements
     IHttpDriver<express.Request, express.Response, express.Application>
 {
+  public sendJson<TData>(
+    res: express.Response<any, Record<string, any>>,
+    data: TData
+  ): void {
+    res.json(data)
+  }
+
   public addRoute(
     method: HttpMethod,
     path: string,

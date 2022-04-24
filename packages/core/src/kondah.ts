@@ -6,9 +6,8 @@ import { IKondahLogger } from './types'
 import { EnergizorLoggerAdapter } from './adapters/energizor-logger.adapter'
 import { IHttpDriver } from './http/http-adapter.interface'
 import { controllers } from './http/rest'
-import { IResponse } from './http/request-handler'
 
-export abstract class Kondah<TRequest, TResponse extends IResponse, TDriver> {
+export abstract class Kondah<TRequest, TResponse, TDriver> {
   private readonly _energizor: Energizor
   private readonly _logger: IKondahLogger
   private readonly _httpDriver: IHttpDriver<TRequest, TResponse, TDriver>
@@ -43,7 +42,9 @@ export abstract class Kondah<TRequest, TResponse extends IResponse, TDriver> {
           ).reverse()
           const result = await v.handler(...params)
 
-          return res.json(result)
+          // NOTE: what if we bind the current request context
+          // could we avoid passing the response object here?
+          return this._httpDriver.sendJson(res, result)
         }
       )
     })
