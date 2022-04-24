@@ -31,9 +31,32 @@ export abstract class Kondah<TRequest, TResponse extends IResponse, TDriver> {
 
     this.configureServices(this._energizor)
 
+    // TOOD: Abstract
+    Object.entries(controllers).forEach(([k, v]) => {
+      this._httpDriver.addRoute(
+        v.method,
+        v.target.__endpoint__ + v.path,
+        async (req, res, next) => {
+          const params = createHandlerParams(
+            v.handler.__params__,
+            req
+          ).reverse()
+          const result = await v.handler(...params)
+
+          return res.json(result)
+        }
+      )
+    })
+
     await this._energizor.boot()
     await this.setup(this._energizor)
 
     this._logger.info('Successfuly booted.', 'KONDAH')
   }
+}
+
+function createHandlerParams(opts: any[], req: any) {
+  return opts.map((opt) => {
+    return req[opt.param]
+  })
 }
