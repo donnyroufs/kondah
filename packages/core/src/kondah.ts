@@ -1,9 +1,10 @@
 import { Energizor, IEnergizor } from '@kondah/energizor'
 
-import { IHttpDriver } from './http/http-adapter.interface'
 import { KondahOptions } from './kondah-options'
-import { EnergizorLoggerAdapter, Logger } from './logger'
+import { Logger } from './logger'
 import { IKondahLogger } from './types'
+import { EnergizorLoggerAdapter } from './adapters/energizor-logger.adapter'
+import { IHttpDriver } from './http/http-adapter.interface'
 
 export abstract class Kondah {
   private readonly _energizor: Energizor
