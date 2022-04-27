@@ -1,6 +1,6 @@
 {
   "name": "@kondah/energizor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "extendable dependency container",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",

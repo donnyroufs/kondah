@@ -1,6 +1,6 @@
 {
   "name": "@kondah/core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "the very core of Kondah",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",
@@ -25,9 +25,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@kondah/energizor": "^0.3.0",
     "chalk": "^4.1.1",
-    "reflect-metadata": "^0.1.13",
-    "@kondah/energizor": "^0.2.0"
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0"
