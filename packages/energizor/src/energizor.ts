@@ -87,6 +87,10 @@ export class Energizor implements IEnergizor {
     this.register(Package.SINGLETON, depOrToken, dependency)
   }
 
+  public addConstantValue(token: Token, dependency: any) {
+    this.register(Package.CONSTANT, token, dependency)
+  }
+
   /**
    * In order to keep boundaries in your application you can add dependencies
    * that have been configured with the interface ICollection.

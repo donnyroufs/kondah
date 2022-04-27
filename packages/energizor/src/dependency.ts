@@ -1,9 +1,10 @@
+import { EnergizorException } from './exceptions/energizor.exception'
 import { MetadataKey } from './metadata.enum'
 import { DependencyConstr, Identifier } from './types'
 import { Utils } from './utils'
 
 export class Dependency<T = unknown> {
-  private _constantValue: any = null
+  private _isConstantValue = false
 
   public constructor(
     private readonly _identifier: Identifier,
@@ -22,15 +23,21 @@ export class Dependency<T = unknown> {
   }
 
   public getConstantValue() {
-    return this._constantValue
+    if (!this.isConstantValue()) {
+      throw new EnergizorException(
+        'You tried to access a constant value but it is not a constant.'
+      )
+    }
+
+    return this._constructor
   }
 
   public isConstantValue(): boolean {
-    return this._constantValue != null
+    return this._isConstantValue
   }
 
-  public flagAsConstantValue(value: unknown) {
-    this._constantValue = value
+  public flagAsConstantValue() {
+    this._isConstantValue = true
   }
 
   /**
@@ -44,13 +51,22 @@ export class Dependency<T = unknown> {
    * @description gives you the class arguments that got added by the Injectable and Inject decorators
    */
   public getArguments() {
-    return Utils.getMetadata<Identifier>(MetadataKey.args, this._constructor)
+    const args = Utils.getMetadata<Identifier>(
+      MetadataKey.args,
+      this._constructor
+    )
+
+    return Array.isArray(args) ? args : []
   }
 
   /**
    * @description checks whether the dependency has a onBoot hook.
    */
   public hasBootMethod(): boolean {
+    if (this.isConstantValue()) {
+      return false
+    }
+
     return this.getConstructor().prototype.onBoot != null
   }
 }

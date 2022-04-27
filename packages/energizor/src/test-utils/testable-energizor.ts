@@ -39,7 +39,7 @@ export class TestableEnergizor extends Energizor implements IRebind {
     const isConstructor = Utils.isConstructor(constr)
 
     if (!isConstructor) {
-      pckg.getDependency().flagAsConstantValue(constr)
+      pckg.getDependency().setConstructor(Utils.constructify(constr))
       return
     }
 
