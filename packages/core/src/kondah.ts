@@ -28,43 +28,69 @@ export abstract class Kondah<TRequest, TResponse, TDriver> {
 
   public async boot() {
     this._energizor.addSingleton(Logger)
-
     this.configureServices(this._energizor)
     await this._httpDriver.onBoot()
 
-    // TOOD: Abstract to a plugin which requires its own adapters
-    // based on the http framework perhaps? That way we dont collide with Request and Response objects
-    Object.entries(controllers).forEach(([k, v]) => {
+    await this._energizor.boot()
+    await this.setup(this._energizor)
+
+    // TODO: Abstract, add tests, and refactor.
+    controllers.forEach((v) => {
       this._httpDriver.addRoute(
         v.method,
         this.normalizePath(v.target.__endpoint__, v.path),
-        async (req, res, next) => {
+        asyncRequestHandler(async (req, res) => {
+          const instance = this._energizor.get(v.constr!)
+
           const params = createHandlerParams(
             v.handler.__params__ ?? [],
             req
           ).reverse()
-          const result = await v.handler(...params)
+
+          // TODO: Handle async error
+          const result = await instance[v.handler.name](...params)
 
           // NOTE: what if we bind the current request context
           // could we avoid passing the response object here?
           return this._httpDriver.sendJson(res, result)
-        }
+        })
       )
     })
 
-    await this._energizor.boot()
-    await this.setup(this._energizor)
+    this.getHttpDriver().addErrorHandler()
 
     this._logger.info('Successfuly booted.', 'KONDAH')
   }
 
   private normalizePath(controller: string, endpoint: string) {
-    return controller + endpoint === '//' ? '/' : controller + endpoint
+    const path = controller + endpoint
+
+    if (path.includes('//')) {
+      return path.replace('//', '/')
+    }
+
+    if (path.slice(-1) === '/') return path.substring(0, path.length - 1)
+
+    return path
   }
 }
 
 function createHandlerParams(opts: any[], req: any) {
   return opts.map((opt) => {
-    return req[opt.param]
+    const param = req[opt.param]
+
+    if (opt.callback) return opt.callback(param)
+
+    return param
   })
+}
+
+function asyncRequestHandler(cb: any) {
+  return async (req, res, next) => {
+    try {
+      return await cb(req, res)
+    } catch (err) {
+      next(err)
+    }
+  }
 }

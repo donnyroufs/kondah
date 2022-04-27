@@ -25,4 +25,6 @@ export interface IHttpDriver<TRequest, TResponse, TDriver> extends IBoot {
   run(port: number, message?: string): Promise<void>
 
   getServer(): Server
+
+  addErrorHandler(): void
 }

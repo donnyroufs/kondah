@@ -1,3 +1,5 @@
+import { Injectable } from '@kondah/energizor'
+import { Constructor } from '../kondah-options'
 import { HttpMethod } from './http-method.enum'
 
 export class RouteData {
@@ -6,35 +8,47 @@ export class RouteData {
     public readonly method: HttpMethod,
     public readonly handler: any,
     public readonly target: { __endpoint__: string },
+    public readonly id: string,
+    public constr?: Constructor<any>,
     public readonly methodParams?: any
   ) {}
 }
 
-export const controllers: Record<string, RouteData> = {}
+export const controllers: RouteData[] = []
 
-export function Get(path: string) {
-  return (target: any, key: string) => {
+function makeMethodDecorator(method: HttpMethod) {
+  return (path: string) => (target: any, key: string) => {
     const handler = target[key]
 
-    controllers[target.constructor.name] = {
-      ...controllers[target.constructor.name],
+    controllers.push({
       handler,
       path,
       target,
-      method: HttpMethod.GET,
-    }
+      method: method,
+      id: target.constructor.name,
+    })
   }
 }
 
 export function Controller(pathName: string) {
   // eslint-disable-next-line @typescript-eslint/ban-types
   return (target: Function) => {
+    Injectable()(target)
+
+    controllers.forEach((ctrl) =>
+      ctrl.constr == null && ctrl.id === target.name
+        ? // @ts-ignore
+          (ctrl.constr = target)
+        : null
+    )
+
     target.prototype.__endpoint__ = pathName
   }
 }
 
 export function createParamDecorator(param: any) {
-  return () => {
+  // TODO: Refactor to use pipes
+  return (callback?: (val: any) => any) => {
     return (
       target: any,
       propertyKey: string | symbol,
@@ -49,6 +63,7 @@ export function createParamDecorator(param: any) {
         propertyKey,
         parameterIndex,
         param,
+        callback,
       })
     }
   }
@@ -56,3 +71,11 @@ export function createParamDecorator(param: any) {
 
 export const Body = createParamDecorator('body')
 export const Query = createParamDecorator('query')
+export const Params = createParamDecorator('params')
+export const Headers = createParamDecorator('headers')
+
+export const Get = makeMethodDecorator(HttpMethod.GET)
+export const Post = makeMethodDecorator(HttpMethod.POST)
+export const Put = makeMethodDecorator(HttpMethod.PUT)
+export const Patch = makeMethodDecorator(HttpMethod.PATCH)
+export const Delete = makeMethodDecorator(HttpMethod.DELETE)

@@ -44,4 +44,5 @@ export abstract class AbstractHttpAdapter<TRequest, TResponse, TDriver>
   }
 
   public abstract onBoot(): void | Promise<void>
+  public abstract addErrorHandler(): void
 }

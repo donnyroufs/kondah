@@ -69,6 +69,22 @@ export class ExpressHttpAdapter extends AbstractHttpAdapter<
     )
   }
 
+  public addErrorHandler(): void {
+    this._app.use((err, req, res, next) => {
+      const logger = this.energizor.get(Logger)
+
+      logger.danger(err.message, 'HTTP')
+
+      if (res.headersSent) {
+        return next(err)
+      }
+
+      res.status(500).json({
+        message: 'Server failed to handle your request.',
+      })
+    })
+  }
+
   private isHandlerDefined(arg?: unknown) {
     return arg != null
   }
