@@ -1,5 +1,5 @@
 import { once } from 'events'
-import * as express from 'express'
+import express from 'express'
 import { Server } from 'http'
 
 import {
