@@ -1,12 +1,24 @@
-import { HttpMethod, IHttpDriver, RequestHandler } from '@kondah/core'
 import { once } from 'events'
-
 import * as express from 'express'
+import { Server } from 'http'
 
-export class ExpressHttpAdapter
-  implements
-    IHttpDriver<express.Request, express.Response, express.Application>
-{
+import {
+  HttpMethod,
+  IHttpDriver,
+  RequestHandler,
+  Logger,
+  AbstractHttpAdapter,
+} from '@kondah/core'
+
+export class ExpressHttpAdapter extends AbstractHttpAdapter<
+  express.Request,
+  express.Response,
+  express.Application
+> {
+  public async onBoot(): Promise<void> {}
+
+  private _server?: Server
+
   public sendJson<TData>(
     res: express.Response<any, Record<string, any>>,
     data: TData
@@ -47,16 +59,17 @@ export class ExpressHttpAdapter
     return this
   }
 
-  // TODO: Need access to energizor
   public async run(port: number, message?: string): Promise<void> {
-    const server = this._app.listen(port, () =>
-      console.log(message ?? `Server is running on http://localhost:${port}`)
+    const logger = this.energizor.get(Logger)
+    this._server = this._app.listen(port)
+    await once(this._server, 'listening')
+    logger.success(
+      message ?? `Server is running on http://localhost:${port}`,
+      'HTTP'
     )
-    await once(server, 'listening')
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  private isHandlerDefined(arg?: any) {
+  private isHandlerDefined(arg?: unknown) {
     return arg != null
   }
 }
