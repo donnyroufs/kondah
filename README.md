@@ -5,19 +5,30 @@
 </p>
 
 ```ts
-import { Kondah, ExcludeHooks, IEnergizor } from '@kondah/core'
-
-import { AppController } from './AppController'
-
-export class Application extends Kondah {
-  public configureServices(services: IEnergizor) {
+export class Application extends Kondah<
+  Request,
+  Response,
+  Express.Application
+> {
+  public configureServices(services: IEnergizor): void {
+    services.addTransient(MyService)
     services.addSingleton(AppController)
   }
 
-  public async boot(services: IEnergizor) {
-    await services.boot()
+  public async setup(services: IEnergizor): Promise<void> {
+    await http.run(5000)
   }
 }
+
+export async function bootstrap() {
+  const app = new Application({
+    httpDriver: ExpressHttpAdapter,
+  })
+
+  await app.boot()
+}
+
+bootstrap()
 ```
 
 # Roadmap
