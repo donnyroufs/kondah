@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run build --stream",
+    "build": "lerna run build --stream --include-dependencies",
     "publish": "lerna publish --conventional-commits --no-commit-hooks",
     "dev": "lerna run --parallel dev",
     "prepare": "husky install",

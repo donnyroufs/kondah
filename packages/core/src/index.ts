@@ -2,6 +2,8 @@ export * from './kondah'
 export * from './types'
 export * from './logger'
 
+export * from './http'
+
 export {
   ExcludeHooks,
   IEnergizor,

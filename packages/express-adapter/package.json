@@ -1,7 +1,7 @@
 {
-  "name": "@kondah/core",
-  "version": "0.2.0",
-  "description": "the very core of Kondah",
+  "name": "@kondah/express-adapter",
+  "version": "0.0.0",
+  "description": "Adapts to the kondah http driver with the power of Express",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "homepage": "https://kondah.dev",
   "license": "MIT",
@@ -25,11 +25,13 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@kondah/core": "^0.2.0",
     "chalk": "^4.1.1",
-    "reflect-metadata": "^0.1.13",
-    "@kondah/energizor": "^0.2.0"
+    "express": "^4.17.3",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@types/chalk": "^2.2.0"
+    "@types/chalk": "^2.2.0",
+    "@types/express": "^4.17.13"
   }
 }
