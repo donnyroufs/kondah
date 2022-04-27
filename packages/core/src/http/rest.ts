@@ -1,6 +1,7 @@
 import { Injectable } from '@kondah/energizor'
 import { Constructor } from '../kondah-options'
 import { HttpMethod } from './http-method.enum'
+import { HttpStatusCode } from './http-status.enum'
 
 export class RouteData {
   constructor(
@@ -9,6 +10,7 @@ export class RouteData {
     public readonly handler: any,
     public readonly target: { __endpoint__: string },
     public readonly id: string,
+    public statusCode?: HttpStatusCode,
     public constr?: Constructor<any>,
     public readonly methodParams?: any
   ) {}
@@ -17,17 +19,19 @@ export class RouteData {
 export const controllers: RouteData[] = []
 
 function makeMethodDecorator(method: HttpMethod) {
-  return (path: string) => (target: any, key: string) => {
-    const handler = target[key]
+  return (path: string, statusCode = HttpStatusCode.OK) =>
+    (target: any, key: string) => {
+      const handler = target[key]
 
-    controllers.push({
-      handler,
-      path,
-      target,
-      method: method,
-      id: target.constructor.name,
-    })
-  }
+      controllers.push({
+        handler,
+        path,
+        target,
+        method,
+        id: target.constructor.name,
+        statusCode,
+      })
+    }
 }
 
 export function Controller(pathName: string) {

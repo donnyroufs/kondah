@@ -52,6 +52,10 @@ export abstract class Kondah<TRequest, TResponse, TDriver> {
 
           // NOTE: what if we bind the current request context
           // could we avoid passing the response object here?
+
+          // TODO: Refactor with adapter, this only works for Express
+          res.statusCode = v.statusCode
+
           return this._httpDriver.sendJson(res, result)
         })
       )
