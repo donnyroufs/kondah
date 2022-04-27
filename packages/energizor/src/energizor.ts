@@ -22,14 +22,6 @@ import {
   Token,
 } from './types'
 
-class Constant {
-  public constructor(private readonly _value: any) {}
-
-  public getValue() {
-    return this._value
-  }
-}
-
 export class Energizor implements IEnergizor {
   private readonly _registry = new Registry()
   private readonly _pckgFactory = new PckgFactory()
