@@ -26,7 +26,8 @@
   },
   "dependencies": {
     "chalk": "^4.1.1",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "@kondah/energizor": "^0.2.0"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0"
