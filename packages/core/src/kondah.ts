@@ -14,7 +14,8 @@ export abstract class Kondah<TRequest, TResponse, TDriver> {
 
   public constructor(opts: KondahOptions) {
     this._logger = opts.logger ?? new Logger()
-    this._energizor = new Energizor(new EnergizorLoggerAdapter(this._logger))
+    this._energizor =
+      opts.energizor ?? new Energizor(new EnergizorLoggerAdapter(this._logger))
     this._httpDriver = new opts.httpDriver(this._energizor)
   }
 
