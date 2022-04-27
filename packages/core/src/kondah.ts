@@ -13,9 +13,9 @@ export abstract class Kondah<TRequest, TResponse, TDriver> {
   private readonly _httpDriver: IHttpDriver<TRequest, TResponse, TDriver>
 
   public constructor(opts: KondahOptions) {
-    this._httpDriver = opts.httpDriver
     this._logger = opts.logger ?? new Logger()
     this._energizor = new Energizor(new EnergizorLoggerAdapter(this._logger))
+    this._httpDriver = new opts.httpDriver(this._energizor)
   }
 
   public abstract configureServices(services: IEnergizor): void
@@ -29,15 +29,17 @@ export abstract class Kondah<TRequest, TResponse, TDriver> {
     this._energizor.addSingleton(Logger)
 
     this.configureServices(this._energizor)
+    await this._httpDriver.onBoot()
 
-    // TOOD: Abstract
+    // TOOD: Abstract to a plugin which requires its own adapters
+    // based on the http framework perhaps? That way we dont collide with Request and Response objects
     Object.entries(controllers).forEach(([k, v]) => {
       this._httpDriver.addRoute(
         v.method,
-        v.target.__endpoint__ + v.path,
+        this.normalizePath(v.target.__endpoint__, v.path),
         async (req, res, next) => {
           const params = createHandlerParams(
-            v.handler.__params__,
+            v.handler.__params__ ?? [],
             req
           ).reverse()
           const result = await v.handler(...params)
@@ -53,6 +55,10 @@ export abstract class Kondah<TRequest, TResponse, TDriver> {
     await this.setup(this._energizor)
 
     this._logger.info('Successfuly booted.', 'KONDAH')
+  }
+
+  private normalizePath(controller: string, endpoint: string) {
+    return controller + endpoint === '//' ? '/' : controller + endpoint
   }
 }
 
