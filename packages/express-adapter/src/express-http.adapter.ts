@@ -1,4 +1,3 @@
-import { once } from 'events'
 import express from 'express'
 import { Server } from 'http'
 
@@ -16,8 +15,6 @@ export class ExpressHttpAdapter extends AbstractHttpAdapter<
   express.Application
 > {
   public async onBoot(): Promise<void> {}
-
-  private _server?: Server
 
   public sendJson<TData>(
     res: express.Response<any, Record<string, any>>,
@@ -59,14 +56,24 @@ export class ExpressHttpAdapter extends AbstractHttpAdapter<
     return this
   }
 
-  public async run(port: number, message?: string): Promise<void> {
+  public run(port: number, message?: string): Promise<void> {
     const logger = this.energizor.get(Logger)
-    this._server = this._app.listen(port)
-    await once(this._server, 'listening')
-    logger.success(
-      message ?? `Server is running on http://localhost:${port}`,
-      'HTTP'
-    )
+
+    return new Promise((resolve, reject) => {
+      this.server = this._app
+        .listen(port)
+        .once('listening', () => {
+          logger.success(
+            message ?? `Server is running on http://localhost:${port}`,
+            'HTTP'
+          )
+          resolve()
+        })
+        .once('error', (err) => {
+          logger.danger(err.message, 'HTTP')
+          reject()
+        })
+    })
   }
 
   public addErrorHandler(): void {
