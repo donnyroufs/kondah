@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/donnyroufs/konda/compare/@kondah/express-adapter@0.1.0...@kondah/express-adapter@0.1.1) (2022-04-27)
+
+
+### Bug Fixes
+
+* **express-adapter:** assign server to property ([72b4653](https://github.com/donnyroufs/konda/commit/72b4653465a96542b8c66249cb403dcf16d15b06))
+
+
+
+
+
 # [0.1.0](https://github.com/donnyroufs/konda/compare/@kondah/express-adapter@1.0.1-alpha.2...@kondah/express-adapter@0.1.0) (2022-04-27)
 
 

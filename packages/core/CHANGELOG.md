@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/donnyroufs/konda/compare/@kondah/core@0.3.0...@kondah/core@0.4.0) (2022-04-27)
+
+
+### Features
+
+* **core:** add status code ([ab3922f](https://github.com/donnyroufs/konda/commit/ab3922f8feb0292ca90fb610ef8f900581793c5e))
+
+
+
+
+
 # [0.3.0](https://github.com/donnyroufs/konda/compare/@kondah/core@0.2.0...@kondah/core@0.3.0) (2022-04-27)
 
 
