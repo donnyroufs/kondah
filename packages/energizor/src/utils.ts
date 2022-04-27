@@ -1,9 +1,9 @@
-import { MetadataKey } from "./metadata.enum"
-import { Constructor } from "./types"
+import { MetadataKey } from './metadata.enum'
+import { Constructor } from './types'
 
 export class Utils {
   public static isConstructor(token: any): token is Constructor {
-    return typeof token === "function" && token.prototype
+    return typeof token === 'function' && token.prototype
   }
 
   public static mergeAndSetMetadata(
@@ -25,5 +25,13 @@ export class Utils {
     }
 
     return data
+  }
+
+  public static constructify<T>(target: T) {
+    return class {
+      constructor() {
+        Object.assign(this, target)
+      }
+    } as Constructor<T>
   }
 }

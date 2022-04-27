@@ -28,6 +28,7 @@ export interface ILogger {
 export enum Package {
   TRANSIENT = 'transient',
   SINGLETON = 'singleton',
+  CONSTANT = 'constant',
 }
 
 export interface ICollection {

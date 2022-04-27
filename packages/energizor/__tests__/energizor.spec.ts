@@ -170,6 +170,22 @@ describe('energizor', () => {
     })
   })
 
+  describe('addConstantValue()', () => {
+    test.each([
+      [{ id: 1 }, 'object'],
+      [function () {}, 'function'],
+    ])('registers a constant value', async (dep: any, depType: string) => {
+      const energizor = new Energizor(new MockedLogger())
+      const token = 'token'
+      energizor.addConstantValue(token, dep)
+
+      await energizor.boot()
+      const value = energizor.get(token)
+
+      expect(typeof value).toBe(depType)
+    })
+  })
+
   describe('addCollection()', () => {
     test('adds a collection and exposes its dependencies', async () => {
       const energizor = new Energizor(new MockedLogger())

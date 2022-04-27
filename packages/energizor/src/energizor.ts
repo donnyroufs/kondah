@@ -22,6 +22,14 @@ import {
   Token,
 } from './types'
 
+class Constant {
+  public constructor(private readonly _value: any) {}
+
+  public getValue() {
+    return this._value
+  }
+}
+
 export class Energizor implements IEnergizor {
   private readonly _registry = new Registry()
   private readonly _pckgFactory = new PckgFactory()
@@ -85,6 +93,10 @@ export class Energizor implements IEnergizor {
     dependency?: DependencyConstr<T>
   ): void {
     this.register(Package.SINGLETON, depOrToken, dependency)
+  }
+
+  public addConstantValue(token: Token, dependency: any) {
+    this.register(Package.CONSTANT, token, dependency)
   }
 
   /**
