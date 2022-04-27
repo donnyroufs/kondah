@@ -60,5 +60,7 @@ export interface IEnergizor {
     dependency?: DependencyConstr<T>
   ): void
 
+  addConstantValue(token: Token, value: any): void
+
   addCollection(collection: Constructor<ICollection>): void
 }
