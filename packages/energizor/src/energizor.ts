@@ -92,6 +92,13 @@ export class Energizor implements IEnergizor {
   }
 
   /**
+   * @experimental
+   */
+  public addFactory(token: Token, dependency: Function) {
+    this.register(Package.FACTORY, token, dependency)
+  }
+
+  /**
    * In order to keep boundaries in your application you can add dependencies
    * that have been configured with the interface ICollection.
    */
@@ -108,7 +115,7 @@ export class Energizor implements IEnergizor {
   protected register<T>(
     type: Package,
     depOrToken: DepOrToken<T>,
-    constr?: DependencyConstr<T>
+    constr?: DependencyConstr<T> | Function
   ) {
     const isInverted = !!(constr && !Utils.isConstructor(depOrToken))
 
@@ -116,7 +123,9 @@ export class Energizor implements IEnergizor {
       ? constr
       : (depOrToken as DependencyConstr)
 
-    const dependency = new Dependency(depOrToken, dependencyConstructor!)
+    // TODO: Refactor, we probably could wrap functions and other primitive values in a class
+    // that way we do not have to do a whole rewrite for now. -last famous words
+    const dependency = new Dependency(depOrToken, dependencyConstructor as any)
 
     const pckg = this._pckgFactory.makePckg(type, dependency)
 

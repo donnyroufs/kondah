@@ -29,6 +29,7 @@ export enum Package {
   TRANSIENT = 'transient',
   SINGLETON = 'singleton',
   CONSTANT = 'constant',
+  FACTORY = 'factory',
 }
 
 export interface ICollection {
@@ -61,6 +62,7 @@ export interface IEnergizor {
   ): void
 
   addConstantValue(token: Token, value: any): void
+  addFactory(token: Token, value: DependencyConstr | Function): void
 
   addCollection(collection: Constructor<ICollection>): void
 }

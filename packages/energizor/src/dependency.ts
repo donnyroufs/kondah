@@ -67,6 +67,6 @@ export class Dependency<T = unknown> {
       return false
     }
 
-    return this.getConstructor().prototype.onBoot != null
+    return this.getConstructor()?.prototype?.onBoot != null
   }
 }
