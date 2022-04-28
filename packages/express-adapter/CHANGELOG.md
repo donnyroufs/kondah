@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/donnyroufs/konda/compare/@kondah/express-adapter@0.1.1...@kondah/express-adapter@0.2.0) (2022-04-28)
+
+
+### Features
+
+* add http context ([d8a6ac2](https://github.com/donnyroufs/konda/commit/d8a6ac2ff123140e206d6bfd1b8b3cdae4e260cf))
+
+
+
+
+
 ## [0.1.1](https://github.com/donnyroufs/konda/compare/@kondah/express-adapter@0.1.0...@kondah/express-adapter@0.1.1) (2022-04-27)
 
 

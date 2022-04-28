@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/donnyroufs/konda/compare/@kondah/energizor@0.3.0...@kondah/energizor@0.4.0) (2022-04-28)
+
+
+### Features
+
+* **energizor:** add experimental factory ([d004b61](https://github.com/donnyroufs/konda/commit/d004b61d691a7c959b1a24f42fc6b65e8b6bbae7))
+
+
+
+
+
 # [0.3.0](https://github.com/donnyroufs/konda/compare/@kondah/energizor@0.2.0...@kondah/energizor@0.3.0) (2022-04-27)
 
 

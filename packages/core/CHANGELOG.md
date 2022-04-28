@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/donnyroufs/konda/compare/@kondah/core@0.4.0...@kondah/core@0.5.0) (2022-04-28)
+
+
+### Features
+
+* add http context ([d8a6ac2](https://github.com/donnyroufs/konda/commit/d8a6ac2ff123140e206d6bfd1b8b3cdae4e260cf))
+
+
+
+
+
 # [0.4.0](https://github.com/donnyroufs/konda/compare/@kondah/core@0.3.0...@kondah/core@0.4.0) (2022-04-27)
 
 
