@@ -6,6 +6,8 @@ import { IKondahLogger } from './types'
 import { EnergizorLoggerAdapter } from './adapters/energizor-logger.adapter'
 import { IHttpDriver } from './http/http-adapter.interface'
 import { controllers } from './http/rest'
+import { asyncLocalStorage } from './http/async-local-storage'
+import { httpContextToken } from './http'
 
 export abstract class Kondah<TRequest, TResponse, TDriver> {
   private readonly _energizor: Energizor
@@ -28,6 +30,10 @@ export abstract class Kondah<TRequest, TResponse, TDriver> {
 
   public async boot() {
     this._energizor.addSingleton(Logger)
+    this._energizor.addFactory(httpContextToken, () =>
+      asyncLocalStorage.getStore()
+    )
+
     this.configureServices(this._energizor)
     await this._httpDriver.onBoot()
 
@@ -40,23 +46,24 @@ export abstract class Kondah<TRequest, TResponse, TDriver> {
         v.method,
         this.normalizePath(v.target.__endpoint__, v.path),
         asyncRequestHandler(async (req, res) => {
-          const instance = this._energizor.get(v.constr!)
+          asyncLocalStorage.run({ req, res }, async () => {
+            const instance = this._energizor.get(v.constr!)
 
-          const params = createHandlerParams(
-            v.handler.__params__ ?? [],
-            req
-          ).reverse()
+            const params = createHandlerParams(
+              v.handler.__params__ ?? [],
+              req
+            ).reverse()
 
-          // TODO: Handle async error
-          const result = await instance[v.handler.name](...params)
+            const result = await instance[v.handler.name](...params)
 
-          // NOTE: what if we bind the current request context
-          // could we avoid passing the response object here?
+            // NOTE: what if we bind the current request context
+            // could we avoid passing the response object here?
 
-          // TODO: Refactor with adapter, this only works for Express
-          res.statusCode = v.statusCode
+            // TODO: Refactor with adapter, this only works for Express
+            res.statusCode = v.statusCode
 
-          return this._httpDriver.sendJson(res, result)
+            return this._httpDriver.sendJson(res, result)
+          })
         })
       )
     })
