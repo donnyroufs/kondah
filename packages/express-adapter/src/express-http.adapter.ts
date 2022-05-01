@@ -1,5 +1,4 @@
 import express from 'express'
-import { Server } from 'http'
 
 import {
   HttpMethod,
@@ -7,6 +6,7 @@ import {
   RequestHandler,
   Logger,
   AbstractHttpAdapter,
+  HttpStatusCode,
 } from '@kondah/core'
 
 export class ExpressHttpAdapter extends AbstractHttpAdapter<
@@ -90,6 +90,13 @@ export class ExpressHttpAdapter extends AbstractHttpAdapter<
         message: 'Server failed to handle your request.',
       })
     })
+  }
+
+  public setHttpStatusCode(
+    req: express.Request,
+    statusCode: HttpStatusCode
+  ): void {
+    req.statusCode = statusCode
   }
 
   private isHandlerDefined(arg?: unknown) {
