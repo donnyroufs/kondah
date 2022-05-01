@@ -7,7 +7,7 @@ export type Constructor<T = unknown> = new (...args: any[]) => T
 
 export class KondahOptions {
   public constructor(
-    public httpDriver: Constructor<IHttpDriver<any, any, any>>,
+    public httpDriver: Constructor<IHttpDriver>,
     public logger?: IKondahLogger,
     public energizor?: Energizor
   ) {}

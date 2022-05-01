@@ -1,5 +1,6 @@
 import { Energizor, Injectable } from '@kondah/energizor'
 import { mock } from 'jest-mock-extended'
+
 import { AbstractHttpAdapter, IEnergizor, IKondahLogger, Kondah } from '../lib'
 
 @Injectable()

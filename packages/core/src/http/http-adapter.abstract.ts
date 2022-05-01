@@ -4,6 +4,7 @@ import { IEnergizor } from '..'
 import { IHttpDriver } from './http-adapter.interface'
 import { HttpDriverException } from './http-driver.exception'
 import { HttpMethod } from './http-method.enum'
+import { HttpStatusCode } from './http-status.enum'
 import { RequestHandler } from './request-handler'
 
 export abstract class AbstractHttpAdapter<TRequest, TResponse, TDriver>
@@ -45,4 +46,8 @@ export abstract class AbstractHttpAdapter<TRequest, TResponse, TDriver>
 
   public abstract onBoot(): void | Promise<void>
   public abstract addErrorHandler(): void
+  public abstract setHttpStatusCode(
+    req: TRequest,
+    statusCode: HttpStatusCode
+  ): void
 }

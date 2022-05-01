@@ -2,9 +2,11 @@ import { Server } from 'http'
 import { IBoot } from '..'
 
 import { HttpMethod } from './http-method.enum'
+import { HttpStatusCode } from './http-status.enum'
 import { RequestHandler } from './request-handler'
 
-export interface IHttpDriver<TRequest, TResponse, TDriver> extends IBoot {
+export interface IHttpDriver<TRequest = any, TResponse = any, TDriver = any>
+  extends IBoot {
   addRoute(
     method: HttpMethod,
     path: string,
@@ -27,4 +29,6 @@ export interface IHttpDriver<TRequest, TResponse, TDriver> extends IBoot {
   getServer(): Server
 
   addErrorHandler(): void
+
+  setHttpStatusCode(req: TRequest, statusCode: HttpStatusCode): void
 }

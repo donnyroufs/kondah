@@ -1,85 +1,125 @@
-import { Injectable } from '@kondah/energizor'
-import { Constructor } from '../kondah-options'
+import { IBoot, IEnergizor } from '@kondah/energizor'
+import { AsyncLocalStorage } from 'async_hooks'
+
+import { IHttpDriver } from './http-adapter.interface'
 import { HttpMethod } from './http-method.enum'
 import { HttpStatusCode } from './http-status.enum'
+import { HttpContext, IHttpContext } from './http.context'
+import { RouteData } from './route-data'
 
-export class RouteData {
-  constructor(
-    public readonly path: string,
-    public readonly method: HttpMethod,
-    public readonly handler: any,
-    public readonly target: { __endpoint__: string },
-    public readonly id: string,
-    public statusCode?: HttpStatusCode,
-    public constr?: Constructor<any>,
-    public readonly methodParams?: any
+export class REST implements IBoot {
+  public static controllers: RouteData[] = []
+
+  public constructor(
+    private readonly _asyncLocalStorage: AsyncLocalStorage<IHttpContext>,
+    private readonly _httpDriver: IHttpDriver,
+    private readonly _energizor: IEnergizor
   ) {}
-}
 
-export const controllers: RouteData[] = []
-
-function makeMethodDecorator(method: HttpMethod) {
-  return (path: string, statusCode = HttpStatusCode.OK) =>
-    (target: any, key: string) => {
-      const handler = target[key]
-
-      controllers.push({
-        handler,
-        path,
-        target,
-        method,
-        id: target.constructor.name,
-        statusCode,
-      })
+  public onBoot() {
+    for (const data of REST.controllers) {
+      this._httpDriver.addRoute(
+        data.method,
+        this.normalizePath(data.target.__endpoint__, data.path),
+        this.asyncRequestHandler(async (req, res, next) => {
+          this._asyncLocalStorage.run(new HttpContext(req, res), async () =>
+            this.createHandler(data)(req, res, next)
+          )
+        })
+      )
     }
-}
-
-export function Controller(pathName: string) {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  return (target: Function) => {
-    Injectable()(target)
-
-    controllers.forEach((ctrl) =>
-      ctrl.constr == null && ctrl.id === target.name
-        ? // @ts-ignore
-          (ctrl.constr = target)
-        : null
-    )
-
-    target.prototype.__endpoint__ = pathName
   }
-}
 
-export function createParamDecorator(param: any) {
-  // TODO: Refactor to use pipes
-  return (callback?: (val: any) => any) => {
-    return (
-      target: any,
-      propertyKey: string | symbol,
-      parameterIndex: number
-    ) => {
-      if (!target[propertyKey].__params__) {
-        target[propertyKey].__params__ = []
+  public static makeMethodDecorator(method: HttpMethod) {
+    return (path: string, statusCode = HttpStatusCode.OK) =>
+      (target: any, key: string) => {
+        const handler = target[key]
+
+        REST.controllers.push({
+          handler,
+          path,
+          target,
+          method,
+          id: target.constructor.name,
+          statusCode,
+        })
       }
+  }
 
-      target[propertyKey].__params__.push({
-        target,
-        propertyKey,
-        parameterIndex,
-        param,
-        callback,
-      })
+  // @TODO: Add type support
+  public static makeParamDecorator(param: any) {
+    // TODO: Refactor to use pipes
+    return (callback?: (val: any) => any) => {
+      return (
+        target: any,
+        propertyKey: string | symbol,
+        parameterIndex: number
+      ) => {
+        if (!target[propertyKey].__params__) {
+          target[propertyKey].__params__ = []
+        }
+
+        target[propertyKey].__params__.push({
+          target,
+          propertyKey,
+          parameterIndex,
+          param,
+          callback,
+        })
+      }
     }
   }
+
+  private createHandlerParams(opts: any[], req: any) {
+    return opts.map((opt) => {
+      const param = req[opt.param]
+
+      if (opt.callback) return opt.callback(param)
+
+      return param
+    })
+  }
+
+  private asyncRequestHandler(cb: any) {
+    return async (req, res, next) => {
+      try {
+        return await cb(req, res, next)
+      } catch (err) {
+        next(err)
+      }
+    }
+  }
+
+  private createHandler(data: RouteData) {
+    return async (req: any, res: any, next: any) => {
+      const instance = this._energizor.get(data.constr!)
+
+      const params = this.createHandlerParams(
+        data.handler.__params__ ?? [],
+        req
+      ).reverse()
+
+      const result = await instance[data.handler.name](...params).catch(
+        (err) => {
+          return next(err)
+        }
+      )
+
+      this._httpDriver.setHttpStatusCode(req, data.statusCode || 200)
+
+      return this._httpDriver.sendJson(res, result)
+    }
+  }
+
+  private normalizePath(controller: string, endpoint: string) {
+    const path = controller + endpoint
+
+    if (path.includes('//')) {
+      return path.replace('//', '/')
+    }
+
+    if (path.slice(-1) === '/') return path.substring(0, path.length - 1)
+
+    return path
+  }
 }
-
-export const Body = createParamDecorator('body')
-export const Query = createParamDecorator('query')
-export const Params = createParamDecorator('params')
-export const Headers = createParamDecorator('headers')
-
-export const Get = makeMethodDecorator(HttpMethod.GET)
-export const Post = makeMethodDecorator(HttpMethod.POST)
-export const Put = makeMethodDecorator(HttpMethod.PUT)
-export const Patch = makeMethodDecorator(HttpMethod.PATCH)
-export const Delete = makeMethodDecorator(HttpMethod.DELETE)
