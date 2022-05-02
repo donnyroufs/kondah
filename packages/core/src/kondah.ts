@@ -8,10 +8,10 @@ import { IHttpDriver } from './http/http-adapter.interface'
 import { asyncLocalStorage } from './http/async-local-storage'
 import { REST, httpContextToken } from './http'
 
-export abstract class Kondah<TRequest, TResponse, TDriver> {
+export abstract class Kondah {
   private readonly _energizor: Energizor
   private readonly _logger: IKondahLogger
-  private readonly _httpDriver: IHttpDriver<TRequest, TResponse, TDriver>
+  private readonly _httpDriver: IHttpDriver
   private readonly _rest: REST
 
   public constructor(opts: KondahOptions) {

@@ -3,9 +3,9 @@
   "compilerOptions": {
     "outDir": "./lib",
     "skipLibCheck": false,
-    "esModuleInterop": true
+    "esModuleInterop": true,
   },
   "include": [
-    "./src"
-  ]
+    "./src",
+  ],
 }

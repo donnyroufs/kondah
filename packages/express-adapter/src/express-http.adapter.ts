@@ -7,44 +7,34 @@ import {
   Logger,
   AbstractHttpAdapter,
   HttpStatusCode,
+  IKondahResponse,
+  IKondahRequest,
 } from '@kondah/core'
 
-export class ExpressHttpAdapter extends AbstractHttpAdapter<
-  express.Request,
-  express.Response,
-  express.Application
-> {
+export class ExpressHttpAdapter extends AbstractHttpAdapter {
   public async onBoot(): Promise<void> {}
 
-  public sendJson<TData>(
-    res: express.Response<any, Record<string, any>>,
-    data: TData
-  ): void {
+  public sendJson<TData>(res: IKondahResponse, data: TData): void {
     res.json(data)
   }
 
   public addRoute(
     method: HttpMethod,
     path: string,
-    handler: RequestHandler<express.Request, express.Response>
-  ): IHttpDriver<express.Request, express.Response, express.Application> {
+    handler: RequestHandler
+  ): IHttpDriver {
     this._app[method](path, handler)
 
     return this
   }
   private readonly _app = express()
 
-  public addMiddleware(
-    handler: RequestHandler<express.Request, express.Response>
-  ): IHttpDriver<express.Request, express.Response, express.Application>
-  public addMiddleware(
-    path: string,
-    handler: RequestHandler<express.Request, express.Response>
-  ): IHttpDriver<express.Request, express.Response, express.Application>
+  public addMiddleware(handler: RequestHandler): IHttpDriver
+  public addMiddleware(path: string, handler: RequestHandler): IHttpDriver
   public addMiddleware(
     pathOrHandler: any,
-    handler?: RequestHandler<express.Request, express.Response>
-  ): IHttpDriver<express.Request, express.Response, express.Application> {
+    handler?: RequestHandler
+  ): IHttpDriver {
     if (this.isHandlerDefined(handler)) {
       this._app.use(pathOrHandler, handler!)
 
@@ -94,7 +84,7 @@ export class ExpressHttpAdapter extends AbstractHttpAdapter<
   }
 
   public setHttpStatusCode(
-    req: express.Request,
+    req: IKondahRequest,
     statusCode: HttpStatusCode
   ): void {
     req.statusCode = statusCode

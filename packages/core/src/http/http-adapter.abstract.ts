@@ -1,14 +1,19 @@
 import { Server } from 'http'
-import { IEnergizor } from '..'
 
-import { IHttpDriver } from './http-adapter.interface'
-import { HttpDriverException } from './http-driver.exception'
-import { HttpMethod } from './http-method.enum'
-import { HttpStatusCode } from './http-status.enum'
-import { RequestHandler } from './request-handler'
+import {
+  IEnergizor,
+  IKondahDriver,
+  IKondahRequest,
+  IKondahResponse,
+  RequestHandler,
+  HttpStatusCode,
+  HttpMethod,
+  HttpDriverException,
+  IHttpDriver,
+} from '../index'
 
-export abstract class AbstractHttpAdapter<TRequest, TResponse, TDriver>
-  implements IHttpDriver<TRequest, TResponse, TDriver>
+export abstract class AbstractHttpAdapter
+  implements IHttpDriver<IKondahRequest, IKondahResponse, IKondahDriver>
 {
   protected server?: Server
 
@@ -17,22 +22,22 @@ export abstract class AbstractHttpAdapter<TRequest, TResponse, TDriver>
   public abstract addRoute(
     method: HttpMethod,
     path: string,
-    handler: RequestHandler<TRequest, TResponse>
-  ): IHttpDriver<TRequest, TResponse, TDriver>
+    handler: RequestHandler
+  ): IHttpDriver<IKondahRequest, IKondahResponse, IKondahDriver>
 
   public abstract addMiddleware(
-    handler: RequestHandler<TRequest, TResponse>
-  ): IHttpDriver<TRequest, TResponse, TDriver>
+    handler: RequestHandler
+  ): IHttpDriver<IKondahRequest, IKondahResponse, IKondahDriver>
   public abstract addMiddleware(
     path: string,
-    handler: RequestHandler<TRequest, TResponse>
-  ): IHttpDriver<TRequest, TResponse, TDriver>
+    handler: RequestHandler
+  ): IHttpDriver<IKondahRequest, IKondahResponse, IKondahDriver>
   public abstract addMiddleware(
     path: any,
     handler?: any
-  ): IHttpDriver<TRequest, TResponse, TDriver>
+  ): IHttpDriver<IKondahRequest, IKondahResponse, IKondahDriver>
 
-  public abstract sendJson<TData>(res: TResponse, data: TData): void
+  public abstract sendJson<TData>(res: IKondahResponse, data: TData): void
 
   public abstract run(port: number, message?: string): Promise<void>
 
@@ -47,7 +52,7 @@ export abstract class AbstractHttpAdapter<TRequest, TResponse, TDriver>
   public abstract onBoot(): void | Promise<void>
   public abstract addErrorHandler(): void
   public abstract setHttpStatusCode(
-    req: TRequest,
+    req: IKondahRequest,
     statusCode: HttpStatusCode
   ): void
 }

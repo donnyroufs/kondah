@@ -7,3 +7,7 @@ export * from './http-adapter.abstract'
 export * from './http-status.enum'
 export * from './http.context'
 export * from './decorators/index'
+
+export * from './kondah-request.interface'
+export * from './kondah-response.interface'
+export * from './kondah-driver.interface'

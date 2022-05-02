@@ -1,5 +1,4 @@
 import { Energizor } from '@kondah/energizor'
-import { IEnergizor } from '.'
 import { IHttpDriver } from './http/http-adapter.interface'
 import { IKondahLogger } from './types'
 

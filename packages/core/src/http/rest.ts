@@ -5,6 +5,8 @@ import { IHttpDriver } from './http-adapter.interface'
 import { HttpMethod } from './http-method.enum'
 import { HttpStatusCode } from './http-status.enum'
 import { HttpContext, IHttpContext } from './http.context'
+import { IKondahRequest } from './kondah-request.interface'
+import { IKondahResponse } from './kondah-response.interface'
 import { RouteData } from './route-data'
 
 export class REST implements IBoot {
@@ -70,7 +72,7 @@ export class REST implements IBoot {
     }
   }
 
-  private createHandlerParams(opts: any[], req: any) {
+  private createHandlerParams(opts: any[], req: IKondahRequest) {
     return opts.map((opt) => {
       const param = req[opt.param]
 
@@ -81,7 +83,7 @@ export class REST implements IBoot {
   }
 
   private asyncRequestHandler(cb: any) {
-    return async (req, res, next) => {
+    return async (req: IKondahRequest, res: IKondahResponse, next) => {
       try {
         return await cb(req, res, next)
       } catch (err) {
@@ -104,18 +106,20 @@ export class REST implements IBoot {
         }
       })
 
-    return this.asyncRequestHandler(async (req: any, res: any, next: any) => {
-      const params = this.createHandlerParams(
-        data.handler.__params__ ?? [],
-        req
-      ).reverse()
+    return this.asyncRequestHandler(
+      async (req: IKondahRequest, res: IKondahResponse, next: any) => {
+        const params = this.createHandlerParams(
+          data.handler.__params__ ?? [],
+          req
+        ).reverse()
 
-      const result = await handlerAsync(...params)
+        const result = await handlerAsync(...params)
 
-      this._httpDriver.setHttpStatusCode(req, data.statusCode || 200)
+        this._httpDriver.setHttpStatusCode(req, data.statusCode || 200)
 
-      return this._httpDriver.sendJson(res, result)
-    })
+        return this._httpDriver.sendJson(res, result)
+      }
+    )
   }
 
   private normalizePath(controller: string, endpoint: string) {
