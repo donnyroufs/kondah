@@ -21,11 +21,11 @@ export class REST implements IBoot {
       this._httpDriver.addRoute(
         data.method,
         this.normalizePath(data.target.__endpoint__, data.path),
-        this.asyncRequestHandler(async (req, res, next) => {
+        async (req, res, next) => {
           this._asyncLocalStorage.run(new HttpContext(req, res), async () =>
             this.createHandler(data)(req, res, next)
           )
-        })
+        }
       )
     }
   }
@@ -91,24 +91,31 @@ export class REST implements IBoot {
   }
 
   private createHandler(data: RouteData) {
-    return async (req: any, res: any, next: any) => {
-      const instance = this._energizor.get(data.constr!)
+    const instance = this._energizor.get(data.constr!)
+    const handler = instance[data.handler.name].bind(instance)
 
+    const handlerAsync = (...args: any[]) =>
+      new Promise(async (res, rej) => {
+        try {
+          const result = await handler(...args)
+          return res(result)
+        } catch (err) {
+          return rej(err)
+        }
+      })
+
+    return this.asyncRequestHandler(async (req: any, res: any, next: any) => {
       const params = this.createHandlerParams(
         data.handler.__params__ ?? [],
         req
       ).reverse()
 
-      const result = await instance[data.handler.name](...params).catch(
-        (err) => {
-          return next(err)
-        }
-      )
+      const result = await handlerAsync(...params)
 
       this._httpDriver.setHttpStatusCode(req, data.statusCode || 200)
 
       return this._httpDriver.sendJson(res, result)
-    }
+    })
   }
 
   private normalizePath(controller: string, endpoint: string) {

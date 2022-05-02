@@ -32,13 +32,13 @@ export abstract class Kondah<TRequest, TResponse, TDriver> {
   public async boot() {
     await this.preBoot()
 
-    this._rest.onBoot()
-
     this.configureServices(this._energizor)
 
     await this._httpDriver.onBoot()
+
     await this._energizor.boot()
     await this.setup(this._energizor)
+    this._rest.onBoot()
 
     this.getHttpDriver().addErrorHandler()
 
