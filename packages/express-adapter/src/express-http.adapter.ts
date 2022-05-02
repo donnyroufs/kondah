@@ -87,7 +87,8 @@ export class ExpressHttpAdapter extends AbstractHttpAdapter<
       }
 
       res.status(500).json({
-        message: 'Server failed to handle your request.',
+        message: err.message,
+        stack: err.stack,
       })
     })
   }
