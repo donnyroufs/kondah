@@ -5,11 +5,7 @@
 </p>
 
 ```ts
-export class Application extends Kondah<
-  Request,
-  Response,
-  Express.Application
-> {
+export class Application extends Kondah {
   public configureServices(services: IEnergizor): void {
     services.addTransient(MyService)
     services.addSingleton(AppController)
